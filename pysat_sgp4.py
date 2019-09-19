@@ -567,7 +567,7 @@ def project_hwm_onto_sc(inst):
     return
 
 
-def plot_simulated_data(ivm, filename=None):
+def plot_simulated_data(inst, filename=None):
 
     import matplotlib
     import matplotlib.pyplot as plt
@@ -581,30 +581,30 @@ def plot_simulated_data(ivm, filename=None):
         out_fname = filename
 
     # make monotonically increasing longitude signal
-    diff = ivm['glong'].diff()
+    diff = inst['glong'].diff()
 
     idx, = np.where(diff < 0.)
     for item in idx:
-        ivm[item:, 'glong'] += 360.
+        inst[item:, 'glong'] += 360.
 
     f = plt.figure(figsize=(8.5, 7))
 
-    time1 = ivm.data.index[0].strftime('%Y-%h-%d %H:%M:%S')
-    if ivm.data.index[0].date() == ivm.data.index[-1].date():
-        time2 = ivm.data.index[-1].strftime('%H:%M:%S')
+    time1 = inst.data.index[0].strftime('%Y-%h-%d %H:%M:%S')
+    if inst.data.index[0].date() == inst.data.index[-1].date():
+        time2 = inst.data.index[-1].strftime('%H:%M:%S')
     else:
-        time2 = ivm.data.index[-1].strftime('%Y-%h-%d %H:%M:%S')
+        time2 = inst.data.index[-1].strftime('%Y-%h-%d %H:%M:%S')
     # Overall Plot Title
-    plt.suptitle(''.join(('SPORT IVM ', time1, ' -- ', time2)), fontsize=18)
+    plt.suptitle(''.join(('Simulated inst ', time1, ' -- ', time2)), fontsize=18)
 
     # create grid for plots
     gs = gridspec.GridSpec(5, 2, width_ratios=[12, 1])
 
     ax = f.add_subplot(gs[0, 0])
-    plt.plot(np.log10(ivm['ion_dens']), 'k', label='total')
-    plt.plot(np.log10(ivm['ion_dens']*ivm['frac_dens_o']), 'r', label='O+')
-    plt.plot(np.log10(ivm['ion_dens']*ivm['frac_dens_h']), 'b', label='H+')
-    # plt.plot(np.log10(ivm['ion_dens']*ivm['frac_dens_he']), 'g', label='He+')
+    plt.plot(np.log10(inst['ion_dens']), 'k', label='total')
+    plt.plot(np.log10(inst['ion_dens']*inst['frac_dens_o']), 'r', label='O+')
+    plt.plot(np.log10(inst['ion_dens']*inst['frac_dens_h']), 'b', label='H+')
+    # plt.plot(np.log10(inst['ion_dens']*inst['frac_dens_he']), 'g', label='He+')
     plt.legend(loc=(01.01, 0.15))
     ax.set_title('Log Ion Density')
     ax.set_ylabel('Log Density (N/cc)')
@@ -612,7 +612,7 @@ def plot_simulated_data(ivm, filename=None):
     ax.axes.get_xaxis().set_visible(False)
 
     ax2 = f.add_subplot(gs[1, 0], sharex=ax)
-    plt.plot(ivm['ion_temp'])
+    plt.plot(inst['ion_temp'])
     plt.legend(loc=(1.01, 0.15))
     ax2.set_title('Ion Temperature')
     ax2.set_ylabel('Temp (K)')
@@ -620,12 +620,12 @@ def plot_simulated_data(ivm, filename=None):
     ax2.axes.get_xaxis().set_visible(False)
 
     # determine altitudes greater than 770 km
-    # idx, = np.where(ivm['alt'] > 770.)
+    # idx, = np.where(inst['alt'] > 770.)
 
     ax3 = f.add_subplot(gs[2, 0], sharex=ax)
-    plt.plot(ivm['sim_wind_sc_x'], color='b', linestyle='--')
-    plt.plot(ivm['sim_wind_sc_y'], color='r', linestyle='--')
-    plt.plot(ivm['sim_wind_sc_z'], color='g', linestyle='--')
+    plt.plot(inst['sim_wind_sc_x'], color='b', linestyle='--')
+    plt.plot(inst['sim_wind_sc_y'], color='r', linestyle='--')
+    plt.plot(inst['sim_wind_sc_z'], color='g', linestyle='--')
     ax3.set_title('Neutral Winds in S/C X, Y, and Z')
     ax3.set_ylabel('Velocity (m/s)')
     ax3.set_ylim([-200., 200.])
@@ -636,9 +636,9 @@ def plot_simulated_data(ivm, filename=None):
     # plt.setp(ax3.xaxis.get_majorticklabels(), rotation=20, ha='right')
 
     ax4 = f.add_subplot(gs[3, 0], sharex=ax)
-    plt.plot(ivm['B_sc_x']*1e5, color='b', linestyle='--')
-    plt.plot(ivm['B_sc_y']*1e5, color='r', linestyle='--')
-    plt.plot(ivm['B_sc_z']*1e5, color='g', linestyle='--')
+    plt.plot(inst['B_sc_x']*1e5, color='b', linestyle='--')
+    plt.plot(inst['B_sc_y']*1e5, color='r', linestyle='--')
+    plt.plot(inst['B_sc_z']*1e5, color='g', linestyle='--')
     ax4.set_title('Magnetic Field in S/C X, Y, and Z')
     ax4.set_ylabel('Gauss')
     ax4.set_ylim([-3.5, 3.5])
@@ -648,19 +648,19 @@ def plot_simulated_data(ivm, filename=None):
     # # xlabels = [label[0:6] for label in xlabels]
     plt.setp(ax4.xaxis.get_majorticklabels(), rotation=20, ha='right')
 
-    # ivm info
+    # inst info
     ax6 = f.add_subplot(gs[4, 0])
 
     # do world plot if time to be plotted is less than 285 minutes, less than
     # 3 orbits
-    time_diff = ivm.data.index[-1] - ivm.data.index[0]
+    time_diff = inst.data.index[-1] - inst.data.index[0]
     if time_diff > pds.Timedelta(minutes=285):
         # do long time plot
-        ivm['glat'].plot(label='glat')  # legend=True, label='mlat')
-        ivm['mlt'].plot(label='mlt')  # legend=True, label='mlt')
+        inst['glat'].plot(label='glat')  # legend=True, label='mlat')
+        inst['mlt'].plot(label='mlt')  # legend=True, label='mlt')
         plt.title('Satellite Position')
         plt.legend(['mlat', 'mlt'], loc=(1.01, 0.15))
-    #    ivm['glong'].plot(secondary_y = True, label='glong')#legend=True,
+    #    inst['glong'].plot(secondary_y = True, label='glong')#legend=True,
     #       secondary_y = True, label='glong')
 
     else:
@@ -671,9 +671,9 @@ def plot_simulated_data(ivm, filename=None):
         ax6.set_position([s1pos[0], s6pos[1]+.008, s1pos[2], s1pos[3]])
 
         # fix longitude range for plot. Pad longitude so that first sample
-        # aligned with ivm measurement sample
-        lon0 = ivm[0, 'glong']
-        lon1 = ivm[-1, 'glong']
+        # aligned with inst measurement sample
+        lon0 = inst[0, 'glong']
+        lon1 = inst[-1, 'glong']
 
         # enforce minimal longitude window, keep graphics from being too
         # disturbed
@@ -683,7 +683,7 @@ def plot_simulated_data(ivm, filename=None):
         if lon1 > 720:
             lon0 -= 360.
             lon1 -= 360.
-            ivm[:, 'glong'] -= 360.
+            inst[:, 'glong'] -= 360.
 
         m = Basemap(projection='mill', llcrnrlat=-60, urcrnrlat=60.,
                     urcrnrlon=lon1.copy(), llcrnrlon=lon0.copy(),
@@ -699,8 +699,8 @@ def plot_simulated_data(ivm, filename=None):
         m.drawmeridians(np.arange(plon, plon+360.-22.5, 60),
                         labels=[0, 0, 0, 1], ax=ax6)
         m.drawparallels(np.arange(-20, 20, 20))
-        # time midway through ivm to plot terminator locations
-        midDate = ivm.data.index[len(ivm.data.index)//2]
+        # time midway through inst to plot terminator locations
+        midDate = inst.data.index[len(inst.data.index)//2]
 
         # plot day/night terminators
         try:
@@ -708,7 +708,7 @@ def plot_simulated_data(ivm, filename=None):
         except ValueError:
             pass
 
-        x, y = m(ivm['glong'].values, ivm['glat'].values)
+        x, y = m(inst['glong'].values, inst['glat'].values)
         points = np.array([x, y]).T.reshape(-1, 1, 2)
         segments = np.concatenate([points[:-1], points[1:]], axis=1)
         plot_norm = plt.Normalize(300, 500)
@@ -719,7 +719,7 @@ def plot_simulated_data(ivm, filename=None):
 
         lc = LineCollection(segments, cmap=plot_cmap, norm=plot_norm,
                             linewidths=5.0)
-        lc.set_array(ivm['alt'].values)
+        lc.set_array(inst['alt'].values)
         sm = plt.cm.ScalarMappable(cmap=plot_cmap, norm=plot_norm)
         sm._A = []
 
