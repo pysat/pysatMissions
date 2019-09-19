@@ -44,16 +44,22 @@ def init(self):
     Horiontal Wind Model (HWM).
 
     """
+    import pysat.instruments.mission_planning.aacgmv2_methods as methaacgm
+    import pysat.instruments.mission_planning.apexpy_methods as methapex
+    import pysat.instruments.mission_planning.pyglow_methods as methglow
 
-    self.custom.add(add_quasi_dipole_coordinates, 'modify')
-    self.custom.add(add_aacgm_coordinates, 'modify')
+    self.custom.add(methapex.add_quasi_dipole_coordinates, 'modify')
+    self.custom.add(methaacgm.add_aacgm_coordinates, 'modify')
     self.custom.add(calculate_ecef_velocity, 'modify')
     self.custom.add(add_sc_attitude_vectors, 'modify')
-    self.custom.add(add_iri_thermal_plasma, 'modify')
-    self.custom.add(add_hwm_winds_and_ecef_vectors, 'modify')
-    self.custom.add(add_igrf, 'modify')
+    # Thermal Ion Parameters
+    self.custom.add(methglow.add_iri_thermal_plasma, 'modify')
+    # Thermal Neutral parameters
+    self.custom.add(methglow.add_msis, 'modify')
+    self.custom.add(methglow.add_hwm_winds_and_ecef_vectors, 'modify')
     # project simulated vectors onto s/c basis
     # IGRF
+    self.custom.add(methglow.add_igrf, 'modify')
     # create metadata to be added along with vector projection
     in_meta = {'desc': 'IGRF geomagnetic field expressed in the s/c basis.',
                'units': 'nT'}
@@ -63,8 +69,6 @@ def init(self):
                     meta=[in_meta.copy(), in_meta.copy(), in_meta.copy()])
     # project total wind vector
     self.custom.add(project_hwm_onto_sc, 'modify')
-    # neutral parameters
-    self.custom.add(add_msis, 'modify')
 
 
 def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
@@ -97,8 +101,8 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     Example
     -------
       inst = pysat.Instrument('pysat', 'sgp4',
-              TLE1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
-              TLE2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452')
+          TLE1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
+          TLE2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452')
       inst.load(2018, 1)
 
     """
@@ -462,512 +466,6 @@ def calculate_ecef_velocity(inst):
     return
 
 
-def add_quasi_dipole_coordinates(inst, glat_label='glat', glong_label='glong',
-                                 alt_label='alt'):
-    """
-    Uses Apexpy package to add quasi-dipole coordinates to instrument object.
-
-    The Quasi-Dipole coordinate system includes both the tilt and offset of the
-    geomagnetic field to calculate the latitude, longitude, and local time
-    of the spacecraft with respect to the geomagnetic field.
-
-    This system is preferred over AACGM near the equator for LEO satellites.
-
-    Example
-    -------
-        # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_quasi_dipole_coordinates, 'modify',
-        glat_label='custom_label')
-
-    Parameters
-    ----------
-    inst : pysat.Instrument
-        Designed with pysat_sgp4 in mind
-    glat_label : string
-        label used in inst to identify WGS84 geodetic latitude (degrees)
-    glong_label : string
-        label used in inst to identify WGS84 geodetic longitude (degrees)
-    alt_label : string
-        label used in inst to identify WGS84 geodetic altitude (km, height
-        above surface)
-
-    Returns
-    -------
-    inst
-        Input pysat.Instrument object modified to include quasi-dipole
-        coordinates, 'qd_lat' for magnetic latitude, 'qd_long' for longitude,
-        and 'mlt' for magnetic local time.
-
-    """
-
-    import apexpy
-    ap = apexpy.Apex(date=inst.date)
-
-    qd_lat = []
-    qd_lon = []
-    mlt = []
-    for lat, lon, alt, time in zip(inst[glat_label], inst[glong_label],
-                                   inst[alt_label], inst.data.index):
-        # quasi-dipole latitude and longitude from geodetic coords
-        tlat, tlon = ap.geo2qd(lat, lon, alt)
-        qd_lat.append(tlat)
-        qd_lon.append(tlon)
-        mlt.append(ap.mlon2mlt(tlon, time))
-
-    inst['qd_lat'] = qd_lat
-    inst['qd_long'] = qd_lon
-    inst['mlt'] = mlt
-
-    inst.meta['qd_lat'] = {'units': 'degrees',
-                           'long_name': 'Quasi dipole latitude'}
-    inst.meta['qd_long'] = {'units': 'degrees',
-                            'long_name': 'Quasi dipole longitude'}
-    inst.meta['qd_mlt'] = {'units': 'hrs',
-                           'long_name': 'Magnetic local time'}
-
-    return
-
-
-def add_aacgm_coordinates(inst, glat_label='glat', glong_label='glong',
-                          alt_label='alt'):
-    """
-    Uses AACGMV2 package to add AACGM coordinates to instrument object.
-
-    The Altitude Adjusted Corrected Geomagnetic Coordinates library is used
-    to calculate the latitude, longitude, and local time
-    of the spacecraft with respect to the geomagnetic field.
-
-    Example
-    -------
-        # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_quasi_dipole_coordinates, 'modify',
-        glat_label='custom_label')
-
-    Parameters
-    ----------
-    inst : pysat.Instrument
-        Designed with pysat_sgp4 in mind
-    glat_label : string
-        label used in inst to identify WGS84 geodetic latitude (degrees N)
-    glong_label : string
-        label used in inst to identify WGS84 geodetic longitude (degrees E)
-    alt_label : string
-        label used in inst to identify WGS84 geodetic altitude (km, height
-        above surface)
-
-    Returns
-    -------
-    inst
-        Input pysat.Instrument object modified to include quasi-dipole
-        coordinates, 'aacgm_lat' for magnetic latitude, 'aacgm_long' for
-        longitude, and 'aacgm_mlt' for magnetic local time.
-
-    """
-
-    import aacgmv2
-
-    aalat = []
-    aalon = []
-    mlt = []
-    for lat, lon, alt, time in zip(inst[glat_label], inst[glong_label],
-                                   inst[alt_label], inst.data.index):
-        # aacgmv2 latitude and longitude from geodetic coords
-        tlat, tlon, tmlt = aacgmv2.get_aacgm_coord(lat, lon, alt, time)
-        aalat.append(tlat)
-        aalon.append(tlon)
-        mlt.append(tmlt)
-
-    inst['aacgm_lat'] = aalat
-    inst['aacgm_long'] = aalon
-    inst['aacgm_mlt'] = mlt
-
-    inst.meta['aacgm_lat'] = {'units': 'degrees',
-                              'long_name': 'AACGM latitude'}
-    inst.meta['aacgm_long'] = {'units': 'degrees',
-                               'long_name': 'AACGM longitude'}
-    inst.meta['aacgm_mlt'] = {'units': 'hrs',
-                              'long_name': 'AACGM Magnetic local time'}
-
-    return
-
-
-def add_iri_thermal_plasma(inst, glat_label='glat', glong_label='glong',
-                           alt_label='alt'):
-    """
-    Uses IRI (International Reference Ionosphere) model to simulate an
-    ionosphere.
-
-    Uses pyglow module to run IRI. Configured to use actual solar parameters
-    to run model.
-
-    Example
-    -------
-        # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_iri_thermal_plasma, 'modify',
-        glat_label='custom_label')
-
-    Parameters
-    ----------
-    inst : pysat.Instrument
-        Designed with pysat_sgp4 in mind
-    glat_label : string
-        label used in inst to identify WGS84 geodetic latitude (degrees)
-    glong_label : string
-        label used in inst to identify WGS84 geodetic longitude (degrees)
-    alt_label : string
-        label used in inst to identify WGS84 geodetic altitude (km, height
-        above surface)
-
-    Returns
-    -------
-    inst
-        Input pysat.Instrument object modified to include thermal plasma
-        parameters.
-        'ion_temp' for ion temperature in Kelvin
-        'e_temp' for electron temperature in Kelvin
-        'ion_dens' for the total ion density (O+ and H+)
-        'frac_dens_o' for the fraction of total density that is O+
-        'frac_dens_h' for the fraction of total density that is H+
-
-    """
-
-    import pyglow
-    from pyglow.pyglow import Point
-
-    iri_params = []
-    for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
-                                   inst[glong_label], inst[alt_label]):
-        # Point class is instantiated. Its parameters are a function of time
-        # and spatial location
-        pt = Point(time, lat, lon, alt)
-        pt.run_iri()
-        iri = {}
-        # After the model is run, its members like Ti, ni[O+], etc. can be
-        # accessed
-        iri['ion_temp'] = pt.Ti
-        iri['e_temp'] = pt.Te
-        iri['ion_dens'] = pt.ni['O+'] + pt.ni['H+'] + pt.ni['HE+']
-        # pt.ne - pt.ni['NO+'] - pt.ni['O2+'] - pt.ni['HE+']
-        iri['frac_dens_o'] = pt.ni['O+']/iri['ion_dens']
-        iri['frac_dens_h'] = pt.ni['H+']/iri['ion_dens']
-        iri['frac_dens_he'] = pt.ni['HE+']/iri['ion_dens']
-        iri_params.append(iri)
-    iri = pds.DataFrame(iri_params)
-    iri.index = inst.data.index
-    inst[iri.keys()] = iri
-
-    inst.meta['ion_temp'] = {'units': 'Kelvin', 'long_name': 'Ion Temperature'}
-    inst.meta['ion_dens'] = {'units': 'N/cc', 'long_name': 'Ion Density',
-                             'desc': 'Total ion density including O+ and H+ ' +
-                             'from IRI model run.'}
-    inst.meta['frac_dens_o'] = {'units': '',
-                                'long_name': 'Fractional O+ Density'}
-    inst.meta['frac_dens_h'] = {'units': '',
-                                'long_name': 'Fractional H+ Density'}
-
-
-def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
-                                   glong_label='glong', alt_label='alt'):
-    """
-    Uses HWM (Horizontal Wind Model) model to obtain neutral wind details.
-
-    Uses pyglow module to run HWM. Configured to use actual solar parameters
-    to run model.
-
-    Example
-    -------
-        # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_hwm_winds_and_ecef_vectors, 'modify',
-        glat_label='custom_label')
-
-    Parameters
-    ----------
-    inst : pysat.Instrument
-        Designed with pysat_sgp4 in mind
-    glat_label : string
-        label used in inst to identify WGS84 geodetic latitude (degrees)
-    glong_label : string
-        label used in inst to identify WGS84 geodetic longitude (degrees)
-    alt_label : string
-        label used in inst to identify WGS84 geodetic altitude (km, height
-        above surface)
-
-    Returns
-    -------
-    inst
-        Input pysat.Instrument object modified to include HWM winds.
-        'zonal_wind' for the east/west winds (u in model) in m/s
-        'meiridional_wind' for the north/south winds (v in model) in m/s
-        'unit_zonal_wind_ecef_*' (*=x,y,z) is the zonal vector expressed in
-                the ECEF basis
-        'unit_mer_wind_ecef_*' (*=x,y,z) is the meridional vector expressed
-                in the ECEF basis
-        'sim_inst_wind_*' (*=x,y,z) is the projection of the total wind
-                vector onto s/c basis
-
-    """
-
-    import pyglow
-    import pysatMagVect
-
-    hwm_params = []
-    for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
-                                   inst[glong_label], inst[alt_label]):
-        # Point class is instantiated.
-        # Its parameters are a function of time and spatial location
-        pt = pyglow.Point(time, lat, lon, alt)
-        pt.run_hwm()
-        hwm = {}
-        hwm['zonal_wind'] = pt.u
-        hwm['meridional_wind'] = pt.v
-        hwm_params.append(hwm)
-    hwm = pds.DataFrame(hwm_params)
-    hwm.index = inst.data.index
-    inst[['zonal_wind', 'meridional_wind']] = hwm[['zonal_wind',
-                                                   'meridional_wind']]
-
-    # calculate zonal unit vector in ECEF
-    # zonal wind: east - west; positive east
-    # EW direction is tangent to XY location of S/C in ECEF coordinates
-    mag = np.sqrt(inst['position_ecef_x']**2 + inst['position_ecef_y']**2)
-    inst['unit_zonal_wind_ecef_x'] = -inst['position_ecef_y']/mag
-    inst['unit_zonal_wind_ecef_y'] = inst['position_ecef_x']/mag
-    inst['unit_zonal_wind_ecef_z'] = 0 * inst['position_ecef_x']
-
-    # calculate meridional unit vector in ECEF
-    # meridional wind: north - south; positive north
-    # mer direction completes RHS of position and zonal vector
-    unit_pos_x, unit_pos_y, unit_pos_z = \
-        pysatMagVect.normalize_vector(-inst['position_ecef_x'],
-                                      -inst['position_ecef_y'],
-                                      -inst['position_ecef_z'])
-
-    # mer = r x zonal
-    inst['unit_mer_wind_ecef_x'], inst['unit_mer_wind_ecef_y'], inst['unit_mer_wind_ecef_z'] = \
-        pysatMagVect.cross_product(unit_pos_x, unit_pos_y, unit_pos_z,
-                                   inst['unit_zonal_wind_ecef_x'],
-                                   inst['unit_zonal_wind_ecef_y'],
-                                   inst['unit_zonal_wind_ecef_z'])
-
-    # Adding metadata information
-    inst.meta['zonal_wind'] = {'units': 'm/s', 'long_name': 'Zonal Wind',
-                               'desc': 'HWM model zonal wind'}
-    inst.meta['meridional_wind'] = {'units': 'm/s',
-                                    'long_name': 'Meridional Wind',
-                                    'desc': 'HWM model meridional wind'}
-    inst.meta['unit_zonal_wind_ecef_x'] = {'units': '',
-                                           'long_name': 'Zonal Wind Unit ' +
-                                           'ECEF x-vector',
-                                           'desc': 'x-value of zonal wind ' +
-                                           'unit vector in ECEF coordinates'}
-    inst.meta['unit_zonal_wind_ecef_y'] = {'units': '',
-                                           'long_name': 'Zonal Wind Unit ' +
-                                           'ECEF y-vector',
-                                           'desc': 'y-value of zonal wind ' +
-                                           'unit vector in ECEF coordinates'}
-    inst.meta['unit_zonal_wind_ecef_z'] = {'units': '',
-                                           'long_name': 'Zonal Wind Unit ' +
-                                           'ECEF z-vector',
-                                           'desc': 'z-value of zonal wind ' +
-                                           'unit vector in ECEF coordinates'}
-    inst.meta['unit_mer_wind_ecef_x'] = {'units': '',
-                                         'long_name': 'Meridional Wind Unit ' +
-                                         'ECEF x-vector',
-                                         'desc': 'x-value of meridional wind' +
-                                         ' unit vector in ECEF coordinates'}
-    inst.meta['unit_mer_wind_ecef_y'] = {'units': '',
-                                         'long_name': 'Meridional Wind Unit ' +
-                                         'ECEF y-vector',
-                                         'desc': 'y-value of meridional wind' +
-                                         ' unit vector in ECEF coordinates'}
-    inst.meta['unit_mer_wind_ecef_z'] = {'units': '',
-                                         'long_name': 'Meridional Wind Unit ' +
-                                         'ECEF z-vector',
-                                         'desc': 'z-value of meridional wind' +
-                                         ' unit vector in ECEF coordinates'}
-    return
-
-
-def add_igrf(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
-    """
-    Uses International Geomagnetic Reference Field (IGRF) model to obtain
-    geomagnetic field values.
-
-    Uses pyglow module to run IGRF. Configured to use actual solar parameters
-    to run model.
-
-    Example
-    -------
-        # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_igrf, 'modify', glat_label='custom_label')
-
-    Parameters
-    ----------
-    inst : pysat.Instrument
-        Designed with pysat_sgp4 in mind
-    glat_label : string
-        label used in inst to identify WGS84 geodetic latitude (degrees)
-    glong_label : string
-        label used in inst to identify WGS84 geodetic longitude (degrees)
-    alt_label : string
-        label used in inst to identify WGS84 geodetic altitude (km, height
-        above surface)
-
-    Returns
-    -------
-    inst
-        Input pysat.Instrument object modified to include HWM winds.
-        'B' total geomagnetic field
-        'B_east' Geomagnetic field component along east/west directions
-                (+ east)
-        'B_north' Geomagnetic field component along north/south directions
-                (+ north)
-        'B_up' Geomagnetic field component along up/down directions (+ up)
-        'B_ecef_x' Geomagnetic field component along ECEF x
-        'B_ecef_y' Geomagnetic field component along ECEF y
-        'B_ecef_z' Geomagnetic field component along ECEF z
-
-    """
-
-    import pyglow
-    from pyglow.pyglow import Point
-    import pysatMagVect
-
-    igrf_params = []
-    for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
-                                   inst[glong_label], inst[alt_label]):
-        pt = Point(time, lat, lon, alt)
-        pt.run_igrf()
-        igrf = {}
-        igrf['B'] = pt.B
-        igrf['B_east'] = pt.Bx
-        igrf['B_north'] = pt.By
-        igrf['B_up'] = pt.Bz
-        igrf_params.append(igrf)
-    igrf = pds.DataFrame(igrf_params)
-    igrf.index = inst.data.index
-    inst[igrf.keys()] = igrf
-
-    # convert magnetic field in East/north/up to ECEF basis
-    x, y, z = pysatMagVect.enu_to_ecef_vector(inst['B_east'],
-                                              inst['B_north'],
-                                              inst['B_up'],
-                                              inst[glat_label],
-                                              inst[glong_label])
-    inst['B_ecef_x'] = x
-    inst['B_ecef_y'] = y
-    inst['B_ecef_z'] = z
-
-    # metadata
-    inst.meta['B'] = {'units': 'nT',
-                      'desc': 'Total geomagnetic field from IGRF.'}
-    inst.meta['B_east'] = {'units': 'nT',
-                           'desc': 'Geomagnetic field from IGRF expressed ' +
-                           'using the East/North/Up (ENU) basis.'}
-    inst.meta['B_north'] = {'units': 'nT',
-                            'desc': 'Geomagnetic field from IGRF expressed ' +
-                            'using the East/North/Up (ENU) basis.'}
-    inst.meta['B_up'] = {'units': 'nT',
-                         'desc': 'Geomagnetic field from IGRF expressed ' +
-                         'using the East/North/Up (ENU) basis.'}
-
-    inst.meta['B_ecef_x'] = {'units': 'nT',
-                             'desc': 'Geomagnetic field from IGRF expressed ' +
-                             'using the Earth Centered Earth Fixed (ECEF) ' +
-                             'basis.'}
-    inst.meta['B_ecef_y'] = {'units': 'nT',
-                             'desc': 'Geomagnetic field from IGRF expressed ' +
-                             'using the Earth Centered Earth Fixed (ECEF) ' +
-                             'basis.'}
-    inst.meta['B_ecef_z'] = {'units': 'nT',
-                             'desc': 'Geomagnetic field from IGRF expressed ' +
-                             'using the Earth Centered Earth Fixed (ECEF) ' +
-                             'basis.'}
-    return
-
-
-def add_msis(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
-    """
-    Uses MSIS model to obtain thermospheric values.
-
-    Uses pyglow module to run MSIS. Configured to use actual solar parameters
-    to run model.
-
-    Example
-    -------
-        # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_msis, 'modify', glat_label='custom_label')
-
-    Parameters
-    ----------
-    inst : pysat.Instrument
-        Designed with pysat_sgp4 in mind
-    glat_label : string
-        label used in inst to identify WGS84 geodetic latitude (degrees)
-    glong_label : string
-        label used in inst to identify WGS84 geodetic longitude (degrees)
-    alt_label : string
-        label used in inst to identify WGS84 geodetic altitude (km, height
-        above surface)
-
-    Returns
-    -------
-    inst
-        Input pysat.Instrument object modified to include MSIS values winds.
-        'Nn' total neutral density particles/cm^3
-        'Nn_N' Nitrogen number density (particles/cm^3)
-        'Nn_N2' N2 number density (particles/cm^3)
-        'Nn_O' Oxygen number density (particles/cm^3)
-        'Nn_O2' O2 number density (particles/cm^3)
-        'Tn_msis' Temperature from MSIS (Kelvin)
-
-    """
-
-    import pyglow
-    from pyglow.pyglow import Point
-
-    msis_params = []
-    for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
-                                   inst[glong_label], inst[alt_label]):
-        pt = Point(time, lat, lon, alt)
-        pt.run_msis()
-        msis = {}
-        total = 0
-        for key in pt.nn.keys():
-            total += pt.nn[key]
-        msis['Nn'] = total
-        msis['Nn_N'] = pt.nn['N']
-        msis['Nn_N2'] = pt.nn['N2']
-        msis['Nn_O'] = pt.nn['O']
-        msis['Nn_O2'] = pt.nn['O2']
-        msis['Tn_msis'] = pt.Tn_msis
-        msis_params.append(msis)
-    msis = pds.DataFrame(msis_params)
-    msis.index = inst.data.index
-    inst[msis.keys()] = msis
-
-    # metadata
-    inst.meta['Nn'] = {'units': 'cm^-3',
-                       'desc': 'Total neutral number particle density ' +
-                       'from MSIS.'}
-    inst.meta['Nn_N'] = {'units': 'cm^-3',
-                         'desc': 'Total nitrogen number particle density ' +
-                         'from MSIS.'}
-    inst.meta['Nn_N2'] = {'units': 'cm^-3',
-                          'desc': 'Total N2 number particle density ' +
-                          'from MSIS.'}
-    inst.meta['Nn_O'] = {'units': 'cm^-3',
-                         'desc': 'Total oxygen number particle density ' +
-                         'from MSIS.'}
-    inst.meta['Nn_O2'] = {'units': 'cm^-3',
-                          'desc': 'Total O2 number particle density ' +
-                          'from MSIS.'}
-    inst.meta['Tn_msis'] = {'units': 'K',
-                            'desc': 'Neutral temperature from MSIS.'}
-
-    return
-
-
 def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
                                 new_x_label, new_y_label, new_z_label,
                                 meta=None):
@@ -1186,7 +684,7 @@ def plot_simulated_data(ivm, filename=None):
             lon0 -= 360.
             lon1 -= 360.
             ivm[:, 'glong'] -= 360.
-        
+
         m = Basemap(projection='mill', llcrnrlat=-60, urcrnrlat=60.,
                     urcrnrlon=lon1.copy(), llcrnrlon=lon0.copy(),
                     resolution='c', ax=ax6, fix_aspect=False)
@@ -1229,9 +727,9 @@ def plot_simulated_data(ivm, filename=None):
 
         ax6_bar = f.add_subplot(gs[4, 1])
         # plt.colorbar(sm)
-        cbar = plt.colorbar(cax=ax6_bar, ax=ax6, mappable=sm,
-                            orientation='vertical',
-                            ticks=[300., 400., 500.])
+        plt.colorbar(cax=ax6_bar, ax=ax6, mappable=sm,
+                     orientation='vertical',
+                     ticks=[300., 400., 500.])
         plt.xlabel('Altitude')
         plt.ylabel('km')
 
