@@ -39,5 +39,5 @@ The module is portable and designed to be run like any pysat instrument.
 import pysat
 from pysatMissionPlanning.instruments import pysat_sgp4
 
-sgp4 = pysat.Instrument(module=pysat_sgp4)
+sgp4 = pysat.Instrument(inst_module=pysat_sgp4)
 ```

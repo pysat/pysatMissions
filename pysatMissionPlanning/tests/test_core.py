@@ -15,6 +15,6 @@ class TestBasic():
     def test_module_loading(self):
         """Check if instrument module can be loaded as a pysat instrument"""
 
-        testInst = pysat.Instrument(module=self.module)
+        testInst = pysat.Instrument(inst_module=self.module)
 
         assert isinstance(testInst, pysat._instrument.Instrument)
