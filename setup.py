@@ -21,11 +21,11 @@ with open(os.path.join(here, version_filename)) as version_file:
 # on_rtd = os.environ.get('READTHEpysatMissionPlanningDOCS') == 'True'
 if sys.version_info.major == 2:
     install_requires = ['pandas>=0.23, <0.25', 'numpy>=1.12, <1.17',
-                        'sgp4', 'pyEphem', 'matplotlib<3.0',
+                        'pysat', 'sgp4', 'pyEphem', 'matplotlib<3.0',
                         'apexpy', 'aacgmv2', 'pysatMagVect', 'pyglow']
 else:
     install_requires = ['pandas>=0.23', 'numpy>=1.12',
-                        'sgp4', 'pyEphem', 'matplotlib',
+                        'pysat', 'sgp4', 'pyEphem', 'matplotlib',
                         'apexpy', 'aacgmv2', 'pysatMagVect', 'pyglow']
 
 
