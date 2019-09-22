@@ -4,7 +4,6 @@
 # Full license can be found in License.md
 # -----------------------------------------------------------------------------
 
-import sys
 import os
 from codecs import open
 from setuptools import setup, find_packages
@@ -19,14 +18,9 @@ with open(os.path.join(here, version_filename)) as version_file:
 
 # change setup.py for readthedocs - commented for now
 # on_rtd = os.environ.get('READTHEpysatMissionPlanningDOCS') == 'True'
-if sys.version_info.major == 2:
-    install_requires = ['pandas>=0.23, <0.25', 'numpy>=1.12, <1.17',
-                        'sgp4', 'pyEphem', 'matplotlib<3.0',
-                        'apexpy', 'aacgmv2', 'pysatMagVect', 'pyglow']
-else:
-    install_requires = ['pandas>=0.23', 'numpy>=1.12',
-                        'sgp4', 'pyEphem', 'matplotlib',
-                        'apexpy', 'aacgmv2', 'pysatMagVect', 'pyglow']
+
+install_requires = ['pysat', 'sgp4', 'pyEphem', 'matplotlib',
+                    'apexpy', 'aacgmv2', 'pysatMagVect', 'pyglow']
 
 
 # Run setup
