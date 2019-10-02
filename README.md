@@ -1,3 +1,8 @@
+<div align="left">
+        <img height="0" width="0px">
+        <img width="20%" src="/poweredbypysat.png" alt="pysat" title="pysat"</img>
+</div>
+
 # pysatMissionPlanning
 [![Build Status](https://travis-ci.org/pysat/pysatMissionPlanning.svg?branch=master)](https://travis-ci.org/pysat/pysatMissionPlanning)
 [![Coverage Status](https://coveralls.io/repos/github/pysat/pysatMissionPlanning/badge.svg?branch=master)](https://coveralls.io/github/pysat/pysatMissionPlanning?branch=master)
