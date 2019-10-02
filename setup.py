@@ -19,8 +19,8 @@ with open(os.path.join(here, version_filename)) as version_file:
 # change setup.py for readthedocs - commented for now
 # on_rtd = os.environ.get('READTHEpysatMissionPlanningDOCS') == 'True'
 
-install_requires = ['pysat', 'sgp4', 'pyEphem', 'matplotlib',
-                    'apexpy', 'aacgmv2', 'pysatMagVect', 'pyglow']
+install_requires = ['pysat', 'numpy', 'pandas', 'matplotlib', 'sgp4',
+                    'pyEphem', 'apexpy', 'aacgmv2', 'pysatMagVect', 'pyglow']
 
 
 # Run setup
