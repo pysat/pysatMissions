@@ -5,15 +5,15 @@
 # -----------------------------------------------------------------------------
 
 import os
-from codecs import open
+import codecs
 from setuptools import setup, find_packages
 
 
 here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, 'description.txt'), encoding='utf-8') as f:
+with codecs.open(os.path.join(here, 'description.txt'), encoding='utf-8') as f:
     long_description = f.read()
 version_filename = os.path.join('pysatMissionPlanning', 'version.txt')
-with open(os.path.join(here, version_filename)) as version_file:
+with codecs.open(os.path.join(here, version_filename)) as version_file:
     version = version_file.read().strip()
 
 # change setup.py for readthedocs - commented for now
