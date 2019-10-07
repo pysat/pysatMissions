@@ -18,7 +18,7 @@ Main Features
 
 Documentation
 ---------------------
-`Full Documentation for main package <http://pysat.readthedocs.io/en/latest/>`_
+[Full Documentation for main package](http://pysat.readthedocs.io/en/latest/)
 
 
 # Installation
