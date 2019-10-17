@@ -30,9 +30,8 @@ before_install:
   - cd ./pysat
   - git checkout develop
   # set up data directory
-  - mkdir /home/travis/build/pysat/pysatData
+  - mkdir /home/travis/build/pysatData
   # install pysat
-  - cd /home/travis/build/pysat/pysat
   - python setup.py install >/dev/null
 
   # install pyglow, space science models
@@ -43,7 +42,7 @@ before_install:
   - cd ./pyglow
   - make -C src/pyglow/models source >/dev/null
   - python setup.py install >/dev/null
-  - cd /home/travis/build/pysat/pysatMissionPlanning
+  - cd ../pysatMissionPlanning
 
 install:
   - python setup.py install
