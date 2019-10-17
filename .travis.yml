@@ -18,6 +18,8 @@ before_install:
   - pip install coveralls
   - pip install future
   # Install version specific packages for 2.7 and 3.5
+  - pip install 'pandas<0.25'
+  - pip install xarray
   - pip install matplotlib
   - pip install apexpy
 
