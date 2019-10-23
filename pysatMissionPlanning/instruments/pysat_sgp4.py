@@ -44,9 +44,9 @@ def init(self):
     Horiontal Wind Model (HWM).
 
     """
-    import pysat.instruments.mission_planning.aacgmv2_methods as methaacgm
-    import pysat.instruments.mission_planning.apexpy_methods as methapex
-    import pysat.instruments.mission_planning.pyglow_methods as methglow
+    import pysatMissionPlanning.methods.aacgmv2 as methaacgm
+    import pysatMissionPlanning.methods.apexpy as methapex
+    import pysatMissionPlanning.methods.pyglow as methglow
 
     self.custom.add(methapex.add_quasi_dipole_coordinates, 'modify')
     self.custom.add(methaacgm.add_aacgm_coordinates, 'modify')
