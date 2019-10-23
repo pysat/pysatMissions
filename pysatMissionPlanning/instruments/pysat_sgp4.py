@@ -595,7 +595,8 @@ def plot_simulated_data(inst, filename=None):
     else:
         time2 = inst.data.index[-1].strftime('%Y-%h-%d %H:%M:%S')
     # Overall Plot Title
-    plt.suptitle(''.join(('Simulated inst ', time1, ' -- ', time2)), fontsize=18)
+    plt.suptitle(''.join(('Simulated inst ', time1, ' -- ', time2)),
+                 fontsize=18)
 
     # create grid for plots
     gs = gridspec.GridSpec(5, 2, width_ratios=[12, 1])
@@ -604,7 +605,6 @@ def plot_simulated_data(inst, filename=None):
     plt.plot(np.log10(inst['ion_dens']), 'k', label='total')
     plt.plot(np.log10(inst['ion_dens']*inst['frac_dens_o']), 'r', label='O+')
     plt.plot(np.log10(inst['ion_dens']*inst['frac_dens_h']), 'b', label='H+')
-    # plt.plot(np.log10(inst['ion_dens']*inst['frac_dens_he']), 'g', label='He+')
     plt.legend(loc=(01.01, 0.15))
     ax.set_title('Log Ion Density')
     ax.set_ylabel('Log Density (N/cc)')
@@ -704,7 +704,7 @@ def plot_simulated_data(inst, filename=None):
 
         # plot day/night terminators
         try:
-            cs = m.nightshade(midDate)
+            _ = m.nightshade(midDate)
         except ValueError:
             pass
 
@@ -712,10 +712,7 @@ def plot_simulated_data(inst, filename=None):
         points = np.array([x, y]).T.reshape(-1, 1, 2)
         segments = np.concatenate([points[:-1], points[1:]], axis=1)
         plot_norm = plt.Normalize(300, 500)
-        try:
-            plot_cmap = plt.get_cmap('viridis')
-        except:
-            plot_cmap = plt.get_cmap('jet')
+        plot_cmap = plt.get_cmap('viridis')
 
         lc = LineCollection(segments, cmap=plot_cmap, norm=plot_norm,
                             linewidths=5.0)
