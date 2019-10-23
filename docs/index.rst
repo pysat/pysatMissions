@@ -9,3 +9,4 @@ Welcome to pysatMissionPlanning's documentation!
    introduction.rst
    installation.rst
    contributing.rst
+   citing.rst
