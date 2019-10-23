@@ -7,4 +7,5 @@ Welcome to pysatMissionPlanning's documentation!
    :maxdepth: 2
 
    introduction.rst
+   installation.rst
    contributing.rst
