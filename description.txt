@@ -4,7 +4,7 @@ Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
 - Import ionosphere and thermosphere values through pyglow
-- Import coordidnates through apexpy
+- Import coordinates through apexpy
 
 Documentation
 ---------------------
