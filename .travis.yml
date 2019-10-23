@@ -1,0 +1,64 @@
+language: python
+dist: xenial
+matrix:
+  include:
+    - python: 2.7
+    - python: 3.5
+    - python: 3.6
+    - python: 3.7
+
+services: xvfb
+addons:
+  apt:
+    packages:
+    - gfortran
+
+before_install:
+  - pip install pytest-cov
+  - pip install coveralls
+  - pip install future
+  # Install version specific packages for 2.7 and 3.5
+  - pip install 'pandas<0.25'
+  - pip install xarray
+  - pip install matplotlib
+  - pip install apexpy
+
+  # Prepare modified pysat install
+  - pip install numpy
+  - cd ..
+  - echo 'cloning pysat'
+  - git clone https://github.com/pysat/pysat.git >/dev/null
+  - echo 'installing pysat'
+  - cd ./pysat
+  - git checkout develop
+  # set up data directory
+  - mkdir /home/travis/build/pysatData
+  # install pysat
+  - python setup.py install >/dev/null
+
+  # install pyglow, space science models
+  - cd ..
+  - echo 'cloning pyglow'
+  - git clone https://github.com/timduly4/pyglow.git >/dev/null
+  - echo 'installing pyglow'
+  - cd ./pyglow
+  - make -C src/pyglow/models source >/dev/null
+  - python setup.py install >/dev/null
+  - cd ../pysatMissionPlanning
+
+install:
+  - python setup.py install
+
+before_script:
+  # set up display screen
+  - export DISPLAY=:99.0
+  - if [[ $TRAVIS_PYTHON_VERSION < "3.0" ]]; then
+      sh -e /etc/init.d/xvfb start;
+      sleep 3;
+    fi
+
+script:
+  - pytest -vs --cov=pysatMissionPlanning/
+
+after_success:
+  - coveralls

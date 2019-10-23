@@ -1,0 +1,13 @@
+include *.py
+include *.f
+include *.c
+recursive-include pysatMissionPlanning *.py
+include *.md
+include description.txt
+include LICENSE
+include pysatMissionPlanning/version.txt
+prune pysatMissionPlanning/tests
+prune docs
+prune demo
+exclude *.pdf
+exclude *.png
