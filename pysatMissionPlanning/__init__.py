@@ -1,8 +1,8 @@
 from __future__ import print_function
 from __future__ import absolute_import
 
-from . import instruments
 import os
+from pysatMissionPlanning import instruments
 
 __all__ = ['instruments']
 
