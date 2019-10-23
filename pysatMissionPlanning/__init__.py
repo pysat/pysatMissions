@@ -2,9 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 import os
-from pysatMissionPlanning import instruments
+from pysatMissionPlanning import instruments, methods
 
-__all__ = ['instruments']
+__all__ = ['instruments', 'methods']
 
 # set version
 here = os.path.abspath(os.path.dirname(__file__))
