@@ -10,12 +10,6 @@ satellite is in.
 from __future__ import print_function
 from __future__ import absolute_import
 
-# basestring abstract type is removed in Python 3 and is replaced by str
-# python 2/3 compatibility
-try:
-    basestring
-except NameError:
-    basestring = str
 import os
 
 import pandas as pds
