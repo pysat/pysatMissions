@@ -3,6 +3,7 @@ for pysat instruments.
 
 """
 
+import numpy as np
 import pysatMagVect
 
 
