@@ -5,7 +5,7 @@
 # -----------------------------------------------------------------------------
 
 import os
-from codecs import open
+import codecs
 from setuptools import setup, find_packages
 
 
