@@ -23,7 +23,14 @@ Documentation
 
 # Installation
 
-First, checkout the repository:
+One way to install is through pip.  Just type
+
+```
+pip install pysatMissionPlanning
+```
+into the terminal.
+
+Or, if you prefer to work directly from github, checkout the repository:
 
 ```
   git clone https://github.com/pysat/pysatMissionPlanning.git
