@@ -17,6 +17,9 @@ before_install:
   - pip install pytest-cov
   - pip install coveralls
   - pip install future
+  # Install version specific packages for 2.7 and 3.5
+  - pip install 'pandas<0.25'
+  - pip install xarray
   - pip install matplotlib
   - pip install apexpy
 
@@ -27,11 +30,10 @@ before_install:
   - git clone https://github.com/pysat/pysat.git >/dev/null
   - echo 'installing pysat'
   - cd ./pysat
-  - git checkout no_sgp4
+  - git checkout develop
   # set up data directory
-  - mkdir /home/travis/build/pysat/pysatData
+  - mkdir /home/travis/build/pysatData
   # install pysat
-  - cd /home/travis/build/pysat/pysat
   - python setup.py install >/dev/null
 
   # install pyglow, space science models
@@ -42,7 +44,7 @@ before_install:
   - cd ./pyglow
   - make -C src/pyglow/models source >/dev/null
   - python setup.py install >/dev/null
-  - cd /home/travis/build/pysat/pysatMissionPlanning
+  - cd ../pysatMissionPlanning
 
 install:
   - python setup.py install
