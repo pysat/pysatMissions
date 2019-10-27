@@ -31,7 +31,7 @@ class TestBasics():
                                  glong_label='longitude',
                                  alt_label='altitude')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
-        targets = ['qd_lat', 'qd_long', 'qd_mlt']
+        targets = ['qd_lat', 'qd_long', 'mlt']
         for target in targets:
             # Check if data is added
             assert target in self.testInst.data.keys()
