@@ -47,18 +47,18 @@ def add_quasi_dipole_coordinates(inst, glat_label='glat', glong_label='glong',
 
     qd_lat = []
     qd_lon = []
-    mlt = []
+    qd_mlt = []
     for lat, lon, alt, time in zip(inst[glat_label], inst[glong_label],
                                    inst[alt_label], inst.data.index):
         # quasi-dipole latitude and longitude from geodetic coords
         tlat, tlon = ap.geo2qd(lat, lon, alt)
         qd_lat.append(tlat)
         qd_lon.append(tlon)
-        mlt.append(ap.mlon2mlt(tlon, time))
+        qd_mlt.append(ap.mlon2mlt(tlon, time))
 
     inst['qd_lat'] = qd_lat
     inst['qd_long'] = qd_lon
-    inst['mlt'] = mlt
+    inst['qd_mlt'] = qd_mlt
 
     inst.meta['qd_lat'] = {'units': 'degrees',
                            'long_name': 'Quasi dipole latitude'}
