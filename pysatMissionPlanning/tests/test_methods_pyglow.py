@@ -3,14 +3,13 @@
 
 import numpy as np
 import pysat
-import pysat.instruments.pysat_testing
 from pysatMissionPlanning.methods import pyglow as methglow
 
 
 def add_altitude(inst, altitude=400.0):
     """Add altitudes to pysat_testing instrument"""
 
-    inst['alt'] = altitude*np.ones(inst.data.shape[0])
+    inst['altitude'] = altitude*np.ones(inst.data.shape[0])
 
 
 class TestBasics():
@@ -28,25 +27,31 @@ class TestBasics():
         """Test adding thermal plasma data to test inst"""
         self.testInst.custom.add(methglow.add_iri_thermal_plasma, 'modify',
                                  glat_label='latitude',
-                                 glong_label='longitude')
+                                 glong_label='longitude',
+                                 alt_label='altitude')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
         targets = ['e_temp', 'frac_dens_h', 'frac_dens_he', 'frac_dens_o',
                    'ion_dens', 'ion_temp']
         for target in targets:
+            # Check if data is added
             assert target in self.testInst.data.keys()
+            assert not np.isnan(self.testInst[target]).any()
+            # Check if metadata is added
             assert target in self.testInst.meta.data.index
 
     def test_add_igrf(self):
         """Test adding igrf model to test inst"""
         self.testInst.custom.add(methglow.add_igrf, 'modify',
                                  glat_label='latitude',
-                                 glong_label='longitude')
+                                 glong_label='longitude',
+                                 alt_label='altitude')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
         targets = ['B', 'B_east', 'B_north', 'B_up', 'B_ecef_x', 'B_ecef_y',
                    'B_ecef_z']
         for target in targets:
             # Check if data is added
             assert target in self.testInst.data.keys()
+            assert not np.isnan(self.testInst[target]).any()
             # Check if metadata is added
             assert target in self.testInst.meta.data.index
 
@@ -54,13 +59,15 @@ class TestBasics():
         """Test adding msis model to test inst"""
         self.testInst.custom.add(methglow.add_msis, 'modify',
                                  glat_label='latitude',
-                                 glong_label='longitude')
+                                 glong_label='longitude',
+                                 alt_label='altitude')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
         targets = ['Nn', 'Nn_N', 'Nn_N2', 'Nn_O', 'Nn_O2', 'Tn_msis']
         for target in targets:
             # Check if data is added
             assert target in self.testInst.data.keys()
+            assert not np.isnan(self.testInst[target]).any()
             # Check if metadata is added
             assert target in self.testInst.meta.data.index
 
-    # TODO: Add hwm tests once routine is generalized 
+    # TODO: Add hwm tests once routine is generalized
