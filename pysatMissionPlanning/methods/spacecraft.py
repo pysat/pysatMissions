@@ -157,14 +157,13 @@ def calculate_ecef_velocity(inst):
 
     """
 
-    x = inst['position_ecef_x']
-    vel_x = (x.values[2:] - x.values[0:-2])/2.
+    def get_vel_from_pos(x):
+        vel = (x.values[2:] - x.values[0:-2])/2.
+        return vel
 
-    y = inst['position_ecef_y']
-    vel_y = (y.values[2:] - y.values[0:-2])/2.
-
-    z = inst['position_ecef_z']
-    vel_z = (z.values[2:] - z.values[0:-2])/2.
+    vel_x = get_vel_from_pos(inst['position_ecef_x'])
+    vel_y = get_vel_from_pos(inst['position_ecef_y'])
+    vel_z = get_vel_from_pos(inst['position_ecef_z'])
 
     inst[1:-1, 'velocity_ecef_x'] = vel_x
     inst[1:-1, 'velocity_ecef_y'] = vel_y
