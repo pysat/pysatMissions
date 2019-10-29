@@ -289,15 +289,16 @@ def project_hwm_onto_sc(inst):
 
     import pysatMissionPlanning.methods.attitude as methatt
 
-    inst['total_wind_x'] = \
-        (inst['zonal_wind']*inst['unit_zonal_wind_ecef_x'] +
-         inst['meridional_wind']*inst['unit_mer_wind_ecef_x'])
-    inst['total_wind_y'] = \
-        (inst['zonal_wind']*inst['unit_zonal_wind_ecef_y'] +
-         inst['meridional_wind']*inst['unit_mer_wind_ecef_y'])
-    inst['total_wind_z'] = \
-        (inst['zonal_wind']*inst['unit_zonal_wind_ecef_z'] +
-         inst['meridional_wind']*inst['unit_mer_wind_ecef_z'])
+    def get_wind_comp(inst, direction='x'):
+        unit_zon = 'unit_zonal_wind_ecef_' + direction
+        unit_mer = 'unit_mer_wind_ecef_' + direction
+
+        return (inst['zonal_wind']*inst[unit_zon] +
+                inst['meridional_wind']*inst[unit_mer])
+
+    inst['total_wind_x'] = get_wind_comp(inst, direction='x')
+    inst['total_wind_y'] = get_wind_comp(inst, direction='y')
+    inst['total_wind_z'] = get_wind_comp(inst, direction='z')
 
     methatt.project_ecef_vector_onto_sc(inst, 'total_wind_x', 'total_wind_y',
                                         'total_wind_z', 'sim_wind_sc_x',
