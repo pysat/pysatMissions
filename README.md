@@ -5,6 +5,7 @@
 
 # pysatMissionPlanning
 [![Build Status](https://travis-ci.org/pysat/pysatMissionPlanning.svg?branch=master)](https://travis-ci.org/pysat/pysatMissionPlanning)
+[![Documentation Status](https://readthedocs.org/projects/pysatMissionPlanning/badge/?version=latest)](http://pysatMissionPlanning.readthedocs.io/en/latest/?badge=latest)
 [![Coverage Status](https://coveralls.io/repos/github/pysat/pysatMissionPlanning/badge.svg?branch=master)](https://coveralls.io/github/pysat/pysatMissionPlanning?branch=master)
 [![DOI](https://zenodo.org/badge/209358908.svg)](https://zenodo.org/badge/latestdoi/209358908)
 
