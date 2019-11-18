@@ -8,6 +8,8 @@
 [![Coverage Status](https://coveralls.io/repos/github/pysat/pysatMissionPlanning/badge.svg?branch=master)](https://coveralls.io/github/pysat/pysatMissionPlanning?branch=master)
 [![DOI](https://zenodo.org/badge/209358908.svg)](https://zenodo.org/badge/latestdoi/209358908)
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/f795422173ac04203b24/maintainability)](https://codeclimate.com/github/pysat/pysatMissionPlanning/maintainability)
+
 pysatMissionPlanning allows users to run build simulated satellites for TLE info and add empirical data.  It includes the pysat_sgp4 instrument module which can be imported into pysat.
 
 Main Features
