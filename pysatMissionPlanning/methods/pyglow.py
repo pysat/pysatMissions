@@ -386,6 +386,14 @@ def project_hwm_onto_sc(inst):
         return (inst['zonal_wind']*inst[unit_zon] +
                 inst['meridional_wind']*inst[unit_mer])
 
+    def get_wind_meta(coord='x'):
+        dict = {'units': 'm/s',
+                'long_name': ' '.join(['Simulated {:s}-vector instrument',
+                                       'wind']).format(coord),
+                'desc': ' '.join(['Wind from model as measured by instrument',
+                                  'in its {:s}-direction']).format(coord)}
+        return dict
+
     inst['total_wind_x'] = get_wind_comp(inst, direction='x')
     inst['total_wind_y'] = get_wind_comp(inst, direction='y')
     inst['total_wind_z'] = get_wind_comp(inst, direction='z')
@@ -394,20 +402,8 @@ def project_hwm_onto_sc(inst):
                                         'total_wind_z', 'sim_wind_sc_x',
                                         'sim_wind_sc_y', 'sim_wind_sc_z')
 
-    inst.meta['sim_wind_sc_x'] = {'units': 'm/s',
-                                  'long_name': 'Simulated x-vector ' +
-                                  'instrument wind',
-                                  'desc': 'Wind from model as measured ' +
-                                  'by instrument in its x-direction'}
-    inst.meta['sim_wind_sc_y'] = {'units': 'm/s',
-                                  'long_name': 'Simulated y-vector ' +
-                                  'instrument wind',
-                                  'desc': 'Wind from model as measured ' +
-                                  'by instrument in its y-direction'}
-    inst.meta['sim_wind_sc_z'] = {'units': 'm/s',
-                                  'long_name': 'Simulated z-vector ' +
-                                  'instrument wind',
-                                  'desc': 'Wind from model as measured ' +
-                                  'by instrument in its z-direction'}
+    inst.meta['sim_wind_sc_x'] = get_wind_meta('x')
+    inst.meta['sim_wind_sc_y'] = get_wind_meta('y')
+    inst.meta['sim_wind_sc_z'] = get_wind_meta('z')
 
     return
