@@ -49,3 +49,14 @@ from pysatMissionPlanning.instruments import pysat_sgp4
 
 sgp4 = pysat.Instrument(inst_module=pysat_sgp4)
 ```
+
+The methods that run empirical models can also be exported to any pysat instrument. For instance, to add thermal plasma predictions from the IRI model to the C/NOFS IVM instrument, one can invoke
+
+```
+import pysat
+import pysatMissionPlanning.methods.pyglow as methglow
+
+ivm = pysat.Instrument(platform='cnofs', name='ivm')
+ivm.custom.add(methglow.add_iri_thermal_plasma, 'modify')
+```
+Once the custom function is added, the model will automatically be run when the dataset is loaded.
