@@ -373,3 +373,41 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
          'desc': 'z-value of meridional wind unit vector in ECEF coordinates'}
 
     return
+
+
+def project_hwm_onto_sc(inst):
+
+    import pysatMissionPlanning.methods.attitude as methatt
+
+    def get_wind_comp(inst, direction='x'):
+        unit_zon = 'unit_zonal_wind_ecef_' + direction
+        unit_mer = 'unit_mer_wind_ecef_' + direction
+
+        return (inst['zonal_wind']*inst[unit_zon] +
+                inst['meridional_wind']*inst[unit_mer])
+
+    inst['total_wind_x'] = get_wind_comp(inst, direction='x')
+    inst['total_wind_y'] = get_wind_comp(inst, direction='y')
+    inst['total_wind_z'] = get_wind_comp(inst, direction='z')
+
+    methatt.project_ecef_vector_onto_sc(inst, 'total_wind_x', 'total_wind_y',
+                                        'total_wind_z', 'sim_wind_sc_x',
+                                        'sim_wind_sc_y', 'sim_wind_sc_z')
+
+    inst.meta['sim_wind_sc_x'] = {'units': 'm/s',
+                                  'long_name': 'Simulated x-vector ' +
+                                  'instrument wind',
+                                  'desc': 'Wind from model as measured ' +
+                                  'by instrument in its x-direction'}
+    inst.meta['sim_wind_sc_y'] = {'units': 'm/s',
+                                  'long_name': 'Simulated y-vector ' +
+                                  'instrument wind',
+                                  'desc': 'Wind from model as measured ' +
+                                  'by instrument in its y-direction'}
+    inst.meta['sim_wind_sc_z'] = {'units': 'm/s',
+                                  'long_name': 'Simulated z-vector ' +
+                                  'instrument wind',
+                                  'desc': 'Wind from model as measured ' +
+                                  'by instrument in its z-direction'}
+
+    return
