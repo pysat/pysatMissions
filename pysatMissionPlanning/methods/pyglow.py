@@ -342,35 +342,39 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
     inst['unit_mer_wind_ecef_z'] = merz
 
     # Adding metadata information
-    inst.meta['zonal_wind'] = {'units': 'm/s', 'long_name': 'Zonal Wind',
+    def get_ecef_wind_meta(coord='x', geo='mer'):
+        """Generates consistent metadat for ecef winds"""
+        if geo == 'mer':
+            name = 'Meridional'
+        else:
+            name = 'Zonal'
+        dict = {'units': '',
+                'long_name': ' '.join(['{name:s} Wind Unit ECEF',
+                                       '{coord:s}-vector']).format(name=name,
+                                                                   coord=coord),
+                'desc': ' '.join(['{coord:s}-value of {name:s} wind unit vector',
+                                  'in ECEF coordinates']).format(name=name.lower(),
+                                                                 coord=coord)}
+        return dict
+
+    inst.meta['zonal_wind'] = {'units': 'm/s',
+                               'long_name': 'Zonal Wind',
                                'desc': 'HWM model zonal wind'}
     inst.meta['meridional_wind'] = {'units': 'm/s',
                                     'long_name': 'Meridional Wind',
                                     'desc': 'HWM model meridional wind'}
-    inst.meta['unit_zonal_wind_ecef_x'] = \
-        {'units': '',
-         'long_name': 'Zonal Wind Unit ECEF x-vector',
-         'desc': 'x-value of zonal wind unit vector in ECEF coordinates'}
-    inst.meta['unit_zonal_wind_ecef_y'] = \
-        {'units': '',
-         'long_name': 'Zonal Wind Unit ECEF y-vector',
-         'desc': 'y-value of zonal wind unit vector in ECEF coordinates'}
-    inst.meta['unit_zonal_wind_ecef_z'] = \
-        {'units': '',
-         'long_name': 'Zonal Wind Unit ECEF z-vector',
-         'desc': 'z-value of zonal wind unit vector in ECEF coordinates'}
-    inst.meta['unit_mer_wind_ecef_x'] = \
-        {'units': '',
-         'long_name': 'Meridional Wind Unit ECEF x-vector',
-         'desc': 'x-value of meridional wind unit vector in ECEF coordinates'}
-    inst.meta['unit_mer_wind_ecef_y'] = \
-        {'units': '',
-         'long_name': 'Meridional Wind Unit ECEF y-vector',
-         'desc': 'y-value of meridional wind unit vector in ECEF coordinates'}
-    inst.meta['unit_mer_wind_ecef_z'] = \
-        {'units': '',
-         'long_name': 'Meridional Wind Unit ECEF z-vector',
-         'desc': 'z-value of meridional wind unit vector in ECEF coordinates'}
+    inst.meta['unit_zonal_wind_ecef_x'] = get_ecef_wind_meta(coord='x',
+                                                             geo='zon')
+    inst.meta['unit_zonal_wind_ecef_y'] = get_ecef_wind_meta(coord='y',
+                                                             geo='zon')
+    inst.meta['unit_zonal_wind_ecef_z'] = get_ecef_wind_meta(coord='z',
+                                                             geo='zon')
+    inst.meta['unit_mer_wind_ecef_x'] = get_ecef_wind_meta(coord='x',
+                                                           geo='mer')
+    inst.meta['unit_mer_wind_ecef_y'] = get_ecef_wind_meta(coord='y',
+                                                           geo='mer')
+    inst.meta['unit_mer_wind_ecef_z'] = get_ecef_wind_meta(coord='z',
+                                                           geo='mer')
 
     return
 
