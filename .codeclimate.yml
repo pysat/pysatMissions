@@ -10,3 +10,8 @@ exclude_paths:
   - "pysatMissionPlanning/tests/**/*"
   - "docs/**/*"
   - "setup.py"
+  - ".*"
+  - "*.md"
+  - "*.in"
+  - "*.txt"
+  - "*.png"
