@@ -75,14 +75,20 @@ def add_iri_thermal_plasma(inst, glat_label='glat', glong_label='glong',
     iri.index = inst.data.index
     inst[iri.keys()] = iri
 
-    inst.meta['ion_temp'] = {'units': 'Kelvin', 'long_name': 'Ion Temperature'}
+    inst.meta['ion_temp'] = {'units': 'Kelvin', 'long_name': 'Ion Temperature',
+                             'desc': ' '.join(['Ion temperature from IRI',
+                                               'model run.'])}
     inst.meta['ion_dens'] = {'units': 'N/cc', 'long_name': 'Ion Density',
-                             'desc': 'Total ion density including O+ and H+ ' +
-                             'from IRI model run.'}
+                             'desc': ' '.join(['Total ion density including O+'
+                                               'and H+ from IRI model run.'])}
     inst.meta['frac_dens_o'] = {'units': '',
-                                'long_name': 'Fractional O+ Density'}
+                                'long_name': 'Fractional O+ Density',
+                                'desc': ' '.join(['Fraction of O+ generated'
+                                                  'from IRI model run.'])}
     inst.meta['frac_dens_h'] = {'units': '',
-                                'long_name': 'Fractional H+ Density'}
+                                'long_name': 'Fractional H+ Density',
+                                'desc': ' '.join(['Fraction of O+ generated'
+                                                  'from IRI model run.'])}
 
 
 def add_igrf(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
