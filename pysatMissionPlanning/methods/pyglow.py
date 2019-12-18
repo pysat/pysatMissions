@@ -387,7 +387,7 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
 
 def project_hwm_onto_sc(inst):
 
-    import pysatMissionPlanning.methods.attitude as methatt
+    import pysatMissionPlanning.methods.spacecraft as methatt
 
     def get_wind_comp(inst, direction='x'):
         unit_zon = 'unit_zonal_wind_ecef_' + direction
