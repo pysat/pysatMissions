@@ -2,10 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.2.0] - 2019-10-24
+## [0.2.0] - 2019-10-26
 - Added method files to access aacgmv2, apexpy, pyglow for any pysat instrument
 - Added method for spacecraft to handle attitude and coordinates
 - Added method for plotting simulated data
+- Added support for readthedocs
 - Bugs
   - Fixed wrong metadata name for mlt in apexpy
 
