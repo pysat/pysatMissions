@@ -135,12 +135,6 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     if on_travis:
         times = times[0:100]
 
-    # add position and velocity in ECEF
-    # add call for GEI/ECEF translation here
-    # instead, since available, I'll use an orbit predictor from another
-    # package that outputs in ECEF
-    # it also supports ground station calculations
-
     # the observer's (ground station) position on the Earth surface
     site = ephem.Observer()
     site.lon = str(obs_long)
@@ -171,21 +165,23 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                                                                   lp['glong'],
                                                                   lp['alt'])
         output_params.append(lp)
+
     output = pds.DataFrame(output_params, index=times)
     # modify input object to include calculated parameters
     # put data into DataFrame
     data = pysat.DataFrame({'glong': output['glong'],
                             'glat': output['glat'],
-                            'alt': output['alt']},
+                            'alt': output['alt'],
+                            'position_ecef_x': output['x'],
+                            'position_ecef_y': output['y'],
+                            'position_ecef_z': output['z'],
+                            'obs_sat_az_angle': output['obs_sat_az_angle'],
+                            'obs_sat_el_angle': output['obs_sat_el_angle'],
+                            'obs_sat_slant_range':
+                            output['obs_sat_slant_range']},
                            index=times)
     data.index.name = 'Epoch'
 
-    data[['glong', 'glat', 'alt']] = output[['glong', 'glat', 'alt']]
-    data[['position_ecef_x', 'position_ecef_y', 'position_ecef_z']] = \
-        output[['x', 'y', 'z']]
-    data['obs_sat_az_angle'] = output['obs_sat_az_angle']
-    data['obs_sat_el_angle'] = output['obs_sat_el_angle']
-    data['obs_sat_slant_range'] = output['obs_sat_slant_range']
     return data, meta.copy()
 
 
