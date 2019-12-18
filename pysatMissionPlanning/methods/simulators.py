@@ -18,8 +18,7 @@ def list_files(tag=None, sat_id=None, data_path=None, format_str=None):
     return pysat.Series(names, index=index)
 
 
-def download(date_array, tag, sat_id, data_path=None, user=None,
-             password=None):
+def download(date_array, tag, sat_id, data_path=None):
     """ Data is simulated so no download routine is possible. Simple pass
     function"""
     pass
