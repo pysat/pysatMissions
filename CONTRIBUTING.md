@@ -34,7 +34,7 @@ If you are proposing a feature:
   are welcome :)
 
 Development
-===========
+-----------
 
 To set up `pysatMissionPlanning` for local development:
 
