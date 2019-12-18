@@ -11,9 +11,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 import os
+import functools
 import numpy as np
 import pandas as pds
 import pysat
+import pysatMissionPlanning.methods.simulators as sim
 
 # pysat required parameters
 platform = 'pysat'
@@ -187,24 +189,8 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     return data, meta.copy()
 
 
-def list_files(tag=None, sat_id=None, data_path=None, format_str=None):
-    """Produce a fake list of files spanning a year"""
-
-    index = pds.date_range(pysat.datetime(2017, 12, 1),
-                           pysat.datetime(2018, 12, 1))
-    # file list is effectively just the date in string format - '%D' works
-    # only in Mac. '%x' workins in both Windows and Mac
-    names = [data_path + date.strftime('%Y-%m-%d') + '.nofile'
-             for date in index]
-    return pysat.Series(names, index=index)
-
-
-def download(date_array, tag, sat_id, data_path=None, user=None,
-             password=None):
-    """ Data is simulated so no download routine is possible. Simple pass
-    function"""
-    pass
-
+list_files = functools.partial(sim.list_files)
+download = functools.partial(sim.download)
 
 # create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call
