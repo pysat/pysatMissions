@@ -5,13 +5,13 @@ Bug reports, feature suggestions and other contributions are greatly
 appreciated!  pysatMissionPlanning is a community-driven project and welcomes both feedback and contributions.
 
 Short version
-=============
+-------------
 
 * Submit bug reports and feature requests at `GitHub <https://github.com/pysat/pysatMissionPlanning/issues>`_
 * Make pull requests to the ``develop`` branch
 
 Bug reports
-===========
+-----------
 
 When `reporting a bug <https://github.com/pysat/pysatMissionPlanning/issues>`_ please
 include:
@@ -21,7 +21,7 @@ include:
 * Detailed steps to reproduce the bug
 
 Feature requests and feedback
-=============================
+-----------------------------
 
 The best way to send feedback is to file an issue at
 `GitHub <https://github.com/pysat/pysatMissionPlanning/issues>`_.
