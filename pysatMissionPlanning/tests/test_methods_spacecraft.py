@@ -20,6 +20,12 @@ def add_eci(inst):
                                1682.547257, 1676.876312, 1671.203352]
 
 
+def add_fake_data(inst):
+    inst['ax'] = np.ones(9)
+    inst['ay'] = np.zeros(9)
+    inst['az'] = np.zeros(9)
+
+
 class TestBasics():
     def setup(self):
         """Runs before every method to create a clean testing setup."""
@@ -54,6 +60,25 @@ class TestBasics():
         targets = ['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z',
                    'sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z',
                    'sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']
+        for target in targets:
+            # Check if data is added
+            assert target in self.testInst.data.keys()
+            assert not np.isnan(self.testInst[target][1:-1]).any()
+            # Endpoints hsould be NaN
+            assert np.isnan(self.testInst[target][0])
+            assert np.isnan(self.testInst[target][-1])
+            # Check if metadata is added
+            assert target in self.testInst.meta.data.index
+
+    def test_project_ecef_vector_onto_sc(self):
+        # TODO: check if calculations are correct
+        self.testInst.custom.add(methsc.calculate_ecef_velocity, 'modify')
+        self.testInst.custom.add(methsc.add_sc_attitude_vectors, 'modify')
+        self.testInst.custom.add(add_fake_data, 'modify')
+        self.testInst.custom.add(methsc.project_ecef_vector_onto_sc, 'modify',
+                                 'end', 'ax', 'ay', 'az', 'bx', 'by', 'bz')
+        self.testInst.load(date=pysat.datetime(2009, 1, 1))
+        targets = ['bx', 'by', 'bz']
         for target in targets:
             # Check if data is added
             assert target in self.testInst.data.keys()
