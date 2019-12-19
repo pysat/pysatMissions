@@ -36,7 +36,7 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
          TLE1=None, TLE2=None):
     """
     Returns data and metadata in the format required by pysat. Finds position
-    of satellite in both ECI and ECEF co-ordinates.
+    of satellite in ECI co-ordinates.
 
     Routine is directly called by pysat and not the user.
 
