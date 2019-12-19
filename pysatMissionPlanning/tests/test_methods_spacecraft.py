@@ -46,7 +46,7 @@ class TestBasics():
             # Check if data is added
             assert target in self.testInst.data.keys()
             assert not np.isnan(self.testInst[target][1:-1]).any()
-            # Endpoints hsould be NaN
+            # Endpoints should be NaN
             assert np.isnan(self.testInst[target][0])
             assert np.isnan(self.testInst[target][-1])
             # Check if metadata is added
@@ -64,7 +64,7 @@ class TestBasics():
             # Check if data is added
             assert target in self.testInst.data.keys()
             assert not np.isnan(self.testInst[target][1:-1]).any()
-            # Endpoints hsould be NaN
+            # Endpoints should be NaN
             assert np.isnan(self.testInst[target][0])
             assert np.isnan(self.testInst[target][-1])
             # Check if metadata is added
@@ -83,7 +83,7 @@ class TestBasics():
             # Check if data is added
             assert target in self.testInst.data.keys()
             assert not np.isnan(self.testInst[target][1:-1]).any()
-            # Endpoints hsould be NaN
+            # Endpoints should be NaN
             assert np.isnan(self.testInst[target][0])
             assert np.isnan(self.testInst[target][-1])
             # Check if metadata is added
