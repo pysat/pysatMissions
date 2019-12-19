@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Test some of the pyglow method functions
+# Test some of the apexpy method functions
 
 import numpy as np
 import pysat
