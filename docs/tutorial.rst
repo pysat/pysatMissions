@@ -22,7 +22,7 @@ For pysat 3.0.0 or greater, this can be permanently added via the instrument reg
   import pysatMissionPlanning
   pysat.utils.registry.register('pysatMissionPlanning.instruments.pysat_sgp4')
 
-**Orbital Propagators***
+**Orbital Propagators**
 
 ---
 Currently, two orbital propagators are included with pysatMissionPlanning. The pysat_sgp4 instrument uses the wgs72 gravity model to provide satellite position and velocity in ECI co-ordinates.  The pysat_ephem instrument uses the ephem pysat package to calculate an orbit in lat/lon/alt and ECEF co-ordinates.  As an example, it also loads a series of empirical models to provide simulated ionospheric, thermospheric, and magnetic data as an aid for mission planning.
