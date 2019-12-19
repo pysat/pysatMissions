@@ -7,6 +7,7 @@ from pysatMissionPlanning.methods import aacgmv2
 from pysatMissionPlanning.methods import apexpy
 from pysatMissionPlanning.methods import plot
 from pysatMissionPlanning.methods import pyglow
+from pysatMissionPlanning.methods import simulators
 from pysatMissionPlanning.methods import spacecraft
 
-__all__ = ['aacgmv2', 'apexpy', 'plot', 'pyglow', 'spacecraft']
+__all__ = ['aacgmv2', 'apexpy', 'plot', 'pyglow', 'simulators', 'spacecraft']
