@@ -62,7 +62,8 @@ class TestBasics():
                                  glong_label='longitude',
                                  alt_label='altitude')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
-        targets = ['Nn', 'Nn_N', 'Nn_N2', 'Nn_O', 'Nn_O2', 'Tn_msis']
+        targets = ['Nn', 'Nn_H', 'Nn_He', 'Nn_N', 'Nn_N2', 'Nn_O', 'Nn_O2',
+                   'Nn_Ar', 'Tn_msis']
         for target in targets:
             # Check if data is added
             assert target in self.testInst.data.keys()

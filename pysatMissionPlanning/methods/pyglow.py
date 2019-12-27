@@ -232,10 +232,13 @@ def add_msis(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
         for key in pt.nn.keys():
             total += pt.nn[key]
         msis['Nn'] = total
+        msis['Nn_H'] = pt.nn['H']
+        msis['Nn_He'] = pt.nn['HE']
         msis['Nn_N'] = pt.nn['N']
         msis['Nn_N2'] = pt.nn['N2']
         msis['Nn_O'] = pt.nn['O']
         msis['Nn_O2'] = pt.nn['O2']
+        msis['Nn_Ar'] = pt.nn['AR']
         msis['Tn_msis'] = pt.Tn_msis
         msis_params.append(msis)
     msis = pds.DataFrame(msis_params)
@@ -246,6 +249,12 @@ def add_msis(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
     inst.meta['Nn'] = {'units': 'cm^-3',
                        'desc': 'Total neutral number particle density ' +
                        'from MSIS.'}
+    inst.meta['Nn_H'] = {'units': 'cm^-3',
+                         'desc': 'Total hydrogen number particle density ' +
+                         'from MSIS.'}
+    inst.meta['Nn_He'] = {'units': 'cm^-3',
+                          'desc': 'Total helium number particle density ' +
+                          'from MSIS.'}
     inst.meta['Nn_N'] = {'units': 'cm^-3',
                          'desc': 'Total nitrogen number particle density ' +
                          'from MSIS.'}
@@ -257,6 +266,9 @@ def add_msis(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
                          'from MSIS.'}
     inst.meta['Nn_O2'] = {'units': 'cm^-3',
                           'desc': 'Total O2 number particle density ' +
+                          'from MSIS.'}
+    inst.meta['Nn_Ar'] = {'units': 'cm^-3',
+                          'desc': 'Total argon number particle density ' +
                           'from MSIS.'}
     inst.meta['Tn_msis'] = {'units': 'K',
                             'desc': 'Neutral temperature from MSIS.'}

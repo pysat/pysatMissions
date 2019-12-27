@@ -59,7 +59,8 @@ class TestEphem(TestSGP4):
                          'ion_dens', 'ion_temp',
                          'B', 'B_east', 'B_north', 'B_up', 'B_ecef_x',
                          'B_ecef_y', 'B_ecef_z',
-                         'Nn', 'Nn_N', 'Nn_N2', 'Nn_O', 'Nn_O2', 'Tn_msis',
+                         'Nn', 'Nn_H', 'Nn_He', 'Nn_N', 'Nn_N2', 'Nn_O', 'Nn_O2',
+                         'Nn_Ar', 'Tn_msis',
                          'total_wind_x', 'total_wind_y', 'total_wind_z']
         self.targets2 = ['velocity_ecef_x', 'velocity_ecef_y', 'velocity_ecef_z',
                          'sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z',
