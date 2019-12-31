@@ -22,18 +22,10 @@ before_install:
   - pip install xarray
   - pip install matplotlib
   - pip install apexpy
-
-  # Prepare modified pysat install
   - pip install numpy
-  - cd ..
-  - echo 'cloning pysat'
-  - git clone https://github.com/pysat/pysat.git >/dev/null
-  - echo 'installing pysat'
-  - cd ./pysat
+  - pip install 'pysat>=2.1.0'
   # set up data directory
   - mkdir /home/travis/build/pysatData
-  # install pysat
-  - python setup.py install >/dev/null
 
   # install pyglow, space science models
   - cd ..
