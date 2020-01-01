@@ -23,6 +23,7 @@ before_install:
   - pip install matplotlib
   - pip install apexpy
   - pip install numpy
+  
   - pip install 'pysat>=2.1.0'
   # set up data directory
   - mkdir /home/travis/build/pysatData
