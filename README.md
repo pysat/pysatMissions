@@ -11,13 +11,14 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/f795422173ac04203b24/maintainability)](https://codeclimate.com/github/pysat/pysatMissionPlanning/maintainability)
 
-pysatMissionPlanning allows users to run build simulated satellites for TLE info and add empirical data.  It includes the pysat_sgp4 instrument module which can be imported into pysat.
+pysatMissionPlanning allows users to run build simulated satellites for TLE info and add empirical data.  It includes the pysat_ephem and pysat_sgp4 instrument modules which can be imported into pysat.
 
 Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
 - Import ionosphere and thermosphere values through pyglow
-- Import coordidnates through apexpy
+- Import coordinates through apexpy
+- Import magnetic coordinates through aacgmv2
 
 Documentation
 ---------------------
@@ -49,13 +50,13 @@ a local install use the "--user" flag after "install".
 
 # Using with pysat
 
-The module is portable and designed to be run like any pysat instrument.
+The instrument modules are portable and designed to be run like any pysat instrument.
 
 ```
 import pysat
-from pysatMissionPlanning.instruments import pysat_sgp4
+from pysatMissionPlanning.instruments import pysat_ephem
 
-sgp4 = pysat.Instrument(inst_module=pysat_sgp4)
+simInst = pysat.Instrument(inst_module=pysat_ephem)
 ```
 
 The methods that run empirical models can also be exported to any pysat instrument. For instance, to add thermal plasma predictions from the IRI model to the C/NOFS IVM instrument, one can invoke
