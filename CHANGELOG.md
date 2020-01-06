@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added method for spacecraft to handle attitude and coordinates
 - Added method for plotting simulated data
 - Added support for readthedocs
+- Updates to testing environment
 - Split pysat_sgp4 into pysat_sgp4 and pysat_ephem to allow different propagators
 - Bugs
   - Fixed wrong metadata name for mlt in apexpy
