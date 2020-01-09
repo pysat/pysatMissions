@@ -3,9 +3,9 @@ dist: xenial
 matrix:
   include:
     - python: 2.7
+    - python: 3.5
     - python: 3.6
     - python: 3.7
-    - python: 3.8
 
 services: xvfb
 addons:
@@ -22,11 +22,18 @@ before_install:
   - pip install xarray
   - pip install matplotlib
   - pip install apexpy
+
+  # Prepare modified pysat install
   - pip install numpy
-  
-  - pip install 'pysat>=2.1.0'
+  - cd ..
+  - echo 'cloning pysat'
+  - git clone https://github.com/pysat/pysat.git >/dev/null
+  - echo 'installing pysat'
+  - cd ./pysat
   # set up data directory
   - mkdir /home/travis/build/pysatData
+  # install pysat
+  - python setup.py install >/dev/null
 
   # install pyglow, space science models
   - cd ..
