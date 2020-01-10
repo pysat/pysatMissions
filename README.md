@@ -50,7 +50,7 @@ a local install use the "--user" flag after "install".
 
 A note on empirical models
 --------------------------
-pysatMissionPlanning allows users to interact with a number of upper atmospheric empirical models through the [pyglow](https://github.com/timduly4/pyglow) package.  However, pyglow currently requires manual install through git.  While pysatMissionPlanning can be installed and used without pyglow, it should be installed by the user to access the pyglow methods.
+pysatMissionPlanning allows users to interact with a number of upper atmospheric empirical models through the [pyglow](https://github.com/timduly4/pyglow) package.  However, pyglow currently requires manual install through git.  While pysatMissionPlanning can be installed and used without pyglow, it should be installed by the user to access the pyglow methods.  Please follow the install instructions at https://github.com/timduly4/pyglow.
 
 # Using with pysat
 
