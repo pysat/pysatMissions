@@ -6,11 +6,19 @@ from pysat instruments.
 
 import pandas as pds
 import numpy as np
+import warnings
 
-from pyglow.pyglow import Point
+try:
+    from pyglow.pyglow import Point
+except ImportError:
+    pass
+
 import pysatMagVect
 
 # TODO add checks for ECEF and import rest of changes here
+pyglow_warning = ' '.join(['pyglow must be installed to use this',
+                           'function.  See instructions at',
+                           'https://github.com/pysat/pysatMissionPlanning'])
 
 
 def add_iri_thermal_plasma(inst, glat_label='glat', glong_label='glong',
@@ -54,26 +62,29 @@ def add_iri_thermal_plasma(inst, glat_label='glat', glong_label='glong',
     """
 
     iri_params = []
-    for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
-                                   inst[glong_label], inst[alt_label]):
-        # Point class is instantiated. Its parameters are a function of time
-        # and spatial location
-        pt = Point(time, lat, lon, alt)
-        pt.run_iri()
-        iri = {}
-        # After the model is run, its members like Ti, ni[O+], etc. can be
-        # accessed
-        iri['ion_temp'] = pt.Ti
-        iri['e_temp'] = pt.Te
-        iri['ion_dens'] = pt.ni['O+'] + pt.ni['H+'] + pt.ni['HE+']
-        # pt.ne - pt.ni['NO+'] - pt.ni['O2+'] - pt.ni['HE+']
-        iri['frac_dens_o'] = pt.ni['O+']/iri['ion_dens']
-        iri['frac_dens_h'] = pt.ni['H+']/iri['ion_dens']
-        iri['frac_dens_he'] = pt.ni['HE+']/iri['ion_dens']
-        iri_params.append(iri)
-    iri = pds.DataFrame(iri_params)
-    iri.index = inst.data.index
-    inst[iri.keys()] = iri
+    try:
+        for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
+                                       inst[glong_label], inst[alt_label]):
+            # Point class is instantiated. Its parameters are a function of time
+            # and spatial location
+            pt = Point(time, lat, lon, alt)
+            pt.run_iri()
+            iri = {}
+            # After the model is run, its members like Ti, ni[O+], etc. can be
+            # accessed
+            iri['ion_temp'] = pt.Ti
+            iri['e_temp'] = pt.Te
+            iri['ion_dens'] = pt.ni['O+'] + pt.ni['H+'] + pt.ni['HE+']
+            # pt.ne - pt.ni['NO+'] - pt.ni['O2+'] - pt.ni['HE+']
+            iri['frac_dens_o'] = pt.ni['O+']/iri['ion_dens']
+            iri['frac_dens_h'] = pt.ni['H+']/iri['ion_dens']
+            iri['frac_dens_he'] = pt.ni['HE+']/iri['ion_dens']
+            iri_params.append(iri)
+        iri = pds.DataFrame(iri_params)
+        iri.index = inst.data.index
+        inst[iri.keys()] = iri
+    except NameError:
+        warnings.warn(pyglow_warning, stacklevel=2)
 
     inst.meta['ion_temp'] = {'units': 'Kelvin', 'long_name': 'Ion Temperature',
                              'desc': ' '.join(['Ion temperature from IRI',
@@ -133,29 +144,32 @@ def add_igrf(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
     """
 
     igrf_params = []
-    for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
-                                   inst[glong_label], inst[alt_label]):
-        pt = Point(time, lat, lon, alt)
-        pt.run_igrf()
-        igrf = {}
-        igrf['B'] = pt.B
-        igrf['B_east'] = pt.Bx
-        igrf['B_north'] = pt.By
-        igrf['B_up'] = pt.Bz
-        igrf_params.append(igrf)
-    igrf = pds.DataFrame(igrf_params)
-    igrf.index = inst.data.index
-    inst[igrf.keys()] = igrf
+    try:
+        for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
+                                       inst[glong_label], inst[alt_label]):
+            pt = Point(time, lat, lon, alt)
+            pt.run_igrf()
+            igrf = {}
+            igrf['B'] = pt.B
+            igrf['B_east'] = pt.Bx
+            igrf['B_north'] = pt.By
+            igrf['B_up'] = pt.Bz
+            igrf_params.append(igrf)
+        igrf = pds.DataFrame(igrf_params)
+        igrf.index = inst.data.index
+        inst[igrf.keys()] = igrf
 
-    # convert magnetic field in East/north/up to ECEF basis
-    x, y, z = pysatMagVect.enu_to_ecef_vector(inst['B_east'],
-                                              inst['B_north'],
-                                              inst['B_up'],
-                                              inst[glat_label],
-                                              inst[glong_label])
-    inst['B_ecef_x'] = x
-    inst['B_ecef_y'] = y
-    inst['B_ecef_z'] = z
+        # convert magnetic field in East/north/up to ECEF basis
+        x, y, z = pysatMagVect.enu_to_ecef_vector(inst['B_east'],
+                                                  inst['B_north'],
+                                                  inst['B_up'],
+                                                  inst[glat_label],
+                                                  inst[glong_label])
+        inst['B_ecef_x'] = x
+        inst['B_ecef_y'] = y
+        inst['B_ecef_z'] = z
+    except NameError:
+        warnings.warn(pyglow_warning, stacklevel=2)
 
     # metadata
     inst.meta['B'] = {'units': 'nT',
@@ -223,27 +237,30 @@ def add_msis(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
     """
 
     msis_params = []
-    for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
-                                   inst[glong_label], inst[alt_label]):
-        pt = Point(time, lat, lon, alt)
-        pt.run_msis()
-        msis = {}
-        total = 0
-        for key in pt.nn.keys():
-            total += pt.nn[key]
-        msis['Nn'] = total
-        msis['Nn_H'] = pt.nn['H']
-        msis['Nn_He'] = pt.nn['HE']
-        msis['Nn_N'] = pt.nn['N']
-        msis['Nn_N2'] = pt.nn['N2']
-        msis['Nn_O'] = pt.nn['O']
-        msis['Nn_O2'] = pt.nn['O2']
-        msis['Nn_Ar'] = pt.nn['AR']
-        msis['Tn_msis'] = pt.Tn_msis
-        msis_params.append(msis)
-    msis = pds.DataFrame(msis_params)
-    msis.index = inst.data.index
-    inst[msis.keys()] = msis
+    try:
+        for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
+                                       inst[glong_label], inst[alt_label]):
+            pt = Point(time, lat, lon, alt)
+            pt.run_msis()
+            msis = {}
+            total = 0
+            for key in pt.nn.keys():
+                total += pt.nn[key]
+            msis['Nn'] = total
+            msis['Nn_H'] = pt.nn['H']
+            msis['Nn_He'] = pt.nn['HE']
+            msis['Nn_N'] = pt.nn['N']
+            msis['Nn_N2'] = pt.nn['N2']
+            msis['Nn_O'] = pt.nn['O']
+            msis['Nn_O2'] = pt.nn['O2']
+            msis['Nn_Ar'] = pt.nn['AR']
+            msis['Tn_msis'] = pt.Tn_msis
+            msis_params.append(msis)
+        msis = pds.DataFrame(msis_params)
+        msis.index = inst.data.index
+        inst[msis.keys()] = msis
+    except NameError:
+        warnings.warn(pyglow_warning, stacklevel=2)
 
     # metadata
     inst.meta['Nn'] = {'units': 'cm^-3',
@@ -318,20 +335,23 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
     """
 
     hwm_params = []
-    for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
-                                   inst[glong_label], inst[alt_label]):
-        # Point class is instantiated.
-        # Its parameters are a function of time and spatial location
-        pt = Point(time, lat, lon, alt)
-        pt.run_hwm()
-        hwm = {}
-        hwm['zonal_wind'] = pt.u
-        hwm['meridional_wind'] = pt.v
-        hwm_params.append(hwm)
-    hwm = pds.DataFrame(hwm_params)
-    hwm.index = inst.data.index
-    inst[['zonal_wind', 'meridional_wind']] = hwm[['zonal_wind',
-                                                   'meridional_wind']]
+    try:
+        for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
+                                       inst[glong_label], inst[alt_label]):
+            # Point class is instantiated.
+            # Its parameters are a function of time and spatial location
+            pt = Point(time, lat, lon, alt)
+            pt.run_hwm()
+            hwm = {}
+            hwm['zonal_wind'] = pt.u
+            hwm['meridional_wind'] = pt.v
+            hwm_params.append(hwm)
+        hwm = pds.DataFrame(hwm_params)
+        hwm.index = inst.data.index
+        inst[['zonal_wind', 'meridional_wind']] = hwm[['zonal_wind',
+                                                       'meridional_wind']]
+    except NameError:
+        warnings.warn(pyglow_warning, stacklevel=2)
 
     # calculate zonal unit vector in ECEF
     # zonal wind: east - west; positive east
