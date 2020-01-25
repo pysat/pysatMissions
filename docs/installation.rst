@@ -15,8 +15,10 @@ For educational users, an IDE from `Jet Brains <https://www.jetbrains.com/studen
 
 ----
 
-PysatMissionPLanning itself may be installed from a terminal command line via::
+PysatMissionPlanning itself may be installed from a terminal command line via::
 
    pip install pysatMissionPlanning
 
 Note that pysatMissionPlanning requires pysat to interact with the instruments and models here.  [Full Documentation for main package](http://pysat.readthedocs.io/en/latest/)
+
+pysatMissionPlanning allows users to interact with a number of upper atmospheric empirical models through the pyglow package. However, pyglow currently requires manual install through git. While pysatMissionPlanning can be installed and used without pyglow, it should be installed by the user to access the pyglow methods. Please follow the install instructions at https://github.com/timduly4/pyglow.
