@@ -130,8 +130,8 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     return data, meta.copy()
 
 
-list_files = functools.partial(meth.list_files)
-download = functools.partial(meth.download)
+list_files = functools.partial(meth._list_files)
+download = functools.partial(meth._download)
 
 # create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call

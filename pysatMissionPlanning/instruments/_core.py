@@ -6,7 +6,7 @@ import pandas as pds
 import pysat
 
 
-def list_files(tag=None, sat_id=None, data_path=None, format_str=None):
+def _list_files(tag=None, sat_id=None, data_path=None, format_str=None):
     """Produce a fake list of files spanning a year"""
 
     index = pds.date_range(pysat.datetime(2017, 12, 1),
@@ -18,7 +18,7 @@ def list_files(tag=None, sat_id=None, data_path=None, format_str=None):
     return pysat.Series(names, index=index)
 
 
-def download(date_array, tag, sat_id, data_path=None):
+def _download(date_array, tag, sat_id, data_path=None):
     """ Data is simulated so no download routine is possible. Simple pass
     function"""
     pass
