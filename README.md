@@ -9,13 +9,17 @@
 [![Coverage Status](https://coveralls.io/repos/github/pysat/pysatMissionPlanning/badge.svg?branch=master)](https://coveralls.io/github/pysat/pysatMissionPlanning?branch=master)
 [![DOI](https://zenodo.org/badge/209358908.svg)](https://zenodo.org/badge/latestdoi/209358908)
 
-pysatMissionPlanning allows users to run build simulated satellites for TLE info and add empirical data.  It includes the pysat_sgp4 instrument module which can be imported into pysat.
+[![Maintainability](https://api.codeclimate.com/v1/badges/f795422173ac04203b24/maintainability)](https://codeclimate.com/github/pysat/pysatMissionPlanning/maintainability)
+
+pysatMissionPlanning allows users to run build simulated satellites for TLE info and add empirical data.  It includes the pysat_ephem and pysat_sgp4 instrument modules which can be imported into pysat.
 
 Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
 - Import ionosphere and thermosphere values through pyglow
-- Import coordidnates through apexpy
+- Import coordinates through apexpy
+- Import magnetic coordinates through aacgmv2
+- Import geomagnetic basis vectors through pysatMagVect
 
 Documentation
 ---------------------
@@ -45,13 +49,29 @@ a local install use the "--user" flag after "install".
   python setup.py install
 ```
 
+A note on empirical models
+--------------------------
+pysatMissionPlanning allows users to interact with a number of upper atmospheric empirical models through the [pyglow](https://github.com/timduly4/pyglow) package.  However, pyglow currently requires manual install through git.  While pysatMissionPlanning can be installed and used without pyglow, it should be installed by the user to access the pyglow methods.  Please follow the install instructions at https://github.com/timduly4/pyglow.
+
 # Using with pysat
 
-The module is portable and designed to be run like any pysat instrument.
+The instrument modules are portable and designed to be run like any pysat instrument.
 
 ```
 import pysat
-from pysatMissionPlanning.instruments import pysat_sgp4
+from pysatMissionPlanning.instruments import pysat_ephem
 
-sgp4 = pysat.Instrument(inst_module=pysat_sgp4)
+simInst = pysat.Instrument(inst_module=pysat_ephem)
 ```
+
+The methods that run empirical models can also be exported to any pysat instrument. For instance, to add thermal plasma predictions from the IRI model to the C/NOFS IVM instrument, one can invoke
+
+```
+import pysat
+import pysatMissionPlanning.methods.pyglow as methglow
+
+ivm = pysat.Instrument(platform='cnofs', name='ivm')
+ivm.custom.add(methglow.add_iri_thermal_plasma, 'modify', glat_label='glat',
+               glong_label='glon', alt_label='altitude')
+```
+Once the custom function is added, the model will automatically be run when the dataset is loaded.

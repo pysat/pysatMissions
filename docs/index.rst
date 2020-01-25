@@ -8,5 +8,6 @@ Welcome to pysatMissionPlanning's documentation!
 
    introduction.rst
    installation.rst
+   tutorial.rst
    contributing.rst
    citing.rst

@@ -20,7 +20,7 @@ with codecs.open(os.path.join(here, version_filename)) as version_file:
 # on_rtd = os.environ.get('READTHEpysatMissionPlanningDOCS') == 'True'
 
 install_requires = ['pysat', 'sgp4', 'pyEphem', 'matplotlib',
-                    'apexpy', 'aacgmv2', 'pysatMagVect', 'pyglow']
+                    'apexpy', 'aacgmv2', 'pysatMagVect']
 
 
 # Run setup
@@ -42,7 +42,6 @@ setup(name='pysatMissionPlanning',
           "Intended Audience :: Science/Research",
           "License :: OSI Approved :: BSD License",
           "Natural Language :: English",
-          "Programming Language :: Python :: 2.7",
           "Programming Language :: Python :: 3.5",
           "Programming Language :: Python :: 3.6",
           "Programming Language :: Python :: 3.7",

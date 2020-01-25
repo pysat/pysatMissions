@@ -1,0 +1,17 @@
+# Save as .codeclimate.yml (note leading .) in project root directory
+engines:
+  radon:
+    enabled: true
+ratings:
+  paths:
+  - "**.py"
+exclude_paths:
+  - ".github/**/*"
+  - "pysatMissionPlanning/tests/**/*"
+  - "docs/**/*"
+  - "setup.py"
+  - ".*"
+  - "*.md"
+  - "*.in"
+  - "*.txt"
+  - "*.png"
