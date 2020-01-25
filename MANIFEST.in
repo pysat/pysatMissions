@@ -1,12 +1,12 @@
 include *.py
 include *.f
 include *.c
-recursive-include pysatMissionPlanning *.py
+recursive-include pysatMissions *.py
 include *.md
 include description.txt
 include LICENSE
-include pysatMissionPlanning/version.txt
-prune pysatMissionPlanning/tests
+include pysatMissions/version.txt
+prune pysatMissions/tests
 prune docs
 prune demo
 exclude *.pdf

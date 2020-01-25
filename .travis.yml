@@ -42,7 +42,7 @@ before_install:
   - cd ./pyglow
   - make -C src/pyglow/models source >/dev/null
   - python setup.py install >/dev/null
-  - cd ../pysatMissionPlanning
+  - cd ../pysatMissions
 
 install:
   - python setup.py install
@@ -52,7 +52,7 @@ before_script:
   - export DISPLAY=:99.0
 
 script:
-  - pytest -vs --cov=pysatMissionPlanning/
+  - pytest -vs --cov=pysatMissions/
 
 after_success:
   - coveralls

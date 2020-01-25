@@ -3,7 +3,7 @@
 
 import numpy as np
 import pysat
-from pysatMissionPlanning.methods import spacecraft as methsc
+from pysatMissions.methods import spacecraft as methsc
 
 
 def add_eci(inst):

@@ -1,6 +1,6 @@
-.. pysatMissionPlanning documentation master file
+.. pysatMissions documentation master file
 
-Welcome to pysatMissionPlanning's documentation!
+Welcome to pysatMissions's documentation!
 =================================
 
 .. toctree::

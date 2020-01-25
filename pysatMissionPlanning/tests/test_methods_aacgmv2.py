@@ -3,7 +3,7 @@
 
 import numpy as np
 import pysat
-import pysatMissionPlanning.methods.aacgmv2 as methaacgm
+import pysatMissions.methods.aacgmv2 as methaacgm
 
 
 def add_altitude(inst, altitude=400.0):

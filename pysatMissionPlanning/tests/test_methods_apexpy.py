@@ -3,7 +3,7 @@
 
 import numpy as np
 import pysat
-import pysatMissionPlanning.methods.apexpy as methapex
+import pysatMissions.methods.apexpy as methapex
 
 
 def add_altitude(inst, altitude=400.0):

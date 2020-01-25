@@ -7,13 +7,13 @@ Example for citation in BibTex for a generalized version:
 
 .. code::
 
-  @misc{pysatMissionPlanning,
+  @misc{pysatMissions,
     author       = {Stoneback, R.A. and
                     Klenzing, J.H. and
                     Burrell, A.G. and
                     Depew, M. and
                     Spence, C.},
-    title        = {Pysat Mission Planning Toolkit (pysatMissionPlanning) vX.Y.Z},
+    title        = {Pysat Mission Planning Toolkit (pysatMissions) vX.Y.Z},
     month        = oct,
     year         = 2019,
     doi          = {10.5281/zenodo.3475499},
@@ -39,4 +39,4 @@ Citing the publication:
     year      = {2018}
   }
 
-To aid in scientific reproducibility, please include the version number in publications that use this code.  This can be found by invoking `pysatMissionPlanning.__version__ `.
+To aid in scientific reproducibility, please include the version number in publications that use this code.  This can be found by invoking `pysatMissions.__version__ `.

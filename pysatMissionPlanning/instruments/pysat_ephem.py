@@ -15,7 +15,7 @@ import functools
 import numpy as np
 import pandas as pds
 import pysat
-from pysatMissionPlanning.instruments import _core as meth
+from pysatMissions.instruments import _core as meth
 
 # pysat required parameters
 platform = 'pysat'
@@ -39,10 +39,10 @@ def init(self):
     Horiontal Wind Model (HWM).
 
     """
-    import pysatMissionPlanning.methods.aacgmv2 as methaacgm
-    import pysatMissionPlanning.methods.apexpy as methapex
-    import pysatMissionPlanning.methods.pyglow as methglow
-    import pysatMissionPlanning.methods.spacecraft as methsc
+    import pysatMissions.methods.aacgmv2 as methaacgm
+    import pysatMissions.methods.apexpy as methapex
+    import pysatMissions.methods.pyglow as methglow
+    import pysatMissions.methods.spacecraft as methsc
 
     self.custom.add(methapex.add_quasi_dipole_coordinates, 'modify')
     self.custom.add(methaacgm.add_aacgm_coordinates, 'modify')

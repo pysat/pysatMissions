@@ -3,7 +3,7 @@
 
 import numpy as np
 import pysat
-from pysatMissionPlanning.methods import pyglow as methglow
+from pysatMissions.methods import pyglow as methglow
 
 
 def add_altitude(inst, altitude=400.0):
