@@ -84,6 +84,7 @@ def add_iri_thermal_plasma(inst, glat_label='glat', glong_label='glong',
         iri.index = inst.data.index
         inst[iri.keys()] = iri
     except NameError:
+        # Triggered if pyglow not installed
         warnings.warn(pyglow_warning, stacklevel=2)
 
     inst.meta['ion_temp'] = {'units': 'Kelvin', 'long_name': 'Ion Temperature',
@@ -169,6 +170,7 @@ def add_igrf(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
         inst['B_ecef_y'] = y
         inst['B_ecef_z'] = z
     except NameError:
+        # Triggered if pyglow not installed
         warnings.warn(pyglow_warning, stacklevel=2)
 
     # metadata
@@ -260,6 +262,7 @@ def add_msis(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
         msis.index = inst.data.index
         inst[msis.keys()] = msis
     except NameError:
+        # Triggered if pyglow not installed
         warnings.warn(pyglow_warning, stacklevel=2)
 
     # metadata
@@ -351,6 +354,7 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
         inst[['zonal_wind', 'meridional_wind']] = hwm[['zonal_wind',
                                                        'meridional_wind']]
     except NameError:
+        # Triggered if pyglow not installed
         warnings.warn(pyglow_warning, stacklevel=2)
 
     # calculate zonal unit vector in ECEF
