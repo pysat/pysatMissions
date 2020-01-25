@@ -15,7 +15,7 @@ import functools
 import numpy as np
 import pandas as pds
 import pysat
-import pysatMissionPlanning.instruments._core as meth
+from pysatMissionPlanning.instruments import _core as meth
 
 # pysat required parameters
 platform = 'pysat'
