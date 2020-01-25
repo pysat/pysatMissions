@@ -19,6 +19,7 @@ Main Features
 - Import ionosphere and thermosphere values through pyglow
 - Import coordinates through apexpy
 - Import magnetic coordinates through aacgmv2
+- Import geomagnetic basis vectors through pysatMagVect
 
 Documentation
 ---------------------
