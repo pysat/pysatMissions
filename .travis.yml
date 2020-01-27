@@ -22,7 +22,7 @@ before_install:
   - pip install 'pandas<0.25'
   - pip install xarray
   - pip install matplotlib
-  - pip install proj
+  - docker pull osgeo/proj
   - pip install cartopy
   - pip install apexpy
 
