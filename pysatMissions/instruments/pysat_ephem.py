@@ -83,13 +83,18 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     tag : string
         Identifies a particular subset of satellite data
     sat_id : string
-        Satellite ID
+        Instrument satellite ID (accepts '' or a number (i.e., '10'), which
+        specifies the number of seconds to simulate the satellite)
+        (default = '')
     obs_long: float
         Longitude of the observer on the Earth's surface
+        (default = 0.)
     obs_lat: float
         Latitude of the observer on the Earth's surface
+        (default = 0.)
     obs_alt: float
         Altitude of the observer on the Earth's surface
+        (default = 0.)
     TLE1 : string
         First string for Two Line Element. Must be in TLE format
     TLE2 : string
@@ -127,13 +132,9 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     date = pysat.datetime(yr, month, day)
 
     # create timing at 1 Hz (for 1 day)
-    times = pds.date_range(start=date, end=date+pds.DateOffset(seconds=86399),
+    num = 86399 if sat_id == '' else int(sat_id)
+    times = pds.date_range(start=date, end=date+pds.DateOffset(seconds=num),
                            freq='1S')
-    # reduce requirements if on testing server
-    # TODO Remove this when testing resources are higher
-    on_travis = os.environ.get('ONTRAVIS') == 'True'
-    if on_travis:
-        times = times[0:100]
 
     # the observer's (ground station) position on the Earth surface
     site = ephem.Observer()
