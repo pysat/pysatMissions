@@ -94,12 +94,10 @@ def plot_simulated_data(inst, filename=None):
     if time_diff > pds.Timedelta(minutes=285):
         ax6 = f.add_subplot(gs[4, 0])
         # do long time plot
-        inst['glat'].plot(label='glat')  # legend=True, label='mlat')
-        inst['mlt'].plot(label='mlt')  # legend=True, label='mlt')
+        inst['glat'].plot(label='glat')
+        inst['mlt'].plot(label='mlt')
         plt.title('Satellite Position')
         plt.legend(['mlat', 'mlt'], loc=(1.01, 0.15))
-    #    inst['glong'].plot(secondary_y = True, label='glong')#legend=True,
-    #       secondary_y = True, label='glong')
 
     else:
 
@@ -110,28 +108,6 @@ def plot_simulated_data(inst, filename=None):
         s6pos = plt.get(ax6, 'position').bounds
         ax6.set_position([s1pos[0], s6pos[1]+.008, s1pos[2], s1pos[3]])
 
-        # fix longitude range for plot. Pad longitude so that first sample
-        # aligned with inst measurement sample
-        # lon0 = inst[0, 'glong']
-        # lon1 = inst[-1, 'glong']
-        #
-        # # enforce minimal longitude window, keep graphics from being too
-        # # disturbed
-        # if (lon1-lon0) < 90:
-        #     lon0 -= 45.
-        #     lon1 += 45.
-        # if lon1 > 720:
-        #     lon0 -= 360.
-        #     lon1 -= 360.
-        #     inst[:, 'glong'] -= 360.
-        #
-        # # coastlines
-        # m.drawcoastlines(ax=ax6)
-        # # get first longitude meridian to plot
-        # plon = np.ceil(lon0/60.)*60.
-        # m.drawmeridians(np.arange(plon, plon+360.-22.5, 60),
-        #                 labels=[0, 0, 0, 1], ax=ax6)
-        # m.drawparallels(np.arange(-20, 20, 20))
         ax6.set_global()
         ax6.coastlines()
         ax6.set_xticks([0, 60, 120, 180, 240, 300, 360], crs=ccrs.PlateCarree())
@@ -140,36 +116,7 @@ def plot_simulated_data(inst, filename=None):
         lat_formatter = LatitudeFormatter()
         ax6.xaxis.set_major_formatter(lon_formatter)
         ax6.yaxis.set_major_formatter(lat_formatter)
-        # time midway through inst to plot terminator locations
-        # midDate = inst.data.index[len(inst.data.index)//2]
-
-        # plot day/night terminators
-        # try:
-        #     _ = m.nightshade(midDate)
-        # except ValueError:
-        #     pass
-
         ax6.plot(inst['glong'].values, inst['glat'].values)
-        # points = np.array([x, y]).T.reshape(-1, 1, 2)
-        # segments = np.concatenate([points[:-1], points[1:]], axis=1)
-        # plot_norm = plt.Normalize(300, 500)
-        # plot_cmap = plt.get_cmap('viridis')
-        #
-        # lc = LineCollection(segments, cmap=plot_cmap, norm=plot_norm,
-        #                     linewidths=5.0)
-        # lc.set_array(inst['alt'].values)
-        # sm = plt.cm.ScalarMappable(cmap=plot_cmap, norm=plot_norm)
-        # sm._A = []
-
-        # ax6.add_collection(lc)
-
-        # ax6_bar = f.add_subplot(gs[4, 1])
-        # plt.colorbar(sm)
-        # plt.colorbar(cax=ax6_bar, ax=ax6, mappable=sm,
-        #              orientation='vertical',
-        #              ticks=[300., 400., 500.])
-        # plt.xlabel('Altitude')
-        # plt.ylabel('km')
 
     f.tight_layout()
     # buffer for overall title
