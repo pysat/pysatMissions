@@ -12,8 +12,8 @@ def plot_simulated_data(inst, filename=None):
     import matplotlib
     import matplotlib.pyplot as plt
     import matplotlib.gridspec as gridspec
-    from matplotlib.collections import LineCollection
-    from mpl_toolkits.basemap import Basemap
+    import cartopy.crs as ccrs
+    from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 
     if filename is None:
         out_fname = './summary_orbit_simulated_data.png'
@@ -88,13 +88,11 @@ def plot_simulated_data(inst, filename=None):
     # # xlabels = [label[0:6] for label in xlabels]
     plt.setp(ax4.xaxis.get_majorticklabels(), rotation=20, ha='right')
 
-    # inst info
-    ax6 = f.add_subplot(gs[4, 0])
-
     # do world plot if time to be plotted is less than 285 minutes, less than
     # 3 orbits
     time_diff = inst.data.index[-1] - inst.data.index[0]
     if time_diff > pds.Timedelta(minutes=285):
+        ax6 = f.add_subplot(gs[4, 0])
         # do long time plot
         inst['glat'].plot(label='glat')  # legend=True, label='mlat')
         inst['mlt'].plot(label='mlt')  # legend=True, label='mlt')
@@ -106,69 +104,72 @@ def plot_simulated_data(inst, filename=None):
     else:
 
         # make map the same size as the other plots
+        ax6 = f.add_subplot(gs[4, 0],
+                            projection=ccrs.PlateCarree(central_longitude=180))
         s1pos = plt.get(ax, 'position').bounds
         s6pos = plt.get(ax6, 'position').bounds
         ax6.set_position([s1pos[0], s6pos[1]+.008, s1pos[2], s1pos[3]])
 
         # fix longitude range for plot. Pad longitude so that first sample
         # aligned with inst measurement sample
-        lon0 = inst[0, 'glong']
-        lon1 = inst[-1, 'glong']
-
-        # enforce minimal longitude window, keep graphics from being too
-        # disturbed
-        if (lon1-lon0) < 90:
-            lon0 -= 45.
-            lon1 += 45.
-        if lon1 > 720:
-            lon0 -= 360.
-            lon1 -= 360.
-            inst[:, 'glong'] -= 360.
-
-        m = Basemap(projection='mill', llcrnrlat=-60, urcrnrlat=60.,
-                    urcrnrlon=lon1.copy(), llcrnrlon=lon0.copy(),
-                    resolution='c', ax=ax6, fix_aspect=False)
-        # m is an object which manages drawing to the map
-        # it also acts as a transformation function for geo coords to
-        # plotting coords
-
-        # coastlines
-        m.drawcoastlines(ax=ax6)
-        # get first longitude meridian to plot
-        plon = np.ceil(lon0/60.)*60.
-        m.drawmeridians(np.arange(plon, plon+360.-22.5, 60),
-                        labels=[0, 0, 0, 1], ax=ax6)
-        m.drawparallels(np.arange(-20, 20, 20))
+        # lon0 = inst[0, 'glong']
+        # lon1 = inst[-1, 'glong']
+        #
+        # # enforce minimal longitude window, keep graphics from being too
+        # # disturbed
+        # if (lon1-lon0) < 90:
+        #     lon0 -= 45.
+        #     lon1 += 45.
+        # if lon1 > 720:
+        #     lon0 -= 360.
+        #     lon1 -= 360.
+        #     inst[:, 'glong'] -= 360.
+        #
+        # # coastlines
+        # m.drawcoastlines(ax=ax6)
+        # # get first longitude meridian to plot
+        # plon = np.ceil(lon0/60.)*60.
+        # m.drawmeridians(np.arange(plon, plon+360.-22.5, 60),
+        #                 labels=[0, 0, 0, 1], ax=ax6)
+        # m.drawparallels(np.arange(-20, 20, 20))
+        ax6.set_global()
+        ax6.coastlines()
+        ax6.set_xticks([0, 60, 120, 180, 240, 300, 360], crs=ccrs.PlateCarree())
+        ax6.set_yticks([-90, -60, -30, 0, 30, 60, 90], crs=ccrs.PlateCarree())
+        lon_formatter = LongitudeFormatter(zero_direction_label=True)
+        lat_formatter = LatitudeFormatter()
+        ax6.xaxis.set_major_formatter(lon_formatter)
+        ax6.yaxis.set_major_formatter(lat_formatter)
         # time midway through inst to plot terminator locations
-        midDate = inst.data.index[len(inst.data.index)//2]
+        # midDate = inst.data.index[len(inst.data.index)//2]
 
         # plot day/night terminators
-        try:
-            _ = m.nightshade(midDate)
-        except ValueError:
-            pass
+        # try:
+        #     _ = m.nightshade(midDate)
+        # except ValueError:
+        #     pass
 
-        x, y = m(inst['glong'].values, inst['glat'].values)
-        points = np.array([x, y]).T.reshape(-1, 1, 2)
-        segments = np.concatenate([points[:-1], points[1:]], axis=1)
-        plot_norm = plt.Normalize(300, 500)
-        plot_cmap = plt.get_cmap('viridis')
+        ax6.plot(inst['glong'].values, inst['glat'].values)
+        # points = np.array([x, y]).T.reshape(-1, 1, 2)
+        # segments = np.concatenate([points[:-1], points[1:]], axis=1)
+        # plot_norm = plt.Normalize(300, 500)
+        # plot_cmap = plt.get_cmap('viridis')
+        #
+        # lc = LineCollection(segments, cmap=plot_cmap, norm=plot_norm,
+        #                     linewidths=5.0)
+        # lc.set_array(inst['alt'].values)
+        # sm = plt.cm.ScalarMappable(cmap=plot_cmap, norm=plot_norm)
+        # sm._A = []
 
-        lc = LineCollection(segments, cmap=plot_cmap, norm=plot_norm,
-                            linewidths=5.0)
-        lc.set_array(inst['alt'].values)
-        sm = plt.cm.ScalarMappable(cmap=plot_cmap, norm=plot_norm)
-        sm._A = []
+        # ax6.add_collection(lc)
 
-        ax6.add_collection(lc)
-
-        ax6_bar = f.add_subplot(gs[4, 1])
+        # ax6_bar = f.add_subplot(gs[4, 1])
         # plt.colorbar(sm)
-        plt.colorbar(cax=ax6_bar, ax=ax6, mappable=sm,
-                     orientation='vertical',
-                     ticks=[300., 400., 500.])
-        plt.xlabel('Altitude')
-        plt.ylabel('km')
+        # plt.colorbar(cax=ax6_bar, ax=ax6, mappable=sm,
+        #              orientation='vertical',
+        #              ticks=[300., 400., 500.])
+        # plt.xlabel('Altitude')
+        # plt.ylabel('km')
 
     f.tight_layout()
     # buffer for overall title
