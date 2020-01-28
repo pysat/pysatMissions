@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Split pysat_sgp4 into pysat_sgp4 and pysat_ephem to allow different propagators
 - Removed basemap
 - Added numeric strings as options for sat_id
+- Added `_get_times` to streamline time steps for simulated instruments
 - Bugs
   - Fixed wrong metadata name for mlt in apexpy
 
