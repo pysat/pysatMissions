@@ -3,7 +3,7 @@
 
 import numpy as np
 import pysat
-import pysatMissions.methods.aacgmv2 as methaacgm
+import pysatMissions.methods.aacgmv2 as mm_aacgm
 
 
 def add_altitude(inst, altitude=400.0):
@@ -25,7 +25,7 @@ class TestBasics():
 
     def test_add_aacgm_coordinates(self):
         """Test adding thermal plasma data to test inst"""
-        self.testInst.custom.add(methaacgm.add_aacgm_coordinates, 'modify',
+        self.testInst.custom.add(mm_aacgm.add_aacgm_coordinates, 'modify',
                                  glat_label='latitude',
                                  glong_label='longitude',
                                  alt_label='altitude')

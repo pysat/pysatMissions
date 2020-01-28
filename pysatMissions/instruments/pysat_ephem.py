@@ -15,7 +15,7 @@ import functools
 import numpy as np
 import pandas as pds
 import pysat
-from pysatMissions.instruments import _core as meth
+from pysatMissions.instruments import _core as mcore
 
 # pysat required parameters
 platform = 'pysat'
@@ -39,33 +39,33 @@ def init(self):
     Horiontal Wind Model (HWM).
 
     """
-    import pysatMissions.methods.aacgmv2 as methaacgm
-    import pysatMissions.methods.apexpy as methapex
-    import pysatMissions.methods.pyglow as methglow
-    import pysatMissions.methods.spacecraft as methsc
+    import pysatMissions.methods.aacgmv2 as mm_aacgm
+    import pysatMissions.methods.apexpy as mm_apex
+    import pysatMissions.methods.pyglow as mm_glow
+    import pysatMissions.methods.spacecraft as mm_sc
 
-    self.custom.add(methapex.add_quasi_dipole_coordinates, 'modify')
-    self.custom.add(methaacgm.add_aacgm_coordinates, 'modify')
-    self.custom.add(methsc.calculate_ecef_velocity, 'modify')
-    self.custom.add(methsc.add_sc_attitude_vectors, 'modify')
+    self.custom.add(mm_apex.add_quasi_dipole_coordinates, 'modify')
+    self.custom.add(mm_aacgm.add_aacgm_coordinates, 'modify')
+    self.custom.add(mm_sc.calculate_ecef_velocity, 'modify')
+    self.custom.add(mm_sc.add_sc_attitude_vectors, 'modify')
     # project simulated vectors onto s/c basis
     # IGRF
-    self.custom.add(methglow.add_igrf, 'modify')
+    self.custom.add(mm_glow.add_igrf, 'modify')
     # create metadata to be added along with vector projection
     in_meta = {'desc': 'IGRF geomagnetic field expressed in the s/c basis.',
                'units': 'nT'}
     # project IGRF
-    self.custom.add(methsc.project_ecef_vector_onto_sc, 'modify', 'end',
+    self.custom.add(mm_sc.project_ecef_vector_onto_sc, 'modify', 'end',
                     'B_ecef_x', 'B_ecef_y', 'B_ecef_z', 'B_sc_x', 'B_sc_y',
                     'B_sc_z', meta=[in_meta.copy(), in_meta.copy(),
                                     in_meta.copy()])
     # Thermal Ion Parameters
-    self.custom.add(methglow.add_iri_thermal_plasma, 'modify')
+    self.custom.add(mm_glow.add_iri_thermal_plasma, 'modify')
     # Thermal Neutral parameters
-    self.custom.add(methglow.add_msis, 'modify')
-    self.custom.add(methglow.add_hwm_winds_and_ecef_vectors, 'modify')
+    self.custom.add(mm_glow.add_msis, 'modify')
+    self.custom.add(mm_glow.add_hwm_winds_and_ecef_vectors, 'modify')
     # project total wind vector
-    self.custom.add(methglow.project_hwm_onto_sc, 'modify')
+    self.custom.add(mm_glow.project_hwm_onto_sc, 'modify')
 
 
 def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
@@ -185,8 +185,8 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     return data, meta.copy()
 
 
-list_files = functools.partial(meth._list_files)
-download = functools.partial(meth._download)
+list_files = functools.partial(mcore._list_files)
+download = functools.partial(mcore._download)
 
 # create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call
