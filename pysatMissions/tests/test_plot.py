@@ -21,4 +21,5 @@ class TestPlot():
         """Try running the plot to see if warning or errors are generated"""
 
         plt.plot_simulated_data(self.testInst)
-        pass
+
+        assert True
