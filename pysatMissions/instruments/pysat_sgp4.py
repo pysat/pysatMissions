@@ -12,7 +12,7 @@ import os
 import functools
 import pandas as pds
 import pysat
-from pysatMissions.instruments import _core as meth
+from pysatMissions.instruments import _core as mcore
 
 # pysat required parameters
 platform = 'pysat'
@@ -94,17 +94,8 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     # according to module webpage, wgs72 is common
     satellite = twoline2rv(line1, line2, wgs72)
 
-    # grab date from filename
-    parts = os.path.split(fnames[0])[-1].split('-')
-    yr = int(parts[0])
-    month = int(parts[1])
-    day = int(parts[2][0:2])
-    date = pysat.datetime(yr, month, day)
-
-    # create timing at 1 Hz (for 1 day)
-    num = 86399 if sat_id == '' else int(sat_id)
-    times = pds.date_range(start=date, end=date+pds.DateOffset(seconds=num),
-                           freq='1S')
+    # Extract list of times from filenames and sat_id
+    times = mcore._get_times(fnames, sat_id)
 
     # create list to hold satellite position, velocity
     position = []
@@ -131,8 +122,8 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     return data, meta.copy()
 
 
-list_files = functools.partial(meth._list_files)
-download = functools.partial(meth._download)
+list_files = functools.partial(mcore._list_files)
+download = functools.partial(mcore._download)
 
 # create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call

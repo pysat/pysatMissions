@@ -2,6 +2,7 @@
 handles the default pysat functions for simulated instruments
 """
 
+import os
 import pandas as pds
 import pysat
 
@@ -22,3 +23,19 @@ def _download(date_array, tag, sat_id, data_path=None):
     """ Data is simulated so no download routine is possible. Simple pass
     function"""
     pass
+
+
+def _get_times(fnames, sat_id):
+    # grab date from filename
+    parts = os.path.split(fnames[0])[-1].split('-')
+    yr = int(parts[0])
+    month = int(parts[1])
+    day = int(parts[2][0:2])
+    date = pysat.datetime(yr, month, day)
+
+    # create timing at 1 Hz (for 1 day)
+    num = 86399 if sat_id == '' else int(sat_id)
+    times = pds.date_range(start=date, end=date+pds.DateOffset(seconds=num),
+                           freq='1S')
+
+    return times
