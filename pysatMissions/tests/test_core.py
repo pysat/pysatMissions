@@ -1,4 +1,4 @@
-import pysatMissionPlanning
+import pysatMissions
 import pysat
 
 
@@ -7,7 +7,7 @@ class TestBasic():
     """
 
     def setup(self):
-        self.module = pysatMissionPlanning.instruments.pysat_sgp4
+        self.module = pysatMissions.instruments.pysat_sgp4
 
     def teardown(self):
         del self.module

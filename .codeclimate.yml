@@ -7,7 +7,7 @@ ratings:
   - "**.py"
 exclude_paths:
   - ".github/**/*"
-  - "pysatMissionPlanning/tests/**/*"
+  - "pysatMissions/tests/**/*"
   - "docs/**/*"
   - "setup.py"
   - ".*"

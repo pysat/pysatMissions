@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Basic test of the instrument objects in pysatMissionPlanning
+Basic test of the instrument objects in pysatMissions
 
 To be replaced once pysat testing techniques are finalized
 """
@@ -12,8 +12,8 @@ import pysat
 class TestSGP4():
     def setup(self):
         """Runs before every method to create a clean testing setup."""
-        from pysatMissionPlanning.instruments import pysat_sgp4
-        self.testInst = pysat.Instrument(inst_module=pysat_sgp4)
+        from pysatMissions.instruments import pysat_sgp4
+        self.testInst = pysat.Instrument(inst_module=pysat_sgp4, sat_id='101')
         self.targets1 = ['position_eci_x', 'position_eci_y', 'position_eci_z',
                          'velocity_eci_x', 'velocity_eci_y', 'velocity_eci_z']
         self.targets2 = []
@@ -24,6 +24,9 @@ class TestSGP4():
 
     def test_basic_instrument_load(self):
         """Checks if instrument loads proper data and metadata"""
+        # Check if instrument is instrument
+        assert isinstance(self.testInst, pysat._instrument.Instrument)
+
         self.testInst.load(date=pysat.datetime(2018, 1, 1))
         # Check for completeness of first set of targets
         for target in self.targets1:
@@ -49,8 +52,9 @@ class TestEphem(TestSGP4):
         """Runs before every method to create a clean testing setup."""
         # NOTE: aacgm not checked here because undefined near the equator
         # TODO: add check for aacgm values
-        from pysatMissionPlanning.instruments import pysat_ephem
-        self.testInst = pysat.Instrument(inst_module=pysat_ephem)
+        from pysatMissions.instruments import pysat_ephem
+        self.testInst = pysat.Instrument(inst_module=pysat_ephem, tag='all',
+                                         sat_id='100')
         self.targets1 = ['glong', 'glat', 'alt', 'obs_sat_slant_range',
                          'obs_sat_az_angle', 'obs_sat_el_angle',
                          'position_ecef_x', 'position_ecef_y', 'position_ecef_z',

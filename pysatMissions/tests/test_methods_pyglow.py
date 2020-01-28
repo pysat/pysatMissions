@@ -3,7 +3,7 @@
 
 import numpy as np
 import pysat
-from pysatMissionPlanning.methods import pyglow as methglow
+from pysatMissions.methods import pyglow as mm_glow
 
 
 def add_altitude(inst, altitude=400.0):
@@ -25,7 +25,7 @@ class TestBasics():
 
     def test_add_iri_thermal_plasma(self):
         """Test adding thermal plasma data to test inst"""
-        self.testInst.custom.add(methglow.add_iri_thermal_plasma, 'modify',
+        self.testInst.custom.add(mm_glow.add_iri_thermal_plasma, 'modify',
                                  glat_label='latitude',
                                  glong_label='longitude',
                                  alt_label='altitude')
@@ -41,7 +41,7 @@ class TestBasics():
 
     def test_add_igrf(self):
         """Test adding igrf model to test inst"""
-        self.testInst.custom.add(methglow.add_igrf, 'modify',
+        self.testInst.custom.add(mm_glow.add_igrf, 'modify',
                                  glat_label='latitude',
                                  glong_label='longitude',
                                  alt_label='altitude')
@@ -57,7 +57,7 @@ class TestBasics():
 
     def test_add_msis(self):
         """Test adding msis model to test inst"""
-        self.testInst.custom.add(methglow.add_msis, 'modify',
+        self.testInst.custom.add(mm_glow.add_msis, 'modify',
                                  glat_label='latitude',
                                  glong_label='longitude',
                                  alt_label='altitude')

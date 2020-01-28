@@ -2,7 +2,7 @@
 Introduction
 ============
 
-pysatMissionPlanning allows users to run build simulated satellites for TLE info and add empirical data. It includes the pysat_sgp4 and pysat_ephem instrument modules which can be imported into pysat.
+pysatMissions allows users to run build simulated satellites for TLE info and add empirical data. It includes the pysat_sgp4 and pysat_ephem instrument modules which can be imported into pysat.
 
 Main Features
 -------------
@@ -12,4 +12,4 @@ Main Features
 - Import magnetic coordinates through aacgmv2
 - Import geomagnetic basis vectors through pysatMagVect
 
-This document covers installation, a tutorial on pysatMissionPlanning including demonstration code, and an API reference.
+This document covers installation, a tutorial on pysatMissions including demonstration code, and an API reference.

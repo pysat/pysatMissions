@@ -12,12 +12,12 @@ from setuptools import setup, find_packages
 here = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(here, 'description.txt'), encoding='utf-8') as f:
     long_description = f.read()
-version_filename = os.path.join('pysatMissionPlanning', 'version.txt')
+version_filename = os.path.join('pysatMissions', 'version.txt')
 with codecs.open(os.path.join(here, version_filename)) as version_file:
     version = version_file.read().strip()
 
 # change setup.py for readthedocs - commented for now
-# on_rtd = os.environ.get('READTHEpysatMissionPlanningDOCS') == 'True'
+# on_rtd = os.environ.get('READTHEpysatMissionsDOCS') == 'True'
 
 install_requires = ['pysat', 'sgp4', 'pyEphem', 'matplotlib',
                     'apexpy', 'aacgmv2', 'pysatMagVect']
@@ -25,9 +25,9 @@ install_requires = ['pysat', 'sgp4', 'pyEphem', 'matplotlib',
 
 # Run setup
 
-setup(name='pysatMissionPlanning',
+setup(name='pysatMissions',
       version=version,
-      url='https://github.com/pysat/pysatMissionPlanning',
+      url='https://github.com/pysat/pysatMissions',
       author='Russell Stoneback, Jeff Klenzing',
       author_email='rstoneba@utdallas.edu',
       description='Mission Planning toolkit for pysat',

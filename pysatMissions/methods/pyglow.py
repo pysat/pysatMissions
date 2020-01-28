@@ -18,7 +18,7 @@ import pysatMagVect
 # TODO add checks for ECEF and import rest of changes here
 pyglow_warning = ' '.join(['pyglow must be installed to use this',
                            'function.  See instructions at',
-                           'https://github.com/pysat/pysatMissionPlanning'])
+                           'https://github.com/pysat/pysatMissions'])
 
 
 def add_iri_thermal_plasma(inst, glat_label='glat', glong_label='glong',
@@ -423,7 +423,7 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
 
 def project_hwm_onto_sc(inst):
 
-    import pysatMissionPlanning.methods.spacecraft as methatt
+    import pysatMissions.methods.spacecraft as mm_sc
 
     def get_wind_comp(inst, direction='x'):
         unit_zon = 'unit_zonal_wind_ecef_' + direction
@@ -444,9 +444,9 @@ def project_hwm_onto_sc(inst):
     inst['total_wind_y'] = get_wind_comp(inst, direction='y')
     inst['total_wind_z'] = get_wind_comp(inst, direction='z')
 
-    methatt.project_ecef_vector_onto_sc(inst, 'total_wind_x', 'total_wind_y',
-                                        'total_wind_z', 'sim_wind_sc_x',
-                                        'sim_wind_sc_y', 'sim_wind_sc_z')
+    mm_sc.project_ecef_vector_onto_sc(inst, 'total_wind_x', 'total_wind_y',
+                                      'total_wind_z', 'sim_wind_sc_x',
+                                      'sim_wind_sc_y', 'sim_wind_sc_z')
 
     inst.meta['sim_wind_sc_x'] = get_wind_meta('x')
     inst.meta['sim_wind_sc_y'] = get_wind_meta('y')

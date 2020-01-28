@@ -2,9 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 import os
-from pysatMissionPlanning import instruments
-from pysatMissionPlanning import methods
-from pysatMissionPlanning import plot
+from pysatMissions import instruments
+from pysatMissions import methods
+from pysatMissions import plot
 
 __all__ = ['instruments', 'methods', 'plot']
 

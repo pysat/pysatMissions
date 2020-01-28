@@ -1,10 +1,12 @@
+os: linux
 language: python
 dist: xenial
-matrix:
+jobs:
   include:
     - python: 3.5
     - python: 3.6
     - python: 3.7
+    - python: 3.8
 
 services: xvfb
 addons:
@@ -16,7 +18,7 @@ before_install:
   - pip install pytest-cov
   - pip install coveralls
   - pip install future
-  # Install version specific packages for 2.7 and 3.5
+  # Install version specific packages for 3.5
   - pip install 'pandas<0.25'
   - pip install xarray
   - pip install matplotlib
@@ -42,7 +44,7 @@ before_install:
   - cd ./pyglow
   - make -C src/pyglow/models source >/dev/null
   - python setup.py install >/dev/null
-  - cd ../pysatMissionPlanning
+  - cd ../pysatMissions
 
 install:
   - python setup.py install
@@ -52,7 +54,7 @@ before_script:
   - export DISPLAY=:99.0
 
 script:
-  - pytest -vs --cov=pysatMissionPlanning/
+  - pytest -vs --cov=pysatMissions/
 
 after_success:
   - coveralls

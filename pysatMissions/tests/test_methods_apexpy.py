@@ -3,7 +3,7 @@
 
 import numpy as np
 import pysat
-import pysatMissionPlanning.methods.apexpy as methapex
+import pysatMissions.methods.apexpy as mm_apex
 
 
 def add_altitude(inst, altitude=400.0):
@@ -25,7 +25,7 @@ class TestBasics():
 
     def test_add_quasi_dipole_coordinates(self):
         """Test adding thermal plasma data to test inst"""
-        self.testInst.custom.add(methapex.add_quasi_dipole_coordinates,
+        self.testInst.custom.add(mm_apex.add_quasi_dipole_coordinates,
                                  'modify',
                                  glat_label='latitude',
                                  glong_label='longitude',
