@@ -10,7 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added support for readthedocs
 - Updates to testing environment
 - Split pysat_sgp4 into pysat_sgp4 and pysat_ephem to allow different propagators
-- Replaced basemap with cartopy for python 3.x compatibility
+- Removed basemap
 - Added numeric strings as options for sat_id
 - Bugs
   - Fixed wrong metadata name for mlt in apexpy
