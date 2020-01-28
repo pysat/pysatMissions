@@ -13,7 +13,6 @@ addons:
   apt:
     packages:
     - gfortran
-    - proj-bin
 
 before_install:
   - pip install pytest-cov
@@ -23,7 +22,6 @@ before_install:
   - pip install 'pandas<0.25'
   - pip install xarray
   - pip install matplotlib
-  - pip install cartopy
   - pip install apexpy
 
   # Prepare modified pysat install

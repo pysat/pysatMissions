@@ -12,8 +12,6 @@ def plot_simulated_data(inst, filename=None):
     import matplotlib
     import matplotlib.pyplot as plt
     import matplotlib.gridspec as gridspec
-    import cartopy.crs as ccrs
-    from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 
     if filename is None:
         out_fname = './summary_orbit_simulated_data.png'
@@ -88,35 +86,12 @@ def plot_simulated_data(inst, filename=None):
     # # xlabels = [label[0:6] for label in xlabels]
     plt.setp(ax4.xaxis.get_majorticklabels(), rotation=20, ha='right')
 
-    # do world plot if time to be plotted is less than 285 minutes, less than
-    # 3 orbits
-    time_diff = inst.data.index[-1] - inst.data.index[0]
-    if time_diff > pds.Timedelta(minutes=285):
-        ax6 = f.add_subplot(gs[4, 0])
-        # do long time plot
-        inst['glat'].plot(label='glat')
-        inst['mlt'].plot(label='mlt')
-        plt.title('Satellite Position')
-        plt.legend(['mlat', 'mlt'], loc=(1.01, 0.15))
-
-    else:
-
-        # make map the same size as the other plots
-        ax6 = f.add_subplot(gs[4, 0],
-                            projection=ccrs.PlateCarree(central_longitude=180))
-        s1pos = plt.get(ax, 'position').bounds
-        s6pos = plt.get(ax6, 'position').bounds
-        ax6.set_position([s1pos[0], s6pos[1]+.008, s1pos[2], s1pos[3]])
-
-        ax6.set_global()
-        ax6.coastlines()
-        ax6.set_xticks([0, 60, 120, 180, 240, 300, 360], crs=ccrs.PlateCarree())
-        ax6.set_yticks([-90, -60, -30, 0, 30, 60, 90], crs=ccrs.PlateCarree())
-        lon_formatter = LongitudeFormatter(zero_direction_label=True)
-        lat_formatter = LatitudeFormatter()
-        ax6.xaxis.set_major_formatter(lon_formatter)
-        ax6.yaxis.set_major_formatter(lat_formatter)
-        ax6.plot(inst['glong'].values, inst['glat'].values)
+    f.add_subplot(gs[4, 0])
+    # do long time plot
+    inst['glat'].plot(label='glat')
+    inst['mlt'].plot(label='mlt')
+    plt.title('Satellite Position')
+    plt.legend(['mlat', 'mlt'], loc=(1.01, 0.15))
 
     f.tight_layout()
     # buffer for overall title
