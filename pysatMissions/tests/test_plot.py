@@ -1,5 +1,5 @@
 import pysat
-from pysatMissions import plot as plt
+from pysatMissions import plot as mplt
 
 
 class TestPlot():
@@ -20,6 +20,6 @@ class TestPlot():
     def test_plot_simulated_data(self):
         """Try running the plot to see if warning or errors are generated"""
 
-        plt.plot_simulated_data(self.testInst)
+        mplt.plot_simulated_data(self.testInst)
 
         assert True
