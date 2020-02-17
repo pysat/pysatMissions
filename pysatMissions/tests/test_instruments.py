@@ -13,7 +13,7 @@ class TestSGP4():
     def setup(self):
         """Runs before every method to create a clean testing setup."""
         from pysatMissions.instruments import pysat_sgp4
-        self.testInst = pysat.Instrument(inst_module=pysat_sgp4, sat_id='101')
+        self.testInst = pysat.Instrument(inst_module=pysat_sgp4, sat_id='100')
         self.targets1 = ['position_eci_x', 'position_eci_y', 'position_eci_z',
                          'velocity_eci_x', 'velocity_eci_y', 'velocity_eci_z']
         self.targets2 = []

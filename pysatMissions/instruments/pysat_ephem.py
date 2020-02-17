@@ -10,7 +10,6 @@ satellite is in.
 from __future__ import print_function
 from __future__ import absolute_import
 
-import os
 import functools
 import numpy as np
 import pandas as pds
@@ -83,13 +82,18 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     tag : string
         Identifies a particular subset of satellite data
     sat_id : string
-        Satellite ID
+        Instrument satellite ID (accepts '' or a number (i.e., '10'), which
+        specifies the number of seconds to simulate the satellite)
+        (default = '')
     obs_long: float
         Longitude of the observer on the Earth's surface
+        (default = 0.)
     obs_lat: float
         Latitude of the observer on the Earth's surface
+        (default = 0.)
     obs_alt: float
         Altitude of the observer on the Earth's surface
+        (default = 0.)
     TLE1 : string
         First string for Two Line Element. Must be in TLE format
     TLE2 : string
@@ -119,21 +123,8 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     if TLE2 is not None:
         line2 = TLE2
 
-    # grab date from filename
-    parts = os.path.split(fnames[0])[-1].split('-')
-    yr = int(parts[0])
-    month = int(parts[1])
-    day = int(parts[2][0:2])
-    date = pysat.datetime(yr, month, day)
-
-    # create timing at 1 Hz (for 1 day)
-    times = pds.date_range(start=date, end=date+pds.DateOffset(seconds=86399),
-                           freq='1S')
-    # reduce requirements if on testing server
-    # TODO Remove this when testing resources are higher
-    on_travis = os.environ.get('ONTRAVIS') == 'True'
-    if on_travis:
-        times = times[0:100]
+    # Extract list of times from filenames and sat_id
+    times = mcore._get_times(fnames, sat_id)
 
     # the observer's (ground station) position on the Earth surface
     site = ephem.Observer()
