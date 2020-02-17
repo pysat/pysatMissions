@@ -21,14 +21,8 @@ before_install:
   - pip install pytest-cov
   - pip install coveralls
   - pip install future
-  # Install version specific packages
-  - pip install pandas
-  - pip install xarray
-  - pip install matplotlib
-  - pip install apexpy
 
   # Prepare modified pysat install
-  - pip install numpy
   - cd ..
   - echo 'cloning pysat'
   - git clone https://github.com/pysat/pysat.git >/dev/null
