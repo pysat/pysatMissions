@@ -21,6 +21,7 @@ before_install:
   - pip install pytest-cov
   - pip install coveralls
   - pip install future
+  - pip install apexpy
 
   # Prepare modified pysat install
   - cd ..
@@ -28,7 +29,6 @@ before_install:
   - git clone https://github.com/pysat/pysat.git >/dev/null
   - echo 'installing pysat'
   - cd ./pysat
-  - git checkout develop-3
   # set up data directory
   - mkdir /home/travis/build/pysatData
   # install pysat
