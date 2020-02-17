@@ -3,7 +3,6 @@ language: python
 dist: xenial
 jobs:
   include:
-    - python: 3.5
     - python: 3.6
     - python: 3.7
     - python: 3.8
@@ -18,8 +17,8 @@ before_install:
   - pip install pytest-cov
   - pip install coveralls
   - pip install future
-  # Install version specific packages for 3.5
-  - pip install 'pandas<0.25'
+  # Install version specific packages
+  - pip install pandas
   - pip install xarray
   - pip install matplotlib
   - pip install apexpy
@@ -31,6 +30,7 @@ before_install:
   - git clone https://github.com/pysat/pysat.git >/dev/null
   - echo 'installing pysat'
   - cd ./pysat
+  - git checkout develop-3
   # set up data directory
   - mkdir /home/travis/build/pysatData
   # install pysat
