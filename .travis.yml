@@ -5,7 +5,7 @@ jobs:
   include:
     - name: Minimum NEP 029 versions
       python: 3.6
-      env: NUMPY=1.15
+      env: NUMPY_VERSION=1.15
     # Versions with latest numpy
     - python: 3.6
     - python: 3.7
@@ -18,6 +18,7 @@ addons:
     - gfortran
 
 before_install:
+  - pip install -q numpy=$NUMPY_VERSION
   - pip install pytest-cov
   - pip install coveralls
   - pip install future
