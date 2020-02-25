@@ -1,6 +1,10 @@
 # Save as .codeclimate.yml (note leading .) in project root directory
-engines:
+plugins:
   radon:
+    enabled: true
+  pep8:
+    enabled: true
+  sonar-python:
     enabled: true
 ratings:
   paths:

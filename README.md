@@ -4,11 +4,11 @@
 </div>
 
 # pysatMissions
-[![Build Status](https://travis-ci.org/pysat/pysatMissions.svg?branch=master)](https://travis-ci.org/pysat/pysatMissions)
 [![Documentation Status](https://readthedocs.org/projects/pysatMissions/badge/?version=latest)](http://pysatMissions.readthedocs.io/en/latest/?badge=latest)
-[![Coverage Status](https://coveralls.io/repos/github/pysat/pysatMissions/badge.svg?branch=master)](https://coveralls.io/github/pysat/pysatMissions?branch=master)
 [![DOI](https://zenodo.org/badge/209358908.svg)](https://zenodo.org/badge/latestdoi/209358908)
 
+[![Build Status](https://travis-ci.org/pysat/pysatMissions.svg?branch=master)](https://travis-ci.org/pysat/pysatMissions)
+[![Coverage Status](https://coveralls.io/repos/github/pysat/pysatMissions/badge.svg?branch=master)](https://coveralls.io/github/pysat/pysatMissions?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f795422173ac04203b24/maintainability)](https://codeclimate.com/github/pysat/pysatMissions/maintainability)
 
 pysatMissions allows users to run build simulated satellites for TLE info and add empirical data.  It includes the pysat_ephem and pysat_sgp4 instrument modules which can be imported into pysat.
