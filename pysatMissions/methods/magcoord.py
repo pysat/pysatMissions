@@ -1,4 +1,4 @@
-"""Provides default routines for projecting aacgmv2 model values onto locations
+"""Provides default routines for projecting aacgmv2 and apexpy model values onto locations
 from pysat instruments.
 
 """
