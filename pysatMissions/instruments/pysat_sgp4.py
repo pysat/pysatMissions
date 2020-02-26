@@ -13,7 +13,7 @@ import os
 import pandas as pds
 import pysat
 
-import pysatMissions.instruments._core as mcore
+from pysatMissions.instruments import _core as mcore
 
 # pysat required parameters
 platform = 'pysat'

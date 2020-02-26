@@ -17,7 +17,7 @@ import pandas as pds
 import pysat
 import pysatMagVect
 
-import pysatMissions.instruments._core as mcore
+from pysatMissions.instruments import _core as mcore
 import pysatMissions.methods.aacgmv2 as mm_aacgm
 import pysatMissions.methods.apexpy as mm_apex
 import pysatMissions.methods.pyglow as mm_glow
