@@ -12,8 +12,10 @@ try:
     from pyglow.pyglow import Point
 except ImportError:
     pass
-
 import pysatMagVect
+
+import pysatMissions.methods.spacecraft as mm_sc
+
 
 # TODO add checks for ECEF and import rest of changes here
 pyglow_warning = ' '.join(['pyglow must be installed to use this',
@@ -30,16 +32,10 @@ def add_iri_thermal_plasma(inst, glat_label='glat', glong_label='glong',
     Uses pyglow module to run IRI. Configured to use actual solar parameters
     to run model.
 
-    Example
-    -------
-        # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_iri_thermal_plasma, 'modify',
-        glat_label='custom_label')
-
     Parameters
     ----------
     inst : pysat.Instrument
-        Designed with pysat_sgp4 in mind
+        instrument object including lat, lon, and alt as timeseries
     glat_label : string
         label used in inst to identify WGS84 geodetic latitude (degrees)
     glong_label : string
@@ -58,6 +54,12 @@ def add_iri_thermal_plasma(inst, glat_label='glat', glong_label='glong',
         'ion_dens' for the total ion density (O+ and H+)
         'frac_dens_o' for the fraction of total density that is O+
         'frac_dens_h' for the fraction of total density that is H+
+
+    Example
+    -------
+        # function added velow modifies the inst object upon every inst.load
+        call inst.custom.add(add_iri_thermal_plasma, 'modify',
+        glat_label='custom_label')
 
     """
 
@@ -111,15 +113,10 @@ def add_igrf(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
     Uses pyglow module to run IGRF. Configured to use actual solar parameters
     to run model.
 
-    Example
-    -------
-        # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_igrf, 'modify', glat_label='custom_label')
-
     Parameters
     ----------
     inst : pysat.Instrument
-        Designed with pysat_sgp4 in mind
+        instrument object including lat, lon, and alt as timeseries
     glat_label : string
         label used in inst to identify WGS84 geodetic latitude (degrees)
     glong_label : string
@@ -141,6 +138,11 @@ def add_igrf(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
         'B_ecef_x' Geomagnetic field component along ECEF x
         'B_ecef_y' Geomagnetic field component along ECEF y
         'B_ecef_z' Geomagnetic field component along ECEF z
+
+    Example
+    -------
+        # function added velow modifies the inst object upon every inst.load
+        call inst.custom.add(add_igrf, 'modify', glat_label='custom_label')
 
     """
 
@@ -208,15 +210,10 @@ def add_msis(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
     Uses pyglow module to run MSIS. Configured to use actual solar parameters
     to run model.
 
-    Example
-    -------
-        # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_msis, 'modify', glat_label='custom_label')
-
     Parameters
     ----------
     inst : pysat.Instrument
-        Designed with pysat_sgp4 in mind
+        instrument object including lat, lon, and alt as timeseries
     glat_label : string
         label used in inst to identify WGS84 geodetic latitude (degrees)
     glong_label : string
@@ -235,6 +232,11 @@ def add_msis(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
         'Nn_O' Oxygen number density (particles/cm^3)
         'Nn_O2' O2 number density (particles/cm^3)
         'Tn_msis' Temperature from MSIS (Kelvin)
+
+    Example
+    -------
+        # function added velow modifies the inst object upon every inst.load
+        call inst.custom.add(add_msis, 'modify', glat_label='custom_label')
 
     """
 
@@ -304,16 +306,10 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
     Uses pyglow module to run HWM. Configured to use actual solar parameters
     to run model.
 
-    Example
-    -------
-        # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_hwm_winds_and_ecef_vectors, 'modify',
-        glat_label='custom_label')
-
     Parameters
     ----------
     inst : pysat.Instrument
-        Designed with pysat_sgp4 in mind
+        instrument object including lat, lon, and alt as timeseries
     glat_label : string
         label used in inst to identify WGS84 geodetic latitude (degrees)
     glong_label : string
@@ -334,6 +330,12 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
                 in the ECEF basis
         'sim_inst_wind_*' (*=x,y,z) is the projection of the total wind
                 vector onto s/c basis
+
+    Example
+    -------
+        # function added velow modifies the inst object upon every inst.load
+        call inst.custom.add(add_hwm_winds_and_ecef_vectors, 'modify',
+        glat_label='custom_label')
 
     """
 
@@ -422,8 +424,26 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
 
 
 def project_hwm_onto_sc(inst):
+    """
+    Projects the modeled wind onto the spacecraft coordinates.
 
-    import pysatMissions.methods.spacecraft as mm_sc
+    Parameters
+    ----------
+    inst : pysat.Instrument
+        instrument object including unit vectors in ecef coords
+
+    Returns
+    -------
+    inst
+        Input pysat.Instrument object modified to include neutral wind
+        parameters.
+
+    Example
+    -------
+        # function added velow modifies the inst object upon every inst.load
+        call inst.custom.add(project_hwm_onto_sc, 'modify')
+
+    """
 
     def get_wind_comp(inst, direction='x'):
         unit_zon = 'unit_zonal_wind_ecef_' + direction

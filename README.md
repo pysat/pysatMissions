@@ -11,13 +11,13 @@
 [![Coverage Status](https://coveralls.io/repos/github/pysat/pysatMissions/badge.svg?branch=master)](https://coveralls.io/github/pysat/pysatMissions?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/83011911691b9d2076e9/maintainability)](https://codeclimate.com/github/pysat/pysatMissions/maintainability)
 
-pysatMissions allows users to run build simulated satellites for TLE info and add empirical data.  It includes the pysat_ephem and pysat_sgp4 instrument modules which can be imported into pysat.
+pysatMissions allows users to run build simulated satellites for Two-Line Elements (TLE) and add empirical data.  It includes the pysat_ephem and pysat_sgp4 instrument modules which can be imported into pysat.
 
 Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
-- Import ionosphere and thermosphere values through pyglow
-- Import coordinates through apexpy
+- Import ionosphere and thermosphere model values through pyglow
+- Import magnetic coordinates through apexpy
 - Import magnetic coordinates through aacgmv2
 - Import geomagnetic basis vectors through pysatMagVect
 

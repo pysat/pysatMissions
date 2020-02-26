@@ -1,5 +1,5 @@
 """
-handles the default pysat functions for simulated instruments
+Handles the default pysat functions for simulated instruments
 """
 
 import os

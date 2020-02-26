@@ -15,15 +15,6 @@ def add_sc_attitude_vectors(inst):
     generally nadir pointing (positive towards Earth), and y completes the
     right handed system (generally southward).
 
-    Notes
-    -----
-        Expects velocity and position of spacecraft in Earth Centered
-        Earth Fixed (ECEF) coordinates to be in the instrument object
-        and named velocity_ecef_* (*=x,y,z) and position_ecef_* (*=x,y,z)
-
-        Adds attitude vectors for spacecraft in the ECEF basis by calculating
-        the scalar product of each attitude vector with each component of ECEF.
-
     Parameters
     ----------
     inst : pysat.Instrument
@@ -37,6 +28,15 @@ def add_sc_attitude_vectors(inst):
         sc_(x,y,z)hat_ecef_(x,y,z).
         sc_xhat_ecef_x is the spacecraft unit vector along x (positive along
         velocity vector) reported in ECEF, ECEF x-component.
+
+    Notes
+    -----
+        Expects velocity and position of spacecraft in Earth Centered
+        Earth Fixed (ECEF) coordinates to be in the instrument object
+        and named velocity_ecef_* (*=x,y,z) and position_ecef_* (*=x,y,z)
+
+        Adds attitude vectors for spacecraft in the ECEF basis by calculating
+        the scalar product of each attitude vector with each component of ECEF.
 
     """
 

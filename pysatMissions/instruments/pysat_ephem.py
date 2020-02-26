@@ -9,12 +9,19 @@ satellite is in.
 
 from __future__ import print_function
 from __future__ import absolute_import
-
 import functools
 import numpy as np
+
+import ephem
 import pandas as pds
 import pysat
-from pysatMissions.instruments import _core as mcore
+import pysatMagVect
+
+import pysatMissions.instruments._core as mcore
+import pysatMissions.methods.aacgmv2 as mm_aacgm
+import pysatMissions.methods.apexpy as mm_apex
+import pysatMissions.methods.pyglow as mm_glow
+import pysatMissions.methods.spacecraft as mm_sc
 
 # pysat required parameters
 platform = 'pysat'
@@ -38,10 +45,6 @@ def init(self):
     Horiontal Wind Model (HWM).
 
     """
-    import pysatMissions.methods.aacgmv2 as mm_aacgm
-    import pysatMissions.methods.apexpy as mm_apex
-    import pysatMissions.methods.pyglow as mm_glow
-    import pysatMissions.methods.spacecraft as mm_sc
 
     self.custom.add(mm_apex.add_quasi_dipole_coordinates, 'modify')
     self.custom.add(mm_aacgm.add_aacgm_coordinates, 'modify')
@@ -99,6 +102,13 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     TLE2 : string
         Second string for Two Line Element. Must be in TLE format
 
+    Returns
+    -------
+    data : (pandas.DataFrame)
+        Object containing satellite data
+    meta : (pysat.Meta)
+        Object containing metadata such as column names and units
+
     Example
     -------
       inst = pysat.Instrument('pysat', 'sgp4',
@@ -107,9 +117,6 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
       inst.load(2018, 1)
 
     """
-
-    import ephem
-    import pysatMagVect
 
     # TLEs (Two Line Elements for ISS)
     # format of TLEs is fixed and available from wikipedia...
@@ -135,9 +142,9 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     # The first parameter in readtle() is the satellite name
     sat = ephem.readtle('pysat', line1, line2)
     output_params = []
-    for time in times:
+    for timestep in times:
         lp = {}
-        site.date = time
+        site.date = timestep
         sat.compute(site)
         # parameters relative to the ground station
         lp['obs_sat_az_angle'] = ephem.degrees(sat.az)

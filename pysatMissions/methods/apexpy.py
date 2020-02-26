@@ -3,6 +3,8 @@ from pysat instruments.
 
 """
 
+import apexpy
+
 
 def add_quasi_dipole_coordinates(inst, glat_label='glat', glong_label='glong',
                                  alt_label='alt'):
@@ -15,16 +17,10 @@ def add_quasi_dipole_coordinates(inst, glat_label='glat', glong_label='glong',
 
     This system is preferred over AACGM near the equator for LEO satellites.
 
-    Example
-    -------
-        # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_quasi_dipole_coordinates, 'modify',
-        glat_label='custom_label')
-
     Parameters
     ----------
     inst : pysat.Instrument
-        Designed with pysat_sgp4 in mind
+        instrument object including lat, lon, and alt as timeseries
     glat_label : string
         label used in inst to identify WGS84 geodetic latitude (degrees)
     glong_label : string
@@ -39,10 +35,14 @@ def add_quasi_dipole_coordinates(inst, glat_label='glat', glong_label='glong',
         Input pysat.Instrument object modified to include quasi-dipole
         coordinates, 'qd_lat' for magnetic latitude, 'qd_long' for longitude,
         and 'mlt' for magnetic local time.
+    Example
+    -------
+        # function added velow modifies the inst object upon every inst.load
+        call inst.custom.add(add_quasi_dipole_coordinates, 'modify',
+        glat_label='custom_label')
 
     """
 
-    import apexpy
     ap = apexpy.Apex(date=inst.date)
 
     qd_lat = []

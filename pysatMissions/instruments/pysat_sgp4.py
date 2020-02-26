@@ -7,12 +7,13 @@ Two Line Elements (TLEs) and SGP4.
 
 from __future__ import print_function
 from __future__ import absolute_import
-
-import os
 import functools
+import os
+
 import pandas as pds
 import pysat
-from pysatMissions.instruments import _core as mcore
+
+import pysatMissions.instruments._core as mcore
 
 # pysat required parameters
 platform = 'pysat'
@@ -30,6 +31,8 @@ def init(self):
     This routine is run once, and only once, upon instantiation.
 
     """
+
+    pass
 
 
 def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
@@ -63,6 +66,13 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         First string for Two Line Element. Must be in TLE format
     TLE2 : string
         Second string for Two Line Element. Must be in TLE format
+
+    Returns
+    -------
+    data : (pandas.DataFrame)
+        Object containing satellite data
+    meta : (pysat.Meta)
+        Object containing metadata such as column names and units
 
     Example
     -------
@@ -100,10 +110,11 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     # create list to hold satellite position, velocity
     position = []
     velocity = []
-    for time in times:
+    for timestep in times:
         # orbit propagator - computes x,y,z position and velocity
-        pos, vel = satellite.propagate(time.year, time.month, time.day,
-                                       time.hour, time.minute, time.second)
+        pos, vel = satellite.propagate(timestep.year, timestep.month,
+                                       timestep.day, timestep.hour,
+                                       timestep.minute, timestep.second)
         position.extend(pos)
         velocity.extend(vel)
 
