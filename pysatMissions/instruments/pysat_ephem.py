@@ -18,10 +18,10 @@ import pysat
 import pysatMagVect
 
 from pysatMissions.instruments import _core as mcore
-import pysatMissions.methods.aacgmv2 as mm_aacgm
-import pysatMissions.methods.apexpy as mm_apex
-import pysatMissions.methods.pyglow as mm_glow
-import pysatMissions.methods.spacecraft as mm_sc
+from pysatMissions.methods import aacgmv2 as mm_aacgm
+from pysatMissions.methods import apexpy as mm_apex
+from pysatMissions.methods import pyglow as mm_glow
+from pysatMissions.methods import spacecraft as mm_sc
 
 # pysat required parameters
 platform = 'pysat'
