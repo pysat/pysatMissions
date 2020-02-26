@@ -68,10 +68,10 @@ The methods that run empirical models can also be exported to any pysat instrume
 
 ```
 import pysat
-import pysatMissions.methods.pyglow as mm_glow
+import pysatMissions.methods.empirical as mm_emp
 
 ivm = pysat.Instrument(platform='cnofs', name='ivm')
-ivm.custom.add(mm_glow.add_iri_thermal_plasma, 'modify', glat_label='glat',
+ivm.custom.add(mm_emp.add_iri_thermal_plasma, 'modify', glat_label='glat',
                glong_label='glon', alt_label='altitude')
 ```
 Once the custom function is added, the model will automatically be run when the dataset is loaded.
