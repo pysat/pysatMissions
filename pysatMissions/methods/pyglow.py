@@ -14,7 +14,7 @@ except ImportError:
     pass
 import pysatMagVect
 
-import pysatMissions.methods.spacecraft as mm_sc
+from pysatMissions.methods import spacecraft as mm_sc
 
 
 # TODO add checks for ECEF and import rest of changes here
