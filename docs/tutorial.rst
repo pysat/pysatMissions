@@ -41,3 +41,5 @@ A number of methods are included to invoke several python wrappers for empirical
   ivm.custom.add(empirical.add_iri_thermal_plasma, 'modify', 'end', glat_label='glat', glong_label='glon', alt_label='altitude')
 
 Note that in this case, the latitude, longitude, and altitude variable names of the instrument must be specified since they are not identical to the default names in the function.
+
+Note that in pysat 3.0.0 the API will change from `custom.add` to `custom.attach`.
