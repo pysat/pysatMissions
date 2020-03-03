@@ -37,7 +37,7 @@ before_install:
   # set up data directory
   - mkdir /home/travis/build/pysatData
   # install pysat
-  - git checkout develop
+  - git checkout develop-3
   - python setup.py install >/dev/null
 
   # install pyglow, space science models

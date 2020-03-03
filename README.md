@@ -71,7 +71,7 @@ import pysat
 from pysatMissions.methods import empirical
 
 ivm = pysat.Instrument(platform='cnofs', name='ivm')
-ivm.custom.add(empirical.add_iri_thermal_plasma, 'modify',
+ivm.custom.attach(empirical.add_iri_thermal_plasma, 'modify',
                glat_label='glat',
                glong_label='glon', alt_label='altitude')
 ```

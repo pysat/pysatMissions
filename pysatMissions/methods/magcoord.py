@@ -38,7 +38,7 @@ def add_aacgm_coordinates(inst, glat_label='glat', glong_label='glong',
     Example
     -------
         # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_quasi_dipole_coordinates, 'modify',
+        call inst.custom.attach(add_quasi_dipole_coordinates, 'modify',
         glat_label='custom_label')
 
     """
@@ -100,7 +100,7 @@ def add_quasi_dipole_coordinates(inst, glat_label='glat', glong_label='glong',
     Example
     -------
         # function added velow modifies the inst object upon every inst.load
-        call inst.custom.add(add_quasi_dipole_coordinates, 'modify',
+        call inst.custom.attach(add_quasi_dipole_coordinates, 'modify',
         glat_label='custom_label')
 
     """
