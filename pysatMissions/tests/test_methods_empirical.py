@@ -17,6 +17,7 @@ class TestBasics():
         """Runs before every method to create a clean testing setup."""
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
                                          sat_id='100', clean_level='clean')
+        # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.add(add_altitude, 'modify')
 
     def teardown(self):
@@ -25,6 +26,7 @@ class TestBasics():
 
     def test_add_iri_thermal_plasma(self):
         """Test adding thermal plasma data to test inst"""
+        # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.add(mm_emp.add_iri_thermal_plasma, 'modify',
                                  glat_label='latitude',
                                  glong_label='longitude',
@@ -41,6 +43,7 @@ class TestBasics():
 
     def test_add_igrf(self):
         """Test adding igrf model to test inst"""
+        # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.add(mm_emp.add_igrf, 'modify',
                                  glat_label='latitude',
                                  glong_label='longitude',
@@ -57,6 +60,7 @@ class TestBasics():
 
     def test_add_msis(self):
         """Test adding msis model to test inst"""
+        # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.add(mm_emp.add_msis, 'modify',
                                  glat_label='latitude',
                                  glong_label='longitude',

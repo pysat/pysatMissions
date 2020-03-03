@@ -45,6 +45,7 @@ def init(self):
 
     """
 
+    # TODO: Update to custom.attach with release of pysat 3.0.0
     self.custom.add(mm_magcoord.add_quasi_dipole_coordinates, 'modify')
     self.custom.add(mm_magcoord.add_aacgm_coordinates, 'modify')
     self.custom.add(mm_sc.calculate_ecef_velocity, 'modify')

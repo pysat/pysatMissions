@@ -31,6 +31,7 @@ class TestBasics():
         """Runs before every method to create a clean testing setup."""
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
                                          sat_id='9', clean_level='clean')
+        # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.add(add_eci, 'modify')
 
     def teardown(self):
@@ -54,6 +55,7 @@ class TestBasics():
 
     def test_add_sc_attitude_vectors(self):
         # TODO: check if calculations are correct
+        # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.add(mm_sc.calculate_ecef_velocity, 'modify')
         self.testInst.custom.add(mm_sc.add_sc_attitude_vectors, 'modify')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
@@ -72,6 +74,7 @@ class TestBasics():
 
     def test_project_ecef_vector_onto_sc(self):
         # TODO: check if calculations are correct
+        # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.add(mm_sc.calculate_ecef_velocity, 'modify')
         self.testInst.custom.add(mm_sc.add_sc_attitude_vectors, 'modify')
         self.testInst.custom.add(add_fake_data, 'modify')
