@@ -19,9 +19,9 @@ addons:
 
 before_install:
   - if [ -z ${NUMPY_VER} ]; then
-      echo 'Using latest numpy'; 
-    else 
-      pip install -q numpy==$NUMPY_VER; 
+      echo 'Using latest numpy';
+    else
+      pip install -q numpy==$NUMPY_VER;
     fi
   - pip install pytest-cov
   - pip install coveralls
@@ -37,7 +37,7 @@ before_install:
   # set up data directory
   - mkdir /home/travis/build/pysatData
   # install pysat
-  - git checkout develop-3
+  - git checkout develop
   - python setup.py install >/dev/null
 
   # install pyglow, space science models
