@@ -8,9 +8,7 @@ Two Line Elements (TLEs) and SGP4.
 from __future__ import print_function
 from __future__ import absolute_import
 import functools
-import os
 
-import pandas as pds
 import pysat
 
 from pysatMissions.instruments import _core as mcore

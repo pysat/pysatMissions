@@ -78,8 +78,9 @@ class TestBasics():
         self.testInst.custom.attach(mm_sc.calculate_ecef_velocity, 'modify')
         self.testInst.custom.attach(mm_sc.add_ram_pointing_sc_attitude_vectors, 'modify')
         self.testInst.custom.attach(add_fake_data, 'modify')
-        self.testInst.custom.attach(mm_sc.project_ecef_vector_onto_sc, 'modify',
-                                 'end', 'ax', 'ay', 'az', 'bx', 'by', 'bz')
+        self.testInst.custom.attach(mm_sc.project_ecef_vector_onto_sc,
+                                    'modify', 'end', 'ax', 'ay', 'az', 'bx',
+                                    'by', 'bz')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
         targets = ['bx', 'by', 'bz']
         for target in targets:
