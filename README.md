@@ -17,8 +17,7 @@ Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
 - Import ionosphere and thermosphere model values through pyglow
-- Import magnetic coordinates through apexpy
-- Import magnetic coordinates through aacgmv2
+- Import magnetic coordinates through apexpy and aacgmv2
 - Import geomagnetic basis vectors through pysatMagVect
 
 Documentation
