@@ -19,9 +19,9 @@ addons:
 
 before_install:
   - if [ -z ${NUMPY_VER} ]; then
-      echo 'Using latest numpy'; 
-    else 
-      pip install -q numpy==$NUMPY_VER; 
+      echo 'Using latest numpy';
+    else
+      pip install -q numpy==$NUMPY_VER;
     fi
   - pip install pytest-cov
   - pip install coveralls

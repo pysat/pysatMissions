@@ -18,9 +18,8 @@ import pysat
 import pysatMagVect
 
 from pysatMissions.instruments import _core as mcore
-from pysatMissions.methods import aacgmv2 as mm_aacgm
-from pysatMissions.methods import apexpy as mm_apex
-from pysatMissions.methods import pyglow as mm_glow
+from pysatMissions.methods import magcoord as mm_magcoord
+from pysatMissions.methods import empirical as mm_emp
 from pysatMissions.methods import spacecraft as mm_sc
 
 # pysat required parameters
@@ -46,28 +45,29 @@ def init(self):
 
     """
 
-    self.custom.add(mm_apex.add_quasi_dipole_coordinates, 'modify')
-    self.custom.add(mm_aacgm.add_aacgm_coordinates, 'modify')
-    self.custom.add(mm_sc.calculate_ecef_velocity, 'modify')
-    self.custom.add(mm_sc.add_sc_attitude_vectors, 'modify')
+    # TODO: Update to custom.attach with release of pysat 3.0.0
+    self.custom.attach(mm_magcoord.add_quasi_dipole_coordinates, 'modify')
+    self.custom.attach(mm_magcoord.add_aacgm_coordinates, 'modify')
+    self.custom.attach(mm_sc.calculate_ecef_velocity, 'modify')
+    self.custom.attach(mm_sc.add_sc_attitude_vectors, 'modify')
     # project simulated vectors onto s/c basis
     # IGRF
-    self.custom.add(mm_glow.add_igrf, 'modify')
+    self.custom.attach(mm_emp.add_igrf, 'modify')
     # create metadata to be added along with vector projection
     in_meta = {'desc': 'IGRF geomagnetic field expressed in the s/c basis.',
                'units': 'nT'}
     # project IGRF
-    self.custom.add(mm_sc.project_ecef_vector_onto_sc, 'modify', 'end',
+    self.custom.attach(mm_sc.project_ecef_vector_onto_sc, 'modify', 'end',
                     'B_ecef_x', 'B_ecef_y', 'B_ecef_z', 'B_sc_x', 'B_sc_y',
                     'B_sc_z', meta=[in_meta.copy(), in_meta.copy(),
                                     in_meta.copy()])
     # Thermal Ion Parameters
-    self.custom.add(mm_glow.add_iri_thermal_plasma, 'modify')
+    self.custom.attach(mm_emp.add_iri_thermal_plasma, 'modify')
     # Thermal Neutral parameters
-    self.custom.add(mm_glow.add_msis, 'modify')
-    self.custom.add(mm_glow.add_hwm_winds_and_ecef_vectors, 'modify')
+    self.custom.attach(mm_emp.add_msis, 'modify')
+    self.custom.attach(mm_emp.add_hwm_winds_and_ecef_vectors, 'modify')
     # project total wind vector
-    self.custom.add(mm_glow.project_hwm_onto_sc, 'modify')
+    self.custom.attach(mm_emp.project_hwm_onto_sc, 'modify')
 
 
 def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,

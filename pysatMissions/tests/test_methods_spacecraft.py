@@ -31,7 +31,8 @@ class TestBasics():
         """Runs before every method to create a clean testing setup."""
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
                                          sat_id='9', clean_level='clean')
-        self.testInst.custom.add(add_eci, 'modify')
+        # TODO: Update to custom.attach with release of pysat 3.0.0
+        self.testInst.custom.attach(add_eci, 'modify')
 
     def teardown(self):
         """Clean up test environment after tests"""
@@ -39,7 +40,7 @@ class TestBasics():
 
     def test_calculate_ecef_velocity(self):
         # TODO: check if calculations are correct
-        self.testInst.custom.add(mm_sc.calculate_ecef_velocity, 'modify')
+        self.testInst.custom.attach(mm_sc.calculate_ecef_velocity, 'modify')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
         targets = ['velocity_ecef_x', 'velocity_ecef_y', 'velocity_ecef_z']
         for target in targets:
@@ -54,8 +55,9 @@ class TestBasics():
 
     def test_add_sc_attitude_vectors(self):
         # TODO: check if calculations are correct
-        self.testInst.custom.add(mm_sc.calculate_ecef_velocity, 'modify')
-        self.testInst.custom.add(mm_sc.add_sc_attitude_vectors, 'modify')
+        # TODO: Update to custom.attach with release of pysat 3.0.0
+        self.testInst.custom.attach(mm_sc.calculate_ecef_velocity, 'modify')
+        self.testInst.custom.attach(mm_sc.add_sc_attitude_vectors, 'modify')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
         targets = ['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z',
                    'sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z',
@@ -72,10 +74,11 @@ class TestBasics():
 
     def test_project_ecef_vector_onto_sc(self):
         # TODO: check if calculations are correct
-        self.testInst.custom.add(mm_sc.calculate_ecef_velocity, 'modify')
-        self.testInst.custom.add(mm_sc.add_sc_attitude_vectors, 'modify')
-        self.testInst.custom.add(add_fake_data, 'modify')
-        self.testInst.custom.add(mm_sc.project_ecef_vector_onto_sc, 'modify',
+        # TODO: Update to custom.attach with release of pysat 3.0.0
+        self.testInst.custom.attach(mm_sc.calculate_ecef_velocity, 'modify')
+        self.testInst.custom.attach(mm_sc.add_sc_attitude_vectors, 'modify')
+        self.testInst.custom.attach(add_fake_data, 'modify')
+        self.testInst.custom.attach(mm_sc.project_ecef_vector_onto_sc, 'modify',
                                  'end', 'ax', 'ay', 'az', 'bx', 'by', 'bz')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
         targets = ['bx', 'by', 'bz']

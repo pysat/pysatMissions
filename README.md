@@ -38,16 +38,27 @@ into the terminal.
 Or, if you prefer to work directly from github, checkout the repository:
 
 ```
-  git clone https://github.com/pysat/pysatMissions.git
+git clone https://github.com/pysat/pysatMissions.git
 ```
 
 Change directories into the repository folder and run the setup.py file.  For
 a local install use the "--user" flag after "install".
 
 ```
-  cd pysatMissions/
-  python setup.py install
+cd pysatMissions/
+python setup.py install
 ```
+
+Note: pre-1.0.0 version
+------------------
+pysatMissions is currently in an initial development phase.  Much of the API is being built off of the upcoming pysat 3.0.0 software in order to streamline the usage and test coverage.  This version of pysat is planned for release later this year.  Currently, you can access the develop version of this through github:
+```
+git clone https://github.com/pysat/pysat.git
+cd pysat
+git checkout develop-3
+python setup.py install
+```
+It should be noted that this is a working branch and is subject to change.
 
 A note on empirical models
 --------------------------
@@ -68,10 +79,11 @@ The methods that run empirical models can also be exported to any pysat instrume
 
 ```
 import pysat
-import pysatMissions.methods.pyglow as mm_glow
+from pysatMissions.methods import empirical
 
 ivm = pysat.Instrument(platform='cnofs', name='ivm')
-ivm.custom.add(mm_glow.add_iri_thermal_plasma, 'modify', glat_label='glat',
+ivm.custom.attach(empirical.add_iri_thermal_plasma, 'modify',
+               glat_label='glat',
                glong_label='glon', alt_label='altitude')
 ```
 Once the custom function is added, the model will automatically be run when the dataset is loaded.
