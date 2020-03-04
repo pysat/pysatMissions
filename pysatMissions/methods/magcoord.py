@@ -97,6 +97,7 @@ def add_quasi_dipole_coordinates(inst, glat_label='glat', glong_label='glong',
         Input pysat.Instrument object modified to include quasi-dipole
         coordinates, 'qd_lat' for magnetic latitude, 'qd_long' for longitude,
         and 'mlt' for magnetic local time.
+
     Example
     -------
         # function added velow modifies the inst object upon every inst.load
