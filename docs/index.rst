@@ -1,7 +1,7 @@
 .. pysatMissions documentation master file
 
 Welcome to pysatMissions's documentation!
-=================================
+=========================================
 
 .. toctree::
    :maxdepth: 2

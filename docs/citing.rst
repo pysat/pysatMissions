@@ -39,4 +39,8 @@ Citing the publication:
     year      = {2018}
   }
 
-To aid in scientific reproducibility, please include the version number in publications that use this code.  This can be found by invoking `pysatMissions.__version__ `.
+To aid in scientific reproducibility, please include the version number in publications that use this code.  This can be found by invoking
+
+.. code::
+
+  pysatMissions.__version__
