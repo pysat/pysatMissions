@@ -11,3 +11,4 @@ Welcome to pysatMissions's documentation!
    tutorial.rst
    contributing.rst
    citing.rst
+   references.rst
