@@ -7,7 +7,7 @@ import numpy as np
 import pysatMagVect
 
 
-def add_sc_attitude_vectors(inst):
+def add_ram_pointing_sc_attitude_vectors(inst):
     """
     Add attitude vectors for spacecraft assuming ram pointing.
 
