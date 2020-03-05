@@ -14,8 +14,8 @@
 #
 import os
 import sys
-from pysatMissions import __version__
 sys.path.insert(0, os.path.abspath('..'))
+from pysatMissions import __version__
 
 # -- Project information -----------------------------------------------------
 
