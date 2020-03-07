@@ -1,0 +1,21 @@
+# Save as .codeclimate.yml (note leading .) in project root directory
+plugins:
+  radon:
+    enabled: true
+  pep8:
+    enabled: true
+  sonar-python:
+    enabled: true
+ratings:
+  paths:
+  - "**.py"
+exclude_paths:
+  - ".github/**/*"
+  - "pysatMissions/tests/**/*"
+  - "docs/**/*"
+  - "setup.py"
+  - ".*"
+  - "*.md"
+  - "*.in"
+  - "*.txt"
+  - "*.png"

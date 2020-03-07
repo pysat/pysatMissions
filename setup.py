@@ -12,22 +12,22 @@ from setuptools import setup, find_packages
 here = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(here, 'description.txt'), encoding='utf-8') as f:
     long_description = f.read()
-version_filename = os.path.join('pysatMissionPlanning', 'version.txt')
+version_filename = os.path.join('pysatMissions', 'version.txt')
 with codecs.open(os.path.join(here, version_filename)) as version_file:
     version = version_file.read().strip()
 
 # change setup.py for readthedocs - commented for now
-# on_rtd = os.environ.get('READTHEpysatMissionPlanningDOCS') == 'True'
+# on_rtd = os.environ.get('READTHEpysatMissionsDOCS') == 'True'
 
-install_requires = ['pysat', 'sgp4', 'pyEphem', 'matplotlib',
-                    'apexpy', 'aacgmv2', 'pysatMagVect', 'pyglow']
+install_requires = ['pysat', 'numpy', 'pandas', 'sgp4', 'pyEphem',
+                    'matplotlib', 'apexpy', 'aacgmv2', 'pysatMagVect']
 
 
 # Run setup
 
-setup(name='pysatMissionPlanning',
+setup(name='pysatMissions',
       version=version,
-      url='https://github.com/pysat/pysatMissionPlanning',
+      url='https://github.com/pysat/pysatMissions',
       author='Russell Stoneback, Jeff Klenzing',
       author_email='rstoneba@utdallas.edu',
       description='Mission Planning toolkit for pysat',
@@ -42,10 +42,9 @@ setup(name='pysatMissionPlanning',
           "Intended Audience :: Science/Research",
           "License :: OSI Approved :: BSD License",
           "Natural Language :: English",
-          "Programming Language :: Python :: 2.7",
-          "Programming Language :: Python :: 3.5",
           "Programming Language :: Python :: 3.6",
           "Programming Language :: Python :: 3.7",
+          "Programming Language :: Python :: 3.8",
           "Operating System :: MacOS :: MacOS X",
       ],
       include_package_data=True,

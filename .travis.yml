@@ -1,11 +1,15 @@
+os: linux
 language: python
 dist: xenial
-matrix:
+jobs:
   include:
-    - python: 2.7
-    - python: 3.5
+    - name: Minimum NEP 029 versions
+      python: 3.6
+      env: NUMPY_VER=1.15
+    # Versions with latest numpy
     - python: 3.6
     - python: 3.7
+    - python: 3.8
 
 services: xvfb
 addons:
@@ -14,26 +18,26 @@ addons:
     - gfortran
 
 before_install:
+  - if [ -z ${NUMPY_VER} ]; then
+      echo 'Using latest numpy';
+    else
+      pip install -q numpy==$NUMPY_VER;
+    fi
   - pip install pytest-cov
   - pip install coveralls
   - pip install future
-  # Install version specific packages for 2.7 and 3.5
-  - pip install 'pandas<0.25'
-  - pip install xarray
-  - pip install matplotlib
   - pip install apexpy
 
   # Prepare modified pysat install
-  - pip install numpy
   - cd ..
   - echo 'cloning pysat'
   - git clone https://github.com/pysat/pysat.git >/dev/null
   - echo 'installing pysat'
   - cd ./pysat
-  - git checkout develop
   # set up data directory
   - mkdir /home/travis/build/pysatData
   # install pysat
+  - git checkout develop-3
   - python setup.py install >/dev/null
 
   # install pyglow, space science models
@@ -44,7 +48,7 @@ before_install:
   - cd ./pyglow
   - make -C src/pyglow/models source >/dev/null
   - python setup.py install >/dev/null
-  - cd ../pysatMissionPlanning
+  - cd ../pysatMissions
 
 install:
   - python setup.py install
@@ -52,13 +56,9 @@ install:
 before_script:
   # set up display screen
   - export DISPLAY=:99.0
-  - if [[ $TRAVIS_PYTHON_VERSION < "3.0" ]]; then
-      sh -e /etc/init.d/xvfb start;
-      sleep 3;
-    fi
 
 script:
-  - pytest -vs --cov=pysatMissionPlanning/
+  - pytest -vs --cov=pysatMissions/
 
 after_success:
   - coveralls

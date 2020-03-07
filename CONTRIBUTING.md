@@ -2,18 +2,18 @@ Contributing
 ============
 
 Bug reports, feature suggestions and other contributions are greatly
-appreciated!  pysatMissionPlanning is a community-driven project and welcomes both feedback and contributions.
+appreciated!  pysatMissions is a community-driven project and welcomes both feedback and contributions.
 
 Short version
-=============
+-------------
 
-* Submit bug reports and feature requests at `GitHub <https://github.com/pysat/pysatMissionPlanning/issues>`_
+* Submit bug reports and feature requests at `GitHub <https://github.com/pysat/pysatMissions/issues>`_
 * Make pull requests to the ``develop`` branch
 
 Bug reports
-===========
+-----------
 
-When `reporting a bug <https://github.com/pysat/pysatMissionPlanning/issues>`_ please
+When `reporting a bug <https://github.com/pysat/pysatMissions/issues>`_ please
 include:
 
 * Your operating system name and version
@@ -21,10 +21,10 @@ include:
 * Detailed steps to reproduce the bug
 
 Feature requests and feedback
-=============================
+-----------------------------
 
 The best way to send feedback is to file an issue at
-`GitHub <https://github.com/pysat/pysatMissionPlanning/issues>`_.
+`GitHub <https://github.com/pysat/pysatMissions/issues>`_.
 
 If you are proposing a feature:
 
@@ -34,14 +34,14 @@ If you are proposing a feature:
   are welcome :)
 
 Development
-===========
+-----------
 
-To set up `pysatMissionPlanning` for local development:
+To set up `pysatMissions` for local development:
 
-1. `Fork pysat on GitHub <https://github.com/pysat/pysatMissionPlanning/fork>`_.
+1. `Fork pysat on GitHub <https://github.com/pysat/pysatMissions/fork>`_.
 2. Clone your fork locally::
 
-    git clone git@github.com:your_name_here/pysatMissionPlanning.git
+    git clone git@github.com:your_name_here/pysatMissions.git
 
 3. Create a branch for local development::
 
@@ -49,7 +49,7 @@ To set up `pysatMissionPlanning` for local development:
 
    Now you can make your changes locally. Tests for new instruments are
    performed automatically.  Tests for custom functions should be added to the
-   appropriately named file in ``pysatMissionPlanning/tests``.  For example, the averaging routines in avg.py are tested in ``pysatMissionPlanning/tests/test_avg.py``.  If no
+   appropriately named file in ``pysatMissions/tests``.  For example, the averaging routines in avg.py are tested in ``pysatMissions/tests/test_avg.py``.  If no
    test file exists, then you should create one.  This testing uses pytest, which
    will run tests on any python file in the test directory that starts with
    ``test_``.
@@ -80,7 +80,7 @@ For merging, you should:
 
 1. Include an example for use
 2. Add a note to ``CHANGELOG.md`` about the changes
-3. Ensure that all checks passed (current checks include Scrutinizer, Travis-CI,
+3. Ensure that all checks passed (current checks include Travis-CI
    and Coveralls) [1]_
 
 .. [1] If you don't have all the necessary Python versions available locally or
