@@ -398,7 +398,7 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
                                                          coord=coord),
                 'desc': ' '.join(['{coord:s}-value of {name:s} wind unit',
                                   'vector in ECEF coordinates']
-                                  ).format(name=name.lower(),coord=coord)}
+                                 ).format(name=name.lower(), coord=coord)}
         return dict
 
     inst.meta['zonal_wind'] = {'units': 'm/s',
