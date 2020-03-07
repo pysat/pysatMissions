@@ -393,9 +393,9 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
         else:
             name = 'Zonal'
         dict = {'units': '',
-                'long_name': ''.join(['{name:s} Wind Unit ECEF {coord:s}',
-                                      '-vector']).format(name=name,
-                                                         coord=coord),
+                'long_name': ' '.join(['{name:s} Wind Unit ECEF',
+                                       '{coord:s}-vector']
+                                      ).format(name=name, coord=coord),
                 'desc': ' '.join(['{coord:s}-value of {name:s} wind unit',
                                   'vector in ECEF coordinates']
                                  ).format(name=name.lower(), coord=coord)}
