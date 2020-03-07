@@ -50,4 +50,4 @@ Naval Research Laboratory Mass Spectrometer Incoherent Scatter radar Exobase (NR
 
 ----
 
-`pysatMagVect <https://github.com/rstoneback/OMMBV>`_ calculates Orthogonal Multipole Magnetic Basis Vectors for the earth's magentic field.  pysatMagVect is being renamed OMMBV.
+`pysatMagVect <https://github.com/rstoneback/OMMBV>`_ calculates Orthogonal Multipole Magnetic Basis Vectors for the earth's magnetic field.  pysatMagVect is being renamed OMMBV.
