@@ -67,8 +67,8 @@ def add_iri_thermal_plasma(inst, glat_label='glat', glong_label='glong',
     try:
         for time, lat, lon, alt in zip(inst.data.index, inst[glat_label],
                                        inst[glong_label], inst[alt_label]):
-            # Point class is instantiated. Its parameters are a function of time
-            # and spatial location
+            # Point class is instantiated. Its parameters are a function of
+            # time and spatial location
             pt = Point(time, lat, lon, alt)
             pt.run_iri()
             iri = {}
@@ -393,12 +393,12 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
         else:
             name = 'Zonal'
         dict = {'units': '',
-                'long_name': ' '.join(['{name:s} Wind Unit ECEF',
-                                       '{coord:s}-vector']).format(name=name,
-                                                                   coord=coord),
-                'desc': ' '.join(['{coord:s}-value of {name:s} wind unit vector',
-                                  'in ECEF coordinates']).format(name=name.lower(),
-                                                                 coord=coord)}
+                'long_name': ''.join(['{name:s} Wind Unit ECEF {coord:s}',
+                                      '-vector']).format(name=name,
+                                                         coord=coord),
+                'desc': ' '.join(['{coord:s}-value of {name:s} wind unit',
+                                  'vector in ECEF coordinates']
+                                  ).format(name=name.lower(),coord=coord)}
         return dict
 
     inst.meta['zonal_wind'] = {'units': 'm/s',
