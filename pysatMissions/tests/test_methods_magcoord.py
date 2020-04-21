@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Test some of the aacgmv2 method functions
 
+import datetime as dt
 import numpy as np
 import pysat
 import pysatMissions.methods.magcoord as mm_magcoord
@@ -32,7 +33,7 @@ class TestBasics():
                                  glat_label='latitude',
                                  glong_label='longitude',
                                  alt_label='altitude')
-        self.testInst.load(date=pysat.datetime(2009, 1, 1))
+        self.testInst.load(date=dt.datetime(2009, 1, 1))
         targets = ['aacgm_lat', 'aacgm_long', 'aacgm_mlt']
         for target in targets:
             # Check if data is added
@@ -49,7 +50,7 @@ class TestBasics():
                                  glat_label='latitude',
                                  glong_label='longitude',
                                  alt_label='altitude')
-        self.testInst.load(date=pysat.datetime(2009, 1, 1))
+        self.testInst.load(date=dt.datetime(2009, 1, 1))
         targets = ['qd_lat', 'qd_long', 'mlt']
         for target in targets:
             # Check if data is added

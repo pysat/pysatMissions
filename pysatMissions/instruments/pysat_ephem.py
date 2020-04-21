@@ -9,6 +9,7 @@ satellite is in.
 
 from __future__ import print_function
 from __future__ import absolute_import
+import datetime as dt
 import functools
 import numpy as np
 
@@ -29,7 +30,7 @@ name = 'ephem'
 tags = {'': 'Satellite simulation data set'}
 # dictionary of satellite IDs, list of corresponding tags
 sat_ids = {'': ['']}
-_test_dates = {'': {'': pysat.datetime(2018, 1, 1)}}
+_test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 
 def init(self):

@@ -2,6 +2,7 @@
 Handles the default pysat functions for simulated instruments
 """
 
+import datetime as dt
 import os
 import pandas as pds
 import pysat
@@ -10,8 +11,8 @@ import pysat
 def _list_files(tag=None, sat_id=None, data_path=None, format_str=None):
     """Produce a fake list of files spanning a year"""
 
-    index = pds.date_range(pysat.datetime(2017, 12, 1),
-                           pysat.datetime(2018, 12, 1))
+    index = pds.date_range(dt.datetime(2017, 12, 1),
+                           dt.datetime(2018, 12, 1))
     # file list is effectively just the date in string format - '%D' works
     # only in Mac. '%x' workins in both Windows and Mac
     names = [data_path + date.strftime('%Y-%m-%d') + '.nofile'
@@ -33,7 +34,7 @@ def _get_times(fnames, sat_id):
     yr = int(parts[0])
     month = int(parts[1])
     day = int(parts[2][0:2])
-    date = pysat.datetime(yr, month, day)
+    date = dt.datetime(yr, month, day)
 
     # create timing at 1 Hz (defaults to 1 day)
     # Allow numeric string to set number of time steps
