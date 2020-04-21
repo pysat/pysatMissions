@@ -170,17 +170,17 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     output = pds.DataFrame(output_params, index=times)
     # modify input object to include calculated parameters
     # put data into DataFrame
-    data = pysat.DataFrame({'glong': output['glong'],
-                            'glat': output['glat'],
-                            'alt': output['alt'],
-                            'position_ecef_x': output['x'],
-                            'position_ecef_y': output['y'],
-                            'position_ecef_z': output['z'],
-                            'obs_sat_az_angle': output['obs_sat_az_angle'],
-                            'obs_sat_el_angle': output['obs_sat_el_angle'],
-                            'obs_sat_slant_range':
-                            output['obs_sat_slant_range']},
-                           index=times)
+    data = pds.DataFrame({'glong': output['glong'],
+                          'glat': output['glat'],
+                          'alt': output['alt'],
+                          'position_ecef_x': output['x'],
+                          'position_ecef_y': output['y'],
+                          'position_ecef_z': output['z'],
+                          'obs_sat_az_angle': output['obs_sat_az_angle'],
+                          'obs_sat_el_angle': output['obs_sat_el_angle'],
+                          'obs_sat_slant_range':
+                          output['obs_sat_slant_range']},
+                         index=times)
     data.index.name = 'Epoch'
 
     return data, meta.copy()
