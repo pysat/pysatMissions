@@ -43,8 +43,6 @@ install:
   - pip install madrigalWeb
   - pip install PyForecastTools
   - pip install pysatCDF >/dev/null
-  # set up data directory
-  - mkdir /home/travis/build/pysatData
 
   # Prepare modified pysat install
   - cd ..
