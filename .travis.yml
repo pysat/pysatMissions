@@ -59,7 +59,7 @@ install:
   - mkdir /home/travis/build/pysatData
   # install pysat
   - git checkout develop-3
-  - python setup.py install >/dev/null
+  - python setup.py install
 
   # install pyglow, space science models
   - cd ..
