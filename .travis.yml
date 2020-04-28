@@ -46,7 +46,7 @@ install:
   - pip install sgp4
   - pip install PyForecastTools
   - pip install pytest-flake8
-  - pip install pysatCDF
+  - pip install pysatCDF >/dev/null
 
   # Prepare modified pysat install
   - cd ..
@@ -58,7 +58,7 @@ install:
   - mkdir /home/travis/build/pysatData
   # install pysat
   - git checkout develop-3
-  - python setup.py install
+  - python setup.py install >/dev/null
 
   # install pyglow, space science models
   - cd ..
@@ -70,8 +70,8 @@ install:
   - python setup.py install >/dev/null
 
   # Install pysatMagVect after pysat
-  - pip install pysatMagVect
-  
+  - pip install pysatMagVect >/dev/null
+
   # install pysatMissions
   - cd ../pysatMissions
   - python setup.py install
