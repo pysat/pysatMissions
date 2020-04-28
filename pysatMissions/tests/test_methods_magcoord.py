@@ -28,10 +28,10 @@ class TestBasics():
         """Test adding thermal plasma data to test inst"""
         # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.attach(mm_magcoord.add_aacgm_coordinates,
-                                 'modify',
-                                 glat_label='latitude',
-                                 glong_label='longitude',
-                                 alt_label='altitude')
+                                    'modify',
+                                    glat_label='latitude',
+                                    glong_label='longitude',
+                                    alt_label='altitude')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
         targets = ['aacgm_lat', 'aacgm_long', 'aacgm_mlt']
         for target in targets:
@@ -45,10 +45,10 @@ class TestBasics():
         """Test adding thermal plasma data to test inst"""
         # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.attach(mm_magcoord.add_quasi_dipole_coordinates,
-                                 'modify',
-                                 glat_label='latitude',
-                                 glong_label='longitude',
-                                 alt_label='altitude')
+                                    'modify',
+                                    glat_label='latitude',
+                                    glong_label='longitude',
+                                    alt_label='altitude')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
         targets = ['qd_lat', 'qd_long', 'mlt']
         for target in targets:

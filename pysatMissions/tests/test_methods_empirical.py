@@ -28,9 +28,9 @@ class TestBasics():
         """Test adding thermal plasma data to test inst"""
         # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.attach(mm_emp.add_iri_thermal_plasma, 'modify',
-                                 glat_label='latitude',
-                                 glong_label='longitude',
-                                 alt_label='altitude')
+                                    glat_label='latitude',
+                                    glong_label='longitude',
+                                    alt_label='altitude')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
         targets = ['e_temp', 'frac_dens_h', 'frac_dens_he', 'frac_dens_o',
                    'ion_dens', 'ion_temp']
@@ -45,9 +45,9 @@ class TestBasics():
         """Test adding igrf model to test inst"""
         # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.attach(mm_emp.add_igrf, 'modify',
-                                 glat_label='latitude',
-                                 glong_label='longitude',
-                                 alt_label='altitude')
+                                    glat_label='latitude',
+                                    glong_label='longitude',
+                                    alt_label='altitude')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
         targets = ['B', 'B_east', 'B_north', 'B_up', 'B_ecef_x', 'B_ecef_y',
                    'B_ecef_z']
@@ -62,9 +62,9 @@ class TestBasics():
         """Test adding msis model to test inst"""
         # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.attach(mm_emp.add_msis, 'modify',
-                                 glat_label='latitude',
-                                 glong_label='longitude',
-                                 alt_label='altitude')
+                                    glat_label='latitude',
+                                    glong_label='longitude',
+                                    alt_label='altitude')
         self.testInst.load(date=pysat.datetime(2009, 1, 1))
         targets = ['Nn', 'Nn_H', 'Nn_He', 'Nn_N', 'Nn_N2', 'Nn_O', 'Nn_O2',
                    'Nn_Ar', 'Tn_msis']
