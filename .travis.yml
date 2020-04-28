@@ -46,7 +46,6 @@ install:
   - pip install sgp4
   - pip install PyForecastTools
   - pip install pytest-flake8
-  - pip install pysatMagVect
   - pip install pysatCDF
 
   # Prepare modified pysat install
@@ -70,6 +69,9 @@ install:
   - make -C src/pyglow/models source >/dev/null
   - python setup.py install >/dev/null
 
+  # Install pysatMagVect after pysat
+  - pip install pysatMagVect
+  
   # install pysatMissions
   - cd ../pysatMissions
   - python setup.py install
