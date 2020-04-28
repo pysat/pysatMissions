@@ -46,8 +46,8 @@ install:
   - pip install sgp4
   - pip install PyForecastTools
   - pip install pytest-flake8
-  - pip install pysatMagVect >/dev/null
-  - pip install pysatCDF >/dev/null
+  - pip install pysatMagVect
+  - pip install pysatCDF
 
   # Prepare modified pysat install
   - cd ..
