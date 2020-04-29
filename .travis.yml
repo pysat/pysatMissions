@@ -81,7 +81,7 @@ before_script:
   - export DISPLAY=:99.0
 
 script:
-  - pytest -vs --cov=pysatMissions/ --flake8
+  - pytest -vs --cov=pysatMissions/
 
 after_success:
   - coveralls
