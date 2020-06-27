@@ -57,7 +57,7 @@ def init(self):
     in_meta = {'desc': 'IGRF geomagnetic field expressed in the s/c basis.',
                'units': 'nT'}
     # project IGRF
-    self.custom.attach(mm_sc.project_ecef_vector_onto_sc, 'modify', 'end',
+    self.custom.attach(mm_sc.project_ecef_vector_onto_sc,
                        args=['B_ecef_x', 'B_ecef_y', 'B_ecef_z', 'B_sc_x',
                              'B_sc_y', 'B_sc_z'],
                        kwargs={'meta': [in_meta.copy(), in_meta.copy(),
