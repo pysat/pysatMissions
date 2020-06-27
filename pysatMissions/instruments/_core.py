@@ -5,7 +5,6 @@ Handles the default pysat functions for simulated instruments
 import datetime as dt
 import os
 import pandas as pds
-import pysat
 
 
 def _list_files(tag=None, sat_id=None, data_path=None, format_str=None):
