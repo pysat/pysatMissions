@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Test some of the pyglow method functions
 
+import datetime as dt
 import numpy as np
 import pysat
 from pysatMissions.methods import empirical as mm_emp
@@ -22,7 +23,7 @@ class TestBasics():
                                     kwargs={'glat_label': 'latitude',
                                             'glong_label': 'longitude',
                                             'alt_label': 'altitude'})
-        self.testInst.load(date=pysat.datetime(2009, 1, 1))
+        self.testInst.load(date=dt.datetime(2009, 1, 1))
         targets = ['e_temp', 'frac_dens_h', 'frac_dens_he', 'frac_dens_o',
                    'ion_dens', 'ion_temp']
         for target in targets:
@@ -38,7 +39,7 @@ class TestBasics():
                                     kwargs={'glat_label': 'latitude',
                                             'glong_label': 'longitude',
                                             'alt_label': 'altitude'})
-        self.testInst.load(date=pysat.datetime(2009, 1, 1))
+        self.testInst.load(date=dt.datetime(2009, 1, 1))
         targets = ['B', 'B_east', 'B_north', 'B_up', 'B_ecef_x', 'B_ecef_y',
                    'B_ecef_z']
         for target in targets:
@@ -54,7 +55,7 @@ class TestBasics():
                                     kwargs={'glat_label': 'latitude',
                                             'glong_label': 'longitude',
                                             'alt_label': 'altitude'})
-        self.testInst.load(date=pysat.datetime(2009, 1, 1))
+        self.testInst.load(date=dt.datetime(2009, 1, 1))
         targets = ['Nn', 'Nn_H', 'Nn_He', 'Nn_N', 'Nn_N2', 'Nn_O', 'Nn_O2',
                    'Nn_Ar', 'Tn_msis']
         for target in targets:
