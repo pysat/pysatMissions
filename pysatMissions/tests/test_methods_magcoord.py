@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Test some of the aacgmv2 method functions
 
+import datetime as dt
 import numpy as np
 import pysat
 import pysatMissions.methods.magcoord as mm_magcoord

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Test some of the pyglow method functions
 
+import datetime as dt
 import numpy as np
 import pysat
 from pysatMissions.methods import empirical as mm_emp

@@ -7,7 +7,9 @@ Two Line Elements (TLEs) and SGP4.
 
 from __future__ import print_function
 from __future__ import absolute_import
+import datetime as dt
 import functools
+import pandas as pds
 
 import pysat
 
@@ -20,7 +22,7 @@ name = 'sgp4'
 tags = {'': 'Satellite simulation data set'}
 # dictionary of satellite IDs, list of corresponding tags
 sat_ids = {'': ['']}
-_test_dates = {'': {'': pysat.datetime(2018, 1, 1)}}
+_test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 
 def init(self):
@@ -117,13 +119,13 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         velocity.extend(vel)
 
     # put data into DataFrame
-    data = pysat.DataFrame({'position_eci_x': position[::3],
-                            'position_eci_y': position[1::3],
-                            'position_eci_z': position[2::3],
-                            'velocity_eci_x': velocity[::3],
-                            'velocity_eci_y': velocity[1::3],
-                            'velocity_eci_z': velocity[2::3]},
-                           index=times)
+    data = pds.DataFrame({'position_eci_x': position[::3],
+                          'position_eci_y': position[1::3],
+                          'position_eci_z': position[2::3],
+                          'velocity_eci_x': velocity[::3],
+                          'velocity_eci_y': velocity[1::3],
+                          'velocity_eci_z': velocity[2::3]},
+                         index=times)
     data.index.name = 'Epoch'
 
     # TODO: add call for GEI/ECEF translation here

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Test some of the spacecraft method functions
 
+import datetime as dt
 import numpy as np
 import pysat
 from pysatMissions.methods import spacecraft as mm_sc
@@ -41,7 +42,7 @@ class TestBasics():
     def test_calculate_ecef_velocity(self):
         # TODO: check if calculations are correct
         self.testInst.custom.attach(mm_sc.calculate_ecef_velocity, 'modify')
-        self.testInst.load(date=pysat.datetime(2009, 1, 1))
+        self.testInst.load(date=dt.datetime(2009, 1, 1))
         targets = ['velocity_ecef_x', 'velocity_ecef_y', 'velocity_ecef_z']
         for target in targets:
             # Check if data is added
@@ -58,7 +59,7 @@ class TestBasics():
         # TODO: Update to custom.attach with release of pysat 3.0.0
         self.testInst.custom.attach(mm_sc.calculate_ecef_velocity, 'modify')
         self.testInst.custom.attach(mm_sc.add_ram_pointing_sc_attitude_vectors, 'modify')
-        self.testInst.load(date=pysat.datetime(2009, 1, 1))
+        self.testInst.load(date=dt.datetime(2009, 1, 1))
         targets = ['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z',
                    'sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z',
                    'sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']
@@ -81,7 +82,7 @@ class TestBasics():
         self.testInst.custom.attach(mm_sc.project_ecef_vector_onto_sc,
                                     'modify', 'end', 'ax', 'ay', 'az', 'bx',
                                     'by', 'bz')
-        self.testInst.load(date=pysat.datetime(2009, 1, 1))
+        self.testInst.load(date=dt.datetime(2009, 1, 1))
         targets = ['bx', 'by', 'bz']
         for target in targets:
             # Check if data is added
