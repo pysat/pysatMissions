@@ -6,18 +6,11 @@ import pysat
 from pysatMissions.methods import empirical as mm_emp
 
 
-def add_altitude(inst, altitude=400.0):
-    """Add altitudes to pysat_testing instrument"""
-
-    inst['altitude'] = altitude*np.ones(inst.data.shape[0])
-
-
 class TestBasics():
     def setup(self):
         """Runs before every method to create a clean testing setup."""
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
                                          sat_id='100', clean_level='clean')
-        self.testInst.custom.attach(add_altitude)
 
     def teardown(self):
         """Clean up test environment after tests"""
