@@ -63,7 +63,7 @@ def init(self):
                        kwargs={'meta': [in_meta.copy(), in_meta.copy(),
                                         in_meta.copy()]})
     # Thermal Ion Parameters
-    # self.custom.attach(mm_emp.add_iri_thermal_plasma)
+    self.custom.attach(mm_emp.add_iri_thermal_plasma)
     # Thermal Neutral parameters
     self.custom.attach(mm_emp.add_msis)
     self.custom.attach(mm_emp.add_hwm_winds_and_ecef_vectors)
