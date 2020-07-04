@@ -70,7 +70,8 @@ def add_iri_thermal_plasma(inst, glat_label='glat', glong_label='glong',
             # Point class is instantiated. Its parameters are a function of
             # time and spatial location
             pt = Point(time, lat, lon, alt)
-            pt.run_iri()
+            # IRI-2016 currently experiencing bugs in pyglow
+            pt.run_iri(version=2012)
             iri = {}
             # After the model is run, its members like Ti, ni[O+], etc. can be
             # accessed
