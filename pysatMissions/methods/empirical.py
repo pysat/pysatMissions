@@ -58,8 +58,8 @@ def add_iri_thermal_plasma(inst, glat_label='glat', glong_label='glong',
     Example
     -------
         # function added velow modifies the inst object upon every inst.load
-        call inst.custom.attach(add_iri_thermal_plasma, 'modify',
-        glat_label='custom_label')
+        call inst.custom.attach(add_iri_thermal_plasma,
+        kwargs={'glat_label': 'custom_label'})
 
     """
 
@@ -70,7 +70,8 @@ def add_iri_thermal_plasma(inst, glat_label='glat', glong_label='glong',
             # Point class is instantiated. Its parameters are a function of
             # time and spatial location
             pt = Point(time, lat, lon, alt)
-            pt.run_iri()
+            # IRI-2016 currently experiencing bugs in pyglow
+            pt.run_iri(version=2012)
             iri = {}
             # After the model is run, its members like Ti, ni[O+], etc. can be
             # accessed
@@ -142,7 +143,7 @@ def add_igrf(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
     Example
     -------
         # function added velow modifies the inst object upon every inst.load
-        call inst.custom.attach(add_igrf, 'modify', glat_label='custom_label')
+        call inst.custom.attach(add_igrf, kwargs={'glat_label': 'custom_label'})
 
     """
 
@@ -236,7 +237,7 @@ def add_msis(inst, glat_label='glat', glong_label='glong', alt_label='alt'):
     Example
     -------
         # function added velow modifies the inst object upon every inst.load
-        call inst.custom.attach(add_msis, 'modify', glat_label='custom_label')
+        call inst.custom.attach(add_msis, kwargs={'glat_label': 'custom_label'})
 
     """
 
@@ -334,8 +335,8 @@ def add_hwm_winds_and_ecef_vectors(inst, glat_label='glat',
     Example
     -------
         # function added velow modifies the inst object upon every inst.load
-        call inst.custom.attach(add_hwm_winds_and_ecef_vectors, 'modify',
-        glat_label='custom_label')
+        call inst.custom.attach(add_hwm_winds_and_ecef_vectors,
+        kwargs={'glat_label': 'custom_label'})
 
     """
 
@@ -441,7 +442,7 @@ def project_hwm_onto_sc(inst):
     Example
     -------
         # function added velow modifies the inst object upon every inst.load
-        call inst.custom.attach(project_hwm_onto_sc, 'modify')
+        call inst.custom.attach(project_hwm_onto_sc)
 
     """
 
