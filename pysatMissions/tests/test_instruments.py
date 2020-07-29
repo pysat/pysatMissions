@@ -5,6 +5,7 @@ Basic test of the instrument objects in pysatMissions
 To be replaced once pysat testing techniques are finalized
 """
 
+import datetime as dt
 import numpy as np
 import pysat
 
@@ -27,7 +28,7 @@ class TestSGP4():
         # Check if instrument is instrument
         assert isinstance(self.testInst, pysat._instrument.Instrument)
 
-        self.testInst.load(date=pysat.datetime(2018, 1, 1))
+        self.testInst.load(date=dt.datetime(2018, 1, 1))
         # Check for completeness of first set of targets
         for target in self.targets1:
             # Check if data is added

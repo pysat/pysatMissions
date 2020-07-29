@@ -9,6 +9,7 @@ satellite is in.
 
 from __future__ import print_function
 from __future__ import absolute_import
+import datetime as dt
 import functools
 import numpy as np
 
@@ -29,7 +30,7 @@ name = 'ephem'
 tags = {'': 'Satellite simulation data set'}
 # dictionary of satellite IDs, list of corresponding tags
 sat_ids = {'': ['']}
-_test_dates = {'': {'': pysat.datetime(2018, 1, 1)}}
+_test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 
 def init(self):
@@ -45,29 +46,29 @@ def init(self):
 
     """
 
-    # TODO: Update to custom.attach with release of pysat 3.0.0
-    self.custom.attach(mm_magcoord.add_quasi_dipole_coordinates, 'modify')
-    self.custom.attach(mm_magcoord.add_aacgm_coordinates, 'modify')
-    self.custom.attach(mm_sc.calculate_ecef_velocity, 'modify')
-    self.custom.attach(mm_sc.add_ram_pointing_sc_attitude_vectors, 'modify')
+    self.custom.attach(mm_magcoord.add_quasi_dipole_coordinates)
+    self.custom.attach(mm_magcoord.add_aacgm_coordinates)
+    self.custom.attach(mm_sc.calculate_ecef_velocity)
+    self.custom.attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
     # project simulated vectors onto s/c basis
     # IGRF
-    self.custom.attach(mm_emp.add_igrf, 'modify')
+    self.custom.attach(mm_emp.add_igrf)
     # create metadata to be added along with vector projection
     in_meta = {'desc': 'IGRF geomagnetic field expressed in the s/c basis.',
                'units': 'nT'}
     # project IGRF
-    self.custom.attach(mm_sc.project_ecef_vector_onto_sc, 'modify', 'end',
-                       'B_ecef_x', 'B_ecef_y', 'B_ecef_z', 'B_sc_x', 'B_sc_y',
-                       'B_sc_z', meta=[in_meta.copy(), in_meta.copy(),
-                                       in_meta.copy()])
+    self.custom.attach(mm_sc.project_ecef_vector_onto_sc,
+                       args=['B_ecef_x', 'B_ecef_y', 'B_ecef_z', 'B_sc_x',
+                             'B_sc_y', 'B_sc_z'],
+                       kwargs={'meta': [in_meta.copy(), in_meta.copy(),
+                                        in_meta.copy()]})
     # Thermal Ion Parameters
-    self.custom.attach(mm_emp.add_iri_thermal_plasma, 'modify')
+    self.custom.attach(mm_emp.add_iri_thermal_plasma)
     # Thermal Neutral parameters
-    self.custom.attach(mm_emp.add_msis, 'modify')
-    self.custom.attach(mm_emp.add_hwm_winds_and_ecef_vectors, 'modify')
+    self.custom.attach(mm_emp.add_msis)
+    self.custom.attach(mm_emp.add_hwm_winds_and_ecef_vectors)
     # project total wind vector
-    self.custom.attach(mm_emp.project_hwm_onto_sc, 'modify')
+    self.custom.attach(mm_emp.project_hwm_onto_sc)
 
 
 def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
@@ -169,17 +170,17 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     output = pds.DataFrame(output_params, index=times)
     # modify input object to include calculated parameters
     # put data into DataFrame
-    data = pysat.DataFrame({'glong': output['glong'],
-                            'glat': output['glat'],
-                            'alt': output['alt'],
-                            'position_ecef_x': output['x'],
-                            'position_ecef_y': output['y'],
-                            'position_ecef_z': output['z'],
-                            'obs_sat_az_angle': output['obs_sat_az_angle'],
-                            'obs_sat_el_angle': output['obs_sat_el_angle'],
-                            'obs_sat_slant_range':
-                            output['obs_sat_slant_range']},
-                           index=times)
+    data = pds.DataFrame({'glong': output['glong'],
+                          'glat': output['glat'],
+                          'alt': output['alt'],
+                          'position_ecef_x': output['x'],
+                          'position_ecef_y': output['y'],
+                          'position_ecef_z': output['z'],
+                          'obs_sat_az_angle': output['obs_sat_az_angle'],
+                          'obs_sat_el_angle': output['obs_sat_el_angle'],
+                          'obs_sat_slant_range':
+                          output['obs_sat_slant_range']},
+                         index=times)
     data.index.name = 'Epoch'
 
     return data, meta.copy()

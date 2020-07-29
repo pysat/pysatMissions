@@ -1,4 +1,4 @@
-.. pysatMissions documentation master file
+.. pysatMissions documentation main file
 
 Welcome to pysatMissions's documentation!
 =========================================

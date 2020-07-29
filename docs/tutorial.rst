@@ -35,6 +35,9 @@ A number of methods are included to invoke several python wrappers for empirical
   from pysatMissions.methods import empirical
 
   ivm = pysat.Instrument(platform='cnofs', name='ivm')
-  ivm.custom.attach(empirical.add_iri_thermal_plasma, 'modify', 'end', glat_label='glat', glong_label='glon', alt_label='altitude')
+  ivm.custom.attach(empirical.add_iri_thermal_plasma,
+                    kwargs={'glat_label': 'glat',
+                            'glong_label': 'glon',
+                            'alt_label': 'altitude'})
 
 Note that in this case, the latitude, longitude, and altitude variable names of the instrument must be specified since they are not identical to the default names in the function.
