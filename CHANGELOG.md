@@ -2,11 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.2.1] - 2020-04-22
+## [0.2.1] - 2020-07-29
 - Use conda to manage Travis CI environment
 - Updated style to be compliant with pandas 2.0 and pysat 3.0
   - Import datetime from datetime
   - import DataFrame and Series from pandas rather than pysat
+- Rename default branch as `main`
 
 ## [0.2.0] - 2020-03-07
 - Renamed as pysatMissions
