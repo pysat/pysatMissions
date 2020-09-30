@@ -11,7 +11,7 @@ class TestBasics():
     def setup(self):
         """Runs before every method to create a clean testing setup."""
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
-                                         sat_id='100', clean_level='clean')
+                                         inst_id='100', clean_level='clean')
 
     def teardown(self):
         """Clean up test environment after tests"""
