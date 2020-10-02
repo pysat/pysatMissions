@@ -21,7 +21,7 @@ name = 'sgp4'
 # dictionary of data 'tags' and corresponding description
 tags = {'': 'Satellite simulation data set'}
 # dictionary of satellite IDs, list of corresponding tags
-sat_ids = {'': ['']}
+inst_ids = {'': ['']}
 _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 
@@ -35,7 +35,7 @@ def init(self):
     pass
 
 
-def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
+def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
          TLE1=None, TLE2=None):
     """
     Returns data and metadata in the format required by pysat. Generates
@@ -49,7 +49,7 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         File name that contains date in its name.
     tag : string
         Identifies a particular subset of satellite data
-    sat_id : string
+    inst_id : string
         Instrument satellite ID (accepts '' or a number (i.e., '10'), which
         specifies the number of seconds to simulate the satellite)
         (default = '')
@@ -104,8 +104,8 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     # according to module webpage, wgs72 is common
     satellite = twoline2rv(line1, line2, wgs72)
 
-    # Extract list of times from filenames and sat_id
-    times = mcore._get_times(fnames, sat_id)
+    # Extract list of times from filenames and inst_id
+    times = mcore._get_times(fnames, inst_id)
 
     # create list to hold satellite position, velocity
     position = []

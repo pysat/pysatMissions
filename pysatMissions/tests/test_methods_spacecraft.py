@@ -31,7 +31,7 @@ class TestBasics():
     def setup(self):
         """Runs before every method to create a clean testing setup."""
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
-                                         sat_id='9', clean_level='clean')
+                                         inst_id='9', clean_level='clean')
         self.testInst.custom.attach(add_eci)
 
     def teardown(self):

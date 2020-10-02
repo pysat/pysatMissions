@@ -11,7 +11,7 @@ class TestPlot():
 
         from pysatMissions.instruments import pysat_ephem
         self.testInst = pysat.Instrument(inst_module=pysat_ephem, tag='all',
-                                         sat_id='100')
+                                         inst_id='100')
         self.testInst.load(date=dt.datetime(2018, 1, 1))
 
     def teardown(self):

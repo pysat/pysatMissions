@@ -7,7 +7,7 @@ import os
 import pandas as pds
 
 
-def _list_files(tag=None, sat_id=None, data_path=None, format_str=None):
+def _list_files(tag=None, inst_id=None, data_path=None, format_str=None):
     """Produce a fake list of files spanning a year"""
 
     index = pds.date_range(dt.datetime(2017, 12, 1),
@@ -19,13 +19,13 @@ def _list_files(tag=None, sat_id=None, data_path=None, format_str=None):
     return pds.Series(names, index=index)
 
 
-def _download(date_array, tag, sat_id, data_path=None):
+def _download(date_array, tag, inst_id, data_path=None):
     """ Data is simulated so no download routine is possible. Simple pass
     function"""
     pass
 
 
-def _get_times(fnames, sat_id):
+def _get_times(fnames, inst_id):
     """Construct list of times for simulated instruments"""
 
     # grab date from filename
@@ -37,7 +37,7 @@ def _get_times(fnames, sat_id):
 
     # create timing at 1 Hz (defaults to 1 day)
     # Allow numeric string to set number of time steps
-    num = 86399 if sat_id == '' else int(sat_id)
+    num = 86399 if inst_id == '' else int(inst_id)
     times = pds.date_range(start=date, end=date+pds.DateOffset(seconds=num),
                            freq='1S')
 
