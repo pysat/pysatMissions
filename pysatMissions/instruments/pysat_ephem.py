@@ -49,16 +49,6 @@ def init(self):
     self.custom.attach(mm_magcoord.add_aacgm_coordinates)
     self.custom.attach(mm_sc.calculate_ecef_velocity)
     self.custom.attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
-    # project simulated vectors onto s/c basis
-    # create metadata to be added along with vector projection
-    in_meta = {'desc': 'IGRF geomagnetic field expressed in the s/c basis.',
-               'units': 'nT'}
-    # project IGRF
-    self.custom.attach(mm_sc.project_ecef_vector_onto_sc,
-                       args=['B_ecef_x', 'B_ecef_y', 'B_ecef_z', 'B_sc_x',
-                             'B_sc_y', 'B_sc_z'],
-                       kwargs={'meta': [in_meta.copy(), in_meta.copy(),
-                                        in_meta.copy()]})
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
