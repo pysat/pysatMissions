@@ -141,8 +141,8 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         lp['alt'] = sat.elevation / 1000.
         # get ECEF position of satellite
         lp['x'], lp['y'], lp['z'] = pysatMagVect.geodetic_to_ecef(lp['glat'],
-                                                           lp['glong'],
-                                                           lp['alt'])
+                                                                  lp['glong'],
+                                                                  lp['alt'])
         output_params.append(lp)
 
     output = pds.DataFrame(output_params, index=times)
