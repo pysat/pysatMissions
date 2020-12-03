@@ -140,7 +140,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         # sublongitude point
         lp['glong'] = np.degrees(sat.sublong)
         # elevation of sat in m, stored as km
-        lp['alt'] = sat.elevation/1000.
+        lp['alt'] = sat.elevation / 1000.
         # get ECEF position of satellite
         lp['x'], lp['y'], lp['z'] = pysatMagVect.geodetic_to_ecef(lp['glat'],
                                                                   lp['glong'],
@@ -195,8 +195,8 @@ meta['position_ecef_z'] = {'units': 'km',
 meta['obs_sat_az_angle'] = {'units': 'degrees',
                             'desc': 'Azimuth of satellite from ground station'}
 meta['obs_sat_el_angle'] = {'units': 'degrees',
-                            'desc': 'Elevation of satellite from ground ' +
-                            'station'}
+                            'desc': ' '.join(('Elevation of satellite from',
+                                              'ground station'))}
 meta['obs_sat_slant_range'] = {'units': 'km',
-                               'desc': 'Distance of satellite from ground ' +
-                               'station'}
+                               'desc': ' '.join(('Distance of satellite from',
+                                                 'ground station'))}
