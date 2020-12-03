@@ -4,7 +4,7 @@ for pysat instruments.
 """
 
 import numpy as np
-import OMMBV
+import pysatMagVect
 
 
 def add_ram_pointing_sc_attitude_vectors(inst):
@@ -42,7 +42,7 @@ def add_ram_pointing_sc_attitude_vectors(inst):
 
     # ram pointing is along velocity vector
     inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'] = \
-        OMMBV.normalize_vector(inst['velocity_ecef_x'],
+        pysatMagVect.normalize_vector(inst['velocity_ecef_x'],
                                inst['velocity_ecef_y'],
                                inst['velocity_ecef_z'])
 
@@ -52,14 +52,14 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     # to the true z (in the orbital plane) that we can use it to get y,
     # and use x and y to get the real z
     inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        OMMBV.normalize_vector(-inst['position_ecef_x'],
+        pysatMagVect.normalize_vector(-inst['position_ecef_x'],
                                -inst['position_ecef_y'],
                                -inst['position_ecef_z'])
 
     # get y vector assuming right hand rule
     # Z x X = Y
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        OMMBV.cross_product(inst['sc_zhat_ecef_x'],
+        pysatMagVect.cross_product(inst['sc_zhat_ecef_x'],
                             inst['sc_zhat_ecef_y'],
                             inst['sc_zhat_ecef_z'],
                             inst['sc_xhat_ecef_x'],
@@ -67,7 +67,7 @@ def add_ram_pointing_sc_attitude_vectors(inst):
                             inst['sc_xhat_ecef_z'])
     # normalize since Xhat and Zhat from above may not be orthogonal
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        OMMBV.normalize_vector(inst['sc_yhat_ecef_x'],
+        pysatMagVect.normalize_vector(inst['sc_yhat_ecef_x'],
                                inst['sc_yhat_ecef_y'],
                                inst['sc_yhat_ecef_z'])
 
@@ -75,7 +75,7 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     # just created
     # Z = X x Y
     inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        OMMBV.cross_product(inst['sc_xhat_ecef_x'],
+        pysatMagVect.cross_product(inst['sc_xhat_ecef_x'],
                             inst['sc_xhat_ecef_y'],
                             inst['sc_xhat_ecef_z'],
                             inst['sc_yhat_ecef_x'],
@@ -214,7 +214,7 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
     # TODO: add checks for existence of ecef labels in inst
 
     x, y, z = \
-        OMMBV.project_ecef_vector_onto_basis(inst[x_label],
+        pysatMagVect.project_ecef_vector_onto_basis(inst[x_label],
                                              inst[y_label],
                                              inst[z_label],
                                              inst['sc_xhat_ecef_x'],
