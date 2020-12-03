@@ -68,8 +68,8 @@ install:
   - make -C src/pyglow/models source >/dev/null
   - python setup.py install >/dev/null
 
-  # Install pysatMagVect after pysat
-  - pip install pysatMagVect >/dev/null
+  # Install OMMBV after pysat
+  - pip install OMMBV >/dev/null
 
   # install pysatMissions
   - cd ../pysatMissions
