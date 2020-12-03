@@ -58,6 +58,7 @@ install:
   # install pysat
   - git checkout develop-3
   - python setup.py install >/dev/null
+  - export PYTHONPATH=$PYTHONPATH:$(pwd)
 
   # Install pysatMagVect after pysat
   - pip install pysatMagVect >/dev/null
