@@ -59,10 +59,6 @@ python setup.py install
 ```
 It should be noted that this is a working branch and is subject to change.
 
-A note on empirical models
---------------------------
-pysatMissions allows users to interact with a number of upper atmospheric empirical models through the [pyglow](https://github.com/timduly4/pyglow) package.  However, pyglow currently requires manual install through git.  While pysatMissions can be installed and used without pyglow, it should be installed by the user to access the pyglow methods.  Please follow the install instructions at https://github.com/timduly4/pyglow.
-
 # Using with pysat
 
 The instrument modules are portable and designed to be run like any pysat instrument.
@@ -73,16 +69,3 @@ from pysatMissions.instruments import pysat_ephem
 
 simInst = pysat.Instrument(inst_module=pysat_ephem)
 ```
-
-The methods that run empirical models can also be exported to any pysat instrument. For instance, to add thermal plasma predictions from the IRI model to the C/NOFS IVM instrument, one can invoke
-
-```
-import pysat
-from pysatMissions.methods import empirical
-
-ivm = pysat.Instrument(platform='cnofs', name='ivm')
-ivm.custom.attach(empirical.add_iri_thermal_plasma, 'modify',
-               glat_label='glat',
-               glong_label='glon', alt_label='altitude')
-```
-Once the custom function is added, the model will automatically be run when the dataset is loaded.
