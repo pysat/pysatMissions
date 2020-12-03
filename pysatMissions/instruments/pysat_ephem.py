@@ -20,7 +20,6 @@ import pysatMagVect
 
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.methods import magcoord as mm_magcoord
-from pysatMissions.methods import empirical as mm_emp
 from pysatMissions.methods import spacecraft as mm_sc
 
 # pysat required parameters
@@ -51,8 +50,6 @@ def init(self):
     self.custom.attach(mm_sc.calculate_ecef_velocity)
     self.custom.attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
     # project simulated vectors onto s/c basis
-    # IGRF
-    self.custom.attach(mm_emp.add_igrf)
     # create metadata to be added along with vector projection
     in_meta = {'desc': 'IGRF geomagnetic field expressed in the s/c basis.',
                'units': 'nT'}
@@ -62,13 +59,6 @@ def init(self):
                              'B_sc_y', 'B_sc_z'],
                        kwargs={'meta': [in_meta.copy(), in_meta.copy(),
                                         in_meta.copy()]})
-    # Thermal Ion Parameters
-    self.custom.attach(mm_emp.add_iri_thermal_plasma)
-    # Thermal Neutral parameters
-    self.custom.attach(mm_emp.add_msis)
-    self.custom.attach(mm_emp.add_hwm_winds_and_ecef_vectors)
-    # project total wind vector
-    self.custom.attach(mm_emp.project_hwm_onto_sc)
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
