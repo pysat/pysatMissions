@@ -20,7 +20,7 @@ with codecs.open(os.path.join(here, version_filename)) as version_file:
 # on_rtd = os.environ.get('READTHEpysatMissionsDOCS') == 'True'
 
 install_requires = ['pysat', 'numpy', 'pandas', 'sgp4', 'pyEphem',
-                    'matplotlib', 'apexpy', 'aacgmv2', 'pysatMagVect']
+                    apexpy', 'aacgmv2', 'pysatMagVect']
 
 
 # Run setup
