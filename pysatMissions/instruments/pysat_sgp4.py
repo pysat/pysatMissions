@@ -5,8 +5,6 @@ Two Line Elements (TLEs) and SGP4.
 
 """
 
-from __future__ import print_function
-from __future__ import absolute_import
 import datetime as dt
 import functools
 import pandas as pds
