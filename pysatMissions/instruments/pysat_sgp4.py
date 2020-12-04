@@ -5,8 +5,6 @@ Two Line Elements (TLEs) and SGP4.
 
 """
 
-from __future__ import print_function
-from __future__ import absolute_import
 import datetime as dt
 import functools
 import pandas as pds
@@ -133,6 +131,13 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     return data, meta.copy()
 
 
+def clean(self):
+    """Cleaning function
+    """
+
+    pass
+
+
 list_files = functools.partial(mcore._list_files)
 download = functools.partial(mcore._download)
 
@@ -146,18 +151,18 @@ meta['Epoch'] = {'units': 'Milliseconds since 1970-1-1',
                  'long_name': 'Time index in milliseconds'}
 meta['position_eci_x'] = {'units': 'km',
                           'long_name': 'ECI x-position',
-                          'desc': 'Earth Centered Inertial x-position of ' +
-                          'satellite.',
+                          'desc': ' '.join(('Earth Centered Inertial',
+                                            'x-position of satellite.')),
                           'label': 'ECI-X'}
 meta['position_eci_y'] = {'units': 'km',
                           'long_name': 'ECI y-position',
-                          'desc': 'Earth Centered Inertial y-position of ' +
-                          'satellite.',
+                          'desc': ' '.join(('Earth Centered Inertial',
+                                            'y-position of satellite.')),
                           'label': 'ECI-Y'}
 meta['position_eci_z'] = {'units': 'km',
                           'long_name': 'ECI z-position',
-                          'desc': 'Earth Centered Inertial z-position of ' +
-                          'satellite.',
+                          'desc': ' '.join(('Earth Centered Inertial',
+                                            'z-position of satellite.')),
                           'label': 'ECI-Z'}
 meta['velocity_eci_x'] = {'units': 'km/s',
                           'desc': 'Satellite velocity along ECI-x',

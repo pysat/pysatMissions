@@ -6,7 +6,7 @@ Installation
 
 ----
 
-Python and associated packages for science are freely available. Convenient science python package setups are available from https://www.python.org/ and `Anaconda <https://www.anaconda.com/distribution/>`_. Anaconda also includes a developer environment. Core science packages such as numpy, scipy, matplotlib, pandas and many others may also be installed directly via pip or your favorite package manager.
+Python and associated packages for science are freely available. Convenient science python package setups are available from https://www.python.org/ and `Anaconda <https://www.anaconda.com/distribution/>`_. Anaconda also includes a developer environment. Core science packages such as numpy, scipy, pandas and many others may also be installed directly via pip or your favorite package manager.
 
 For educational users, developer environments from `Jet Brains <https://www.jetbrains.com/student/>`_ are available for free.
 

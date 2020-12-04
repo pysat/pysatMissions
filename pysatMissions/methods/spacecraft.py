@@ -83,53 +83,53 @@ def add_ram_pointing_sc_attitude_vectors(inst):
                                    inst['sc_yhat_ecef_z'])
 
     # Adding metadata
-    inst.meta['sc_xhat_ecef_x'] = {'units': '',
-                                   'desc': 'S/C attitude (x-direction, ram) ' +
-                                   'unit vector, expressed in ECEF basis, ' +
-                                   'x-component'}
-    inst.meta['sc_xhat_ecef_y'] = {'units': '',
-                                   'desc': 'S/C attitude (x-direction, ram) ' +
-                                   'unit vector, expressed in ECEF basis, ' +
-                                   'y-component'}
-    inst.meta['sc_xhat_ecef_z'] = {'units': '',
-                                   'desc': 'S/C attitude (x-direction, ram) ' +
-                                   'unit vector, expressed in ECEF basis, ' +
-                                   'z-component'}
+    inst.meta['sc_xhat_ecef_x'] = \
+        {'units': '',
+         'desc': ' '.join(('S/C attitude (x-direction, ram) unit vector,',
+                           'expressed in ECEF basis, x-component'))}
+    inst.meta['sc_xhat_ecef_y'] = \
+        {'units': '',
+         'desc': ' '.join(('S/C attitude (x-direction, ram) unit vector,',
+                           'expressed in ECEF basis, y-component'))}
+    inst.meta['sc_xhat_ecef_z'] = \
+        {'units': '',
+         'desc': ' '.join(('S/C attitude (x-direction, ram) unit vector,',
+                           'expressed in ECEF basis, z-component'))}
 
-    inst.meta['sc_zhat_ecef_x'] = {'units': '',
-                                   'desc': 'S/C attitude (z-direction, ' +
-                                   'generally nadir) unit vector, expressed ' +
-                                   'in ECEF basis, x-component'}
-    inst.meta['sc_zhat_ecef_y'] = {'units': '',
-                                   'desc': 'S/C attitude (z-direction, ' +
-                                   'generally nadir) unit vector, expressed ' +
-                                   'in ECEF basis, y-component'}
-    inst.meta['sc_zhat_ecef_z'] = {'units': '',
-                                   'desc': 'S/C attitude (z-direction, ' +
-                                   'generally nadir) unit vector, expressed ' +
-                                   'in ECEF basis, z-component'}
+    inst.meta['sc_zhat_ecef_x'] = \
+        {'units': '',
+         'desc': ' '.join(('S/C attitude (z-direction, generally nadir) unit',
+                           'vector, expressed in ECEF basis, x-component'))}
+    inst.meta['sc_zhat_ecef_y'] = \
+        {'units': '',
+         'desc': ' '.join(('S/C attitude (z-direction, generally nadir) unit',
+                           'vector, expressed in ECEF basis, y-component'))}
+    inst.meta['sc_zhat_ecef_z'] = \
+        {'units': '',
+         'desc': ' '.join(('S/C attitude (z-direction, generally nadir) unit',
+                           'vector, expressed in ECEF basis, z-component'))}
 
-    inst.meta['sc_yhat_ecef_x'] = {'units': '',
-                                   'desc': 'S/C attitude (y-direction, ' +
-                                   'generally south) unit vector, expressed ' +
-                                   'in ECEF basis, x-component'}
-    inst.meta['sc_yhat_ecef_y'] = {'units': '',
-                                   'desc': 'S/C attitude (y-direction, ' +
-                                   'generally south) unit vector, expressed ' +
-                                   'in ECEF basis, y-component'}
-    inst.meta['sc_yhat_ecef_z'] = {'units': '',
-                                   'desc': 'S/C attitude (y-direction, ' +
-                                   'generally south) unit vector, expressed ' +
-                                   'in ECEF basis, z-component'}
+    inst.meta['sc_yhat_ecef_x'] = \
+        {'units': '',
+         'desc': ' '.join(('S/C attitude (y-direction, generally south) unit',
+                           'vector, expressed in ECEF basis, x-component'))}
+    inst.meta['sc_yhat_ecef_y'] = \
+        {'units': '',
+         'desc': ' '.join(('S/C attitude (y-direction, generally south) unit',
+                           'vector, expressed in ECEF basis, y-component'))}
+    inst.meta['sc_yhat_ecef_z'] = \
+        {'units': '',
+         'desc': ' '.join(('S/C attitude (y-direction, generally south) unit',
+                           'vector, expressed in ECEF basis, z-component'))}
 
     # check what magnitudes we get
-    mag = np.sqrt(inst['sc_zhat_ecef_x']**2 + inst['sc_zhat_ecef_y']**2 +
-                  inst['sc_zhat_ecef_z']**2)
+    mag = np.sqrt(inst['sc_zhat_ecef_x']**2 + inst['sc_zhat_ecef_y']**2
+                  + inst['sc_zhat_ecef_z']**2)
     idx, = np.where((mag < .999999999) | (mag > 1.000000001))
     if len(idx) > 0:
         print(mag[idx])
-        raise RuntimeError('Unit vector generation failure. Not sufficently ' +
-                           'orthogonal.')
+        raise RuntimeError(' '.join(('Unit vector generation failure. Not',
+                                     'sufficently orthogonal.')))
 
     return
 
@@ -158,7 +158,7 @@ def calculate_ecef_velocity(inst):
     """
 
     def get_vel_from_pos(x):
-        vel = (x.values[2:] - x.values[0:-2])/2.
+        vel = (x.values[2:] - x.values[0:-2]) / 2.
         return vel
 
     vel_x = get_vel_from_pos(inst['position_ecef_x'])
@@ -170,14 +170,17 @@ def calculate_ecef_velocity(inst):
     inst[1:-1, 'velocity_ecef_z'] = vel_z
 
     inst.meta['velocity_ecef_x'] = {'units': 'km/s',
-                                    'desc': 'Velocity of satellite ' +
-                                    'calculated with respect to ECEF frame.'}
+                                    'desc': ' '.join(('Velocity of satellite',
+                                                      'calculated with respect',
+                                                      'to ECEF frame.'))}
     inst.meta['velocity_ecef_y'] = {'units': 'km/s',
-                                    'desc': 'Velocity of satellite ' +
-                                    'calculated with respect to ECEF frame.'}
+                                    'desc': ' '.join(('Velocity of satellite',
+                                                      'calculated with respect',
+                                                      'to ECEF frame.'))}
     inst.meta['velocity_ecef_z'] = {'units': 'km/s',
-                                    'desc': 'Velocity of satellite ' +
-                                    'calculated with respect to ECEF frame.'}
+                                    'desc': ' '.join(('Velocity of satellite',
+                                                      'calculated with respect',
+                                                      'to ECEF frame.'))}
     return
 
 

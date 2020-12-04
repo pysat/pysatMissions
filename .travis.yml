@@ -3,15 +3,19 @@ language: python
 dist: xenial
 jobs:
   include:
-    - name: Minimum NEP 029 versions
-      python: 3.6
-      env: NUMPY_VER=1.15
-    # Versions with latest numpy
-    - python: 3.6
-    - python: 3.7
-    - python: 3.8
+    - name: '3.6 w/ numpy 1.16 (NEP 029)'
+      python: '3.6'
+      env: NUMPY_VER=1.16
+      script: pytest --cov=pysatMissions/
+    - name: '3.7 with flake8'
+      python: '3.7'
+      script: pytest --flake8 --cov=pysatMissions/
+    - name: '3.8'
+      python: '3.8'
+      script: pytest --cov=pysatMissions/
 
 services: xvfb
+cache: pip
 addons:
   apt:
     packages:
@@ -30,7 +34,7 @@ install:
   # Useful for debugging any issues with conda
   - conda info -a
   # Create conda test environment
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy pandas xarray matplotlib requests beautifulsoup4 lxml netCDF4 h5py nose pytest-cov pytest-ordering coveralls future
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy pandas xarray netCDF4 h5py pytest-cov pytest-ordering coveralls portalocker
   - conda activate test-environment
   # Check for custom numpy version install
   - if [ -z ${NUMPY_VER} ]; then
@@ -45,7 +49,6 @@ install:
   - pip install pyEphem
   - pip install sgp4
   - pip install pytest-flake8
-  - pip install pysatCDF >/dev/null
 
   # Prepare modified pysat install
   - cd ..
@@ -58,15 +61,7 @@ install:
   # install pysat
   - git checkout develop-3
   - python setup.py install >/dev/null
-
-  # install pyglow, space science models
-  - cd ..
-  - echo 'cloning pyglow'
-  - git clone https://github.com/timduly4/pyglow.git >/dev/null
-  - echo 'installing pyglow'
-  - cd ./pyglow
-  - make -C src/pyglow/models source >/dev/null
-  - python setup.py install >/dev/null
+  - export PYTHONPATH=$PYTHONPATH:$(pwd)
 
   # Install pysatMagVect after pysat
   - pip install pysatMagVect >/dev/null
@@ -75,12 +70,5 @@ install:
   - cd ../pysatMissions
   - python setup.py install
 
-before_script:
-  # set up display screen
-  - export DISPLAY=:99.0
-
-script:
-  - pytest -vs --cov=pysatMissions/
-
 after_success:
-  - coveralls
+  - coveralls --rcfile=setup.cfg

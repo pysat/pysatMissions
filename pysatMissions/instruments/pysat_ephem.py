@@ -7,20 +7,17 @@ satellite is in.
 
 """
 
-from __future__ import print_function
-from __future__ import absolute_import
 import datetime as dt
 import functools
 import numpy as np
 
 import ephem
+import pysatMagVect
 import pandas as pds
 import pysat
-import pysatMagVect
 
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.methods import magcoord as mm_magcoord
-from pysatMissions.methods import empirical as mm_emp
 from pysatMissions.methods import spacecraft as mm_sc
 
 # pysat required parameters
@@ -50,25 +47,6 @@ def init(self):
     self.custom.attach(mm_magcoord.add_aacgm_coordinates)
     self.custom.attach(mm_sc.calculate_ecef_velocity)
     self.custom.attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
-    # project simulated vectors onto s/c basis
-    # IGRF
-    self.custom.attach(mm_emp.add_igrf)
-    # create metadata to be added along with vector projection
-    in_meta = {'desc': 'IGRF geomagnetic field expressed in the s/c basis.',
-               'units': 'nT'}
-    # project IGRF
-    self.custom.attach(mm_sc.project_ecef_vector_onto_sc,
-                       args=['B_ecef_x', 'B_ecef_y', 'B_ecef_z', 'B_sc_x',
-                             'B_sc_y', 'B_sc_z'],
-                       kwargs={'meta': [in_meta.copy(), in_meta.copy(),
-                                        in_meta.copy()]})
-    # Thermal Ion Parameters
-    self.custom.attach(mm_emp.add_iri_thermal_plasma)
-    # Thermal Neutral parameters
-    self.custom.attach(mm_emp.add_msis)
-    self.custom.attach(mm_emp.add_hwm_winds_and_ecef_vectors)
-    # project total wind vector
-    self.custom.attach(mm_emp.project_hwm_onto_sc)
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
@@ -160,7 +138,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         # sublongitude point
         lp['glong'] = np.degrees(sat.sublong)
         # elevation of sat in m, stored as km
-        lp['alt'] = sat.elevation/1000.
+        lp['alt'] = sat.elevation / 1000.
         # get ECEF position of satellite
         lp['x'], lp['y'], lp['z'] = pysatMagVect.geodetic_to_ecef(lp['glat'],
                                                                   lp['glong'],
@@ -184,6 +162,13 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     data.index.name = 'Epoch'
 
     return data, meta.copy()
+
+
+def clean(self):
+    """Cleaning function
+    """
+
+    pass
 
 
 list_files = functools.partial(mcore._list_files)
@@ -215,8 +200,8 @@ meta['position_ecef_z'] = {'units': 'km',
 meta['obs_sat_az_angle'] = {'units': 'degrees',
                             'desc': 'Azimuth of satellite from ground station'}
 meta['obs_sat_el_angle'] = {'units': 'degrees',
-                            'desc': 'Elevation of satellite from ground ' +
-                            'station'}
+                            'desc': ' '.join(('Elevation of satellite from',
+                                              'ground station'))}
 meta['obs_sat_slant_range'] = {'units': 'km',
-                               'desc': 'Distance of satellite from ground ' +
-                               'station'}
+                               'desc': ' '.join(('Distance of satellite from',
+                                                 'ground station'))}

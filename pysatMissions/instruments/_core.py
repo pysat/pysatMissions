@@ -38,7 +38,7 @@ def _get_times(fnames, inst_id):
     # create timing at 1 Hz (defaults to 1 day)
     # Allow numeric string to set number of time steps
     num = 86399 if inst_id == '' else int(inst_id)
-    times = pds.date_range(start=date, end=date+pds.DateOffset(seconds=num),
+    times = pds.date_range(start=date, end=(date + pds.DateOffset(seconds=num)),
                            freq='1S')
 
     return times
