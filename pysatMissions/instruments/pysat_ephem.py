@@ -167,7 +167,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                           'obs_sat_el_angle': output['obs_sat_el_angle'],
                           'obs_sat_slant_range':
                           output['obs_sat_slant_range']},
-                         index=times)
+                         index=index)
     data.index.name = 'Epoch'
 
     return data, meta.copy()
