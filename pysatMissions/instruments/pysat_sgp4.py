@@ -30,6 +30,9 @@ def init(self):
 
     """
 
+    self.acknowledgements = ''
+    self.references = ''
+
     pass
 
 
@@ -131,7 +134,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                           'velocity_eci_x': velocity[::3],
                           'velocity_eci_y': velocity[1::3],
                           'velocity_eci_z': velocity[2::3]},
-                         index=times)
+                         index=index)
     data.index.name = 'Epoch'
 
     # TODO: add call for GEI/ECEF translation here
@@ -139,8 +142,8 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     return data, meta.copy()
 
 
-list_files = functools.partial(ps_meth.list_files)
-download = functools.partial(mcore._download)
+list_files = functools.partial(ps_meth.list_files, test_dates=_test_dates)
+download = functools.partial(ps_meth.download)
 clean = functools.partial(mcore._clean)
 
 # create metadata corresponding to variables in load routine just above

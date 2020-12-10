@@ -48,6 +48,8 @@ def init(self):
     self.custom.attach(mm_magcoord.add_aacgm_coordinates)
     self.custom.attach(mm_sc.calculate_ecef_velocity)
     self.custom.attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
+    self.acknowledgements = ''
+    self.references = ''
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
@@ -173,8 +175,8 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     return data, meta.copy()
 
 
-list_files = functools.partial(mcore._list_files)
-download = functools.partial(mcore._download)
+list_files = functools.partial(ps_meth.list_files, test_dates=_test_dates)
+download = functools.partial(ps_meth.download)
 clean = functools.partial(mcore._clean)
 
 # create metadata corresponding to variables in load routine just above
