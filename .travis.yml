@@ -53,7 +53,9 @@ install:
   - pip install madrigalWeb
   - pip install pyEphem
   - pip install sgp4
-  - pip install pytest-flake8
+
+  # Get dependencies not provided by conda from pip (testing dependencies)
+  - pip install -r test_requirements.txt
 
   # Prepare modified pysat install
   - cd ..
