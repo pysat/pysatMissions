@@ -39,7 +39,7 @@ install:
   # Useful for debugging any issues with conda
   - conda info -a
   # Create conda test environment
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy pandas xarray netCDF4 h5py pytest-cov pytest-ordering coveralls portalocker
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy pandas xarray netCDF4 portalocker
   - conda activate test-environment
   # Check for custom numpy version install
   - if [ -z ${NUMPY_VER} ]; then
