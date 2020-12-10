@@ -25,4 +25,8 @@ def _download(date_array, tag, inst_id, data_path=None):
     pass
 
 
+def _clean(self):
+    """Cleaning function.  Simple pass since data is generated locally.
+    """
 
+    pass

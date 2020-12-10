@@ -173,15 +173,9 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     return data, meta.copy()
 
 
-def clean(self):
-    """Cleaning function
-    """
-
-    pass
-
-
 list_files = functools.partial(mcore._list_files)
 download = functools.partial(mcore._download)
+clean = functools.partial(mcore._clean)
 
 # create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call
