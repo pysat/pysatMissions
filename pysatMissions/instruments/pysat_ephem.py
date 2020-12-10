@@ -96,7 +96,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
 
     Example
     -------
-      inst = pysat.Instrument('pysat', 'sgp4',
+      inst = pysat.Instrument('pysat', 'epehm',
           TLE1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
           TLE2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452')
       inst.load(2018, 1)
