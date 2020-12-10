@@ -50,7 +50,6 @@ install:
   # Dependencies not available through conda, install through pip
   - pip install apexpy
   - pip install aacgmv2
-  - pip install madrigalWeb
   - pip install pyEphem
   - pip install sgp4
 
