@@ -10,7 +10,7 @@ import functools
 import pandas as pds
 
 import pysat
-
+from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 
 # pysat required parameters
@@ -34,7 +34,7 @@ def init(self):
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
-         TLE1=None, TLE2=None):
+         TLE1=None, TLE2=None, num_samples=None, freq='1S'):
     """
     Returns data and metadata in the format required by pysat. Generates
     position of satellite in ECI co-ordinates.
@@ -64,12 +64,17 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         First string for Two Line Element. Must be in TLE format
     TLE2 : string
         Second string for Two Line Element. Must be in TLE format
+    num_samples : int
+        Number of samples per day
+    freq : str
+        Uses pandas.frequency string formatting ('1S', etc)
+        (default='1S')
 
     Returns
     -------
-    data : (pandas.DataFrame)
+    data : pandas.DataFrame
         Object containing satellite data
-    meta : (pysat.Meta)
+    meta : pysat.Meta
         Object containing metadata such as column names and units
 
     Example
@@ -98,17 +103,20 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     if TLE2 is not None:
         line2 = TLE2
 
+    if num_samples is None:
+        num_samples = 100
+
     # create satellite from TLEs and assuming a gravity model
     # according to module webpage, wgs72 is common
     satellite = twoline2rv(line1, line2, wgs72)
 
     # Extract list of times from filenames and inst_id
-    times = mcore._get_times(fnames, inst_id)
+    times, index, dates = ps_meth.generate_times(fnames, num_samples, freq=freq)
 
     # create list to hold satellite position, velocity
     position = []
     velocity = []
-    for timestep in times:
+    for timestep in index:
         # orbit propagator - computes x,y,z position and velocity
         pos, vel = satellite.propagate(timestep.year, timestep.month,
                                        timestep.day, timestep.hour,
@@ -138,7 +146,7 @@ def clean(self):
     pass
 
 
-list_files = functools.partial(mcore._list_files)
+list_files = functools.partial(ps_meth.list_files)
 download = functools.partial(mcore._download)
 
 # create metadata corresponding to variables in load routine just above

@@ -14,7 +14,8 @@ class TestSGP4():
     def setup(self):
         """Runs before every method to create a clean testing setup."""
         from pysatMissions.instruments import pysat_sgp4
-        self.testInst = pysat.Instrument(inst_module=pysat_sgp4, inst_id='100')
+        self.testInst = pysat.Instrument(inst_module=pysat_sgp4,
+                                         num_samples=100)
         self.targets1 = ['position_eci_x', 'position_eci_y', 'position_eci_z',
                          'velocity_eci_x', 'velocity_eci_y', 'velocity_eci_z']
         self.targets2 = []
@@ -55,7 +56,7 @@ class TestEphem(TestSGP4):
         # TODO: add check for aacgm values
         from pysatMissions.instruments import pysat_ephem
         self.testInst = pysat.Instrument(inst_module=pysat_ephem, tag='all',
-                                         inst_id='100')
+                                         num_samples=100)
         self.targets1 = ['glong', 'glat', 'alt', 'obs_sat_slant_range',
                          'obs_sat_az_angle', 'obs_sat_el_angle',
                          'position_ecef_x', 'position_ecef_y', 'position_ecef_z',

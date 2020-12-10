@@ -3,7 +3,6 @@ Handles the default pysat functions for simulated instruments
 """
 
 import datetime as dt
-import os
 import pandas as pds
 
 
@@ -22,23 +21,8 @@ def _list_files(tag=None, inst_id=None, data_path=None, format_str=None):
 def _download(date_array, tag, inst_id, data_path=None):
     """ Data is simulated so no download routine is possible. Simple pass
     function"""
+
     pass
 
 
-def _get_times(fnames, inst_id):
-    """Construct list of times for simulated instruments"""
 
-    # grab date from filename
-    parts = os.path.split(fnames[0])[-1].split('-')
-    yr = int(parts[0])
-    month = int(parts[1])
-    day = int(parts[2][0:2])
-    date = dt.datetime(yr, month, day)
-
-    # create timing at 1 Hz (defaults to 1 day)
-    # Allow numeric string to set number of time steps
-    num = 86399 if inst_id == '' else int(inst_id)
-    times = pds.date_range(start=date, end=(date + pds.DateOffset(seconds=num)),
-                           freq='1S')
-
-    return times
