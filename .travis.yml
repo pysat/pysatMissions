@@ -3,6 +3,11 @@ language: python
 dist: xenial
 jobs:
   include:
+    - name: 'docs'
+      python: '3.6'
+      script:
+        - sphinx-build -E -b html docs dist/docs
+        - sphinx-build -b linkcheck docs dist/docs
     - name: '3.6 w/ numpy 1.16 (NEP 029)'
       python: '3.6'
       env: NUMPY_VER=1.16
