@@ -7,4 +7,4 @@ def _clean(self):
     """Cleaning function.  Simple pass since data is generated locally.
     """
 
-    pass
+    return

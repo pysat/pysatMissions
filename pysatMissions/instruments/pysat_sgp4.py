@@ -10,6 +10,7 @@ import functools
 import pandas as pds
 
 import pysat
+from pysat import logger
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 
@@ -32,8 +33,9 @@ def init(self):
 
     self.acknowledgements = ''
     self.references = ''
+    logger.info(self.acknowledgements)
 
-    pass
+    return
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,

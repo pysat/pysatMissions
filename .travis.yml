@@ -44,7 +44,6 @@ install:
   # Once pysat 3.0 is released, remove the custom pysat install and change
   # this to:
   # - while read requirement; do conda install --yes $requirement; done < requirements.txt1
-  - conda install --yes scipy pandas xarray netCDF4 portalocker
   # Check for custom numpy version install
   - if [ -z ${NUMPY_VER} ]; then
       conda install numpy;
@@ -63,13 +62,14 @@ install:
   # Prepare modified pysat install
   - cd ..
   - echo 'cloning pysat'
-  - git clone https://github.com/pysat/pysat.git >/dev/null
+  - git clone --single-branch --branch develop-3 https://github.com/pysat/pysat.git
   - echo 'installing pysat'
   - cd ./pysat
   # set up data directory
   - mkdir /home/travis/build/pysatData
   # install pysat
-  - git checkout develop-3
+  # Install the pysat requirements
+  - while read requirement; do conda install --yes $requirement; done < requirements.txt
   - python setup.py install >/dev/null
   - export PYTHONPATH=$PYTHONPATH:$(pwd)
 

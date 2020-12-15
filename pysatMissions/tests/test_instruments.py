@@ -27,9 +27,9 @@ method_list = [func for func in dir(InstTestClass)
 for method in method_list:
     if hasattr(getattr(InstTestClass, method), 'pytestmark'):
         # Get list of names of pytestmarks
-        Nargs = len(getattr(InstTestClass, method).pytestmark)
+        n_args = len(getattr(InstTestClass, method).pytestmark)
         names = [getattr(InstTestClass, method).pytestmark[j].name
-                 for j in range(0, Nargs)]
+                 for j in range(0, n_args)]
         # Add instruments from your library
         if 'all_inst' in names:
             mark = pytest.mark.parametrize("inst_name", instruments['names'])

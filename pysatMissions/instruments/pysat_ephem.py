@@ -16,6 +16,7 @@ import pysatMagVect
 import pandas as pds
 import pysat
 
+from pysat import logger
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.methods import magcoord as mm_magcoord
@@ -50,6 +51,9 @@ def init(self):
     self.custom.attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
     self.acknowledgements = ''
     self.references = ''
+    logger.info(self.acknowledgements)
+
+    return
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
