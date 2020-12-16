@@ -186,11 +186,11 @@ clean = functools.partial(mcore._clean)
 # create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call
 meta = pysat.Meta()
-meta['Epoch'] = {meta.labels.units: 'Milliseconds since 1970-1-1',
-                 meta.labels.notes: ' '.join(('UTC time at middle of',
-                                              'geophysical measurement.')),
-                 meta.labels.desc: 'UTC seconds',
-                 meta.labels.name: 'Time index in milliseconds'}
+meta['Epoch'] = {
+    meta.labels.units: 'Milliseconds since 1970-1-1',
+    meta.labels.notes: 'UTC time at middle of geophysical measurement.',
+    meta.labels.desc: 'UTC seconds',
+    meta.labels.name: 'Time index in milliseconds'}
 meta['glong'] = {meta.labels.units: 'degrees',
                  meta.labels.desc: 'WGS84 geodetic longitude'}
 meta['glat'] = {meta.labels.units: 'degrees',
@@ -203,12 +203,12 @@ meta['position_ecef_y'] = {meta.labels.units: 'km',
                            meta.labels.desc: 'ECEF y co-ordinate of satellite'}
 meta['position_ecef_z'] = {meta.labels.units: 'km',
                            meta.labels.desc: 'ECEF z co-ordinate of satellite'}
-meta['obs_sat_az_angle'] = \
-    {meta.labels.units: 'degrees',
-     meta.labels.desc: 'Azimuth of satellite from ground station'}
-meta['obs_sat_el_angle'] = \
-    {meta.labels.units: 'degrees',
-     meta.labels.desc: 'Elevation of satellite from ground station'}
-meta['obs_sat_slant_range'] = \
-    {meta.labels.units: 'km',
-     meta.labels.desc: 'Distance of satellite from ground station'}
+meta['obs_sat_az_angle'] = {
+    meta.labels.units: 'degrees',
+    meta.labels.desc: 'Azimuth of satellite from ground station'}
+meta['obs_sat_el_angle'] = {
+    meta.labels.units: 'degrees',
+    meta.labels.desc: 'Elevation of satellite from ground station'}
+meta['obs_sat_slant_range'] = {
+    meta.labels.units: 'km',
+    meta.labels.desc: 'Distance of satellite from ground station'}
