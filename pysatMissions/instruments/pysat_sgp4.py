@@ -151,32 +151,35 @@ clean = functools.partial(mcore._clean)
 # create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call
 meta = pysat.Meta()
-meta['Epoch'] = {meta.labels.units: 'Milliseconds since 1970-1-1',
-                 meta.labels.Bin_Location: 0.5,
-                 meta.labels.notes: 'UTC time at middle of geophysical measurement.',
-                 meta.labels.desc: 'UTC seconds',
-                 meta.labels.long_name: 'Time index in milliseconds'}
-meta['position_eci_x'] = {meta.labels.units: 'km',
-                          meta.labels.long_name: 'ECI x-position',
-                          meta.labels.desc: ' '.join(('Earth Centered Inertial',
-                                                      'x-position of satellite.')),
-                          meta.labels.label: 'ECI-X'}
-meta['position_eci_y'] = {meta.labels.units: 'km',
-                          meta.labels.long_name: 'ECI y-position',
-                          meta.labels.desc: ' '.join(('Earth Centered Inertial',
-                                                      'y-position of satellite.')),
-                          meta.labels.label: 'ECI-Y'}
-meta['position_eci_z'] = {meta.labels.units: 'km',
-                          meta.labels.long_name: 'ECI z-position',
-                          meta.labels.desc: ' '.join(('Earth Centered Inertial',
-                                                      'z-position of satellite.')),
-                          meta.labels.label: 'ECI-Z'}
-meta['velocity_eci_x'] = {meta.labels.units: 'km/s',
-                          meta.labels.desc: 'Satellite velocity along ECI-x',
-                          meta.labels.long_name: 'Satellite velocity ECI-x'}
-meta['velocity_eci_y'] = {meta.labels.units: 'km/s',
-                          meta.labels.desc: 'Satellite velocity along ECI-y',
-                          meta.labels.long_name: 'Satellite velocity ECI-y'}
-meta['velocity_eci_z'] = {meta.labels.units: 'km/s',
-                          meta.labels.desc: 'Satellite velocity along ECI-z',
-                          meta.labels.long_name: 'Satellite velocity ECI-z'}
+meta['Epoch'] = \
+    {meta.labels.units: 'Milliseconds since 1970-1-1',
+     meta.labels.notes: 'UTC time at middle of geophysical measurement.',
+     meta.labels.desc: 'UTC seconds',
+     meta.labels.name: 'Time index in milliseconds'}
+meta['position_eci_x'] = \
+    {meta.labels.units: 'km',
+     meta.labels.name: 'ECI x-position',
+     meta.labels.desc: ' '.join(('Earth Centered Inertial',
+                                 'x-position of satellite.'))}
+meta['position_eci_y'] = \
+    {meta.labels.units: 'km',
+     meta.labels.name: 'ECI y-position',
+     meta.labels.desc: ' '.join(('Earth Centered Inertial',
+                                 'y-position of satellite.'))}
+meta['position_eci_z'] = \
+    {meta.labels.units: 'km',
+     meta.labels.name: 'ECI z-position',
+     meta.labels.desc: ' '.join(('Earth Centered Inertial',
+                                 'z-position of satellite.'))}
+meta['velocity_eci_x'] = \
+    {meta.labels.units: 'km/s',
+     meta.labels.desc: 'Satellite velocity along ECI-x',
+     meta.labels.name: 'Satellite velocity ECI-x'}
+meta['velocity_eci_y'] = \
+    {meta.labels.units: 'km/s',
+     meta.labels.desc: 'Satellite velocity along ECI-y',
+     meta.labels.name: 'Satellite velocity ECI-y'}
+meta['velocity_eci_z'] = \
+    {meta.labels.units: 'km/s',
+     meta.labels.desc: 'Satellite velocity along ECI-z',
+     meta.labels.name: 'Satellite velocity ECI-z'}

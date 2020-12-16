@@ -187,19 +187,15 @@ clean = functools.partial(mcore._clean)
 # made once here rather than regenerate every load call
 meta = pysat.Meta()
 meta['Epoch'] = {meta.labels.units: 'Milliseconds since 1970-1-1',
-                 meta.labels.Bin_Location: 0.5,
                  meta.labels.notes: ' '.join(('UTC time at middle of',
                                               'geophysical measurement.')),
                  meta.labels.desc: 'UTC seconds',
-                 meta.labels.long_name: 'Time index in milliseconds'}
+                 meta.labels.name: 'Time index in milliseconds'}
 meta['glong'] = {meta.labels.units: 'degrees',
-                 meta.labels.long_name: 'Geodetic longitude',
                  meta.labels.desc: 'WGS84 geodetic longitude'}
 meta['glat'] = {meta.labels.units: 'degrees',
-                meta.labels.long_name: 'Geodetic latitude',
                 meta.labels.desc: 'WGS84 geodetic latitude'}
 meta['alt'] = {meta.labels.units: 'km',
-               meta.labels.long_name: 'Geodetic height',
                meta.labels.desc: "WGS84 height above Earth's surface"}
 meta['position_ecef_x'] = {meta.labels.units: 'km',
                            meta.labels.desc: 'ECEF x co-ordinate of satellite'}
@@ -207,13 +203,12 @@ meta['position_ecef_y'] = {meta.labels.units: 'km',
                            meta.labels.desc: 'ECEF y co-ordinate of satellite'}
 meta['position_ecef_z'] = {meta.labels.units: 'km',
                            meta.labels.desc: 'ECEF z co-ordinate of satellite'}
-meta['obs_sat_az_angle'] = {meta.labels.units: 'degrees',
-                            meta.labels.desc: ' '.join(('Azimuth of satellite',
-                                                        'from ground station'))}
-meta['obs_sat_el_angle'] = {meta.labels.units: 'degrees',
-                            meta.labels.desc: ' '.join(('Elevation of satellite',
-                                                        'from ground station'))}
-meta['obs_sat_slant_range'] = {meta.labels.units: 'km',
-                               meta.labels.desc: ' '.join(('Distance of',
-                                                           'satellite from',
-                                                           'ground station'))}
+meta['obs_sat_az_angle'] = \
+    {meta.labels.units: 'degrees',
+     meta.labels.desc: 'Azimuth of satellite from ground station'}
+meta['obs_sat_el_angle'] = \
+    {meta.labels.units: 'degrees',
+     meta.labels.desc: 'Elevation of satellite from ground station'}
+meta['obs_sat_slant_range'] = \
+    {meta.labels.units: 'km',
+     meta.labels.desc: 'Distance of satellite from ground station'}
