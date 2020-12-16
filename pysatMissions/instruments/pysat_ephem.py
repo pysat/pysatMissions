@@ -16,6 +16,8 @@ import pysatMagVect
 import pandas as pds
 import pysat
 
+from pysat import logger
+from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.methods import magcoord as mm_magcoord
 from pysatMissions.methods import spacecraft as mm_sc
@@ -47,10 +49,15 @@ def init(self):
     self.custom.attach(mm_magcoord.add_aacgm_coordinates)
     self.custom.attach(mm_sc.calculate_ecef_velocity)
     self.custom.attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
+    self.acknowledgements = ''
+    self.references = ''
+    logger.info(self.acknowledgements)
+
+    return
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
-         TLE1=None, TLE2=None):
+         TLE1=None, TLE2=None, num_samples=None, freq='1S'):
     """
     Returns data and metadata in the format required by pysat. Generates
     position of satellite in both geographic and ECEF co-ordinates.
@@ -80,17 +87,22 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         First string for Two Line Element. Must be in TLE format
     TLE2 : string
         Second string for Two Line Element. Must be in TLE format
+    num_samples : int
+        Number of samples per day
+    freq : str
+        Uses pandas.frequency string formatting ('1S', etc)
+        (default='1S')
 
     Returns
     -------
-    data : (pandas.DataFrame)
+    data : pandas.DataFrame
         Object containing satellite data
-    meta : (pysat.Meta)
+    meta : pysat.Meta
         Object containing metadata such as column names and units
 
     Example
     -------
-      inst = pysat.Instrument('pysat', 'sgp4',
+      inst = pysat.Instrument('pysat', 'epehm',
           TLE1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
           TLE2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452')
       inst.load(2018, 1)
@@ -111,8 +123,11 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     if TLE2 is not None:
         line2 = TLE2
 
+    if num_samples is None:
+        num_samples = 100
+
     # Extract list of times from filenames and inst_id
-    times = mcore._get_times(fnames, inst_id)
+    times, index, dates = ps_meth.generate_times(fnames, num_samples, freq=freq)
 
     # the observer's (ground station) position on the Earth surface
     site = ephem.Observer()
@@ -123,7 +138,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     # The first parameter in readtle() is the satellite name
     sat = ephem.readtle('pysat', line1, line2)
     output_params = []
-    for timestep in times:
+    for timestep in index:
         lp = {}
         site.date = timestep
         sat.compute(site)
@@ -145,7 +160,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                                                                   lp['alt'])
         output_params.append(lp)
 
-    output = pds.DataFrame(output_params, index=times)
+    output = pds.DataFrame(output_params, index=index)
     # modify input object to include calculated parameters
     # put data into DataFrame
     data = pds.DataFrame({'glong': output['glong'],
@@ -158,21 +173,15 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                           'obs_sat_el_angle': output['obs_sat_el_angle'],
                           'obs_sat_slant_range':
                           output['obs_sat_slant_range']},
-                         index=times)
+                         index=index)
     data.index.name = 'Epoch'
 
     return data, meta.copy()
 
 
-def clean(self):
-    """Cleaning function
-    """
-
-    pass
-
-
-list_files = functools.partial(mcore._list_files)
-download = functools.partial(mcore._download)
+list_files = functools.partial(ps_meth.list_files, test_dates=_test_dates)
+download = functools.partial(ps_meth.download)
+clean = functools.partial(mcore._clean)
 
 # create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call

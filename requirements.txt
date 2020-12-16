@@ -1,0 +1,8 @@
+pysat
+numpy
+pandas
+sgp4
+pyEphem
+apexpy
+aacgmv2
+pysatMagVect
