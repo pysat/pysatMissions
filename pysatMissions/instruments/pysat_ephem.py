@@ -45,10 +45,10 @@ def init(self):
 
     """
 
-    self.custom.attach(mm_magcoord.add_quasi_dipole_coordinates)
-    self.custom.attach(mm_magcoord.add_aacgm_coordinates)
-    self.custom.attach(mm_sc.calculate_ecef_velocity)
-    self.custom.attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
+    self.custom_attach(mm_magcoord.add_quasi_dipole_coordinates)
+    self.custom_attach(mm_magcoord.add_aacgm_coordinates)
+    self.custom_attach(mm_sc.calculate_ecef_velocity)
+    self.custom_attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
     self.acknowledgements = ''
     self.references = ''
     logger.info(self.acknowledgements)

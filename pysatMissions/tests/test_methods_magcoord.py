@@ -19,7 +19,7 @@ class TestBasics():
 
     def test_add_aacgm_coordinates(self):
         """Test adding thermal plasma data to test inst"""
-        self.testInst.custom.attach(mm_magcoord.add_aacgm_coordinates,
+        self.testInst.custom_attach(mm_magcoord.add_aacgm_coordinates,
                                     kwargs={'glat_label': 'latitude',
                                             'glong_label': 'longitude',
                                             'alt_label': 'altitude'})
@@ -34,7 +34,7 @@ class TestBasics():
 
     def test_add_quasi_dipole_coordinates(self):
         """Test adding thermal plasma data to test inst"""
-        self.testInst.custom.attach(mm_magcoord.add_quasi_dipole_coordinates,
+        self.testInst.custom_attach(mm_magcoord.add_quasi_dipole_coordinates,
                                     kwargs={'glat_label': 'latitude',
                                             'glong_label': 'longitude',
                                             'alt_label': 'altitude'})
