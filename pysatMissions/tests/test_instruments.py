@@ -12,8 +12,6 @@ from pysat.utils import generate_instrument_list
 from pysat.tests.instrument_test_class import InstTestClass
 
 
-saved_path = pysat.data_dir
-
 # Developers for instrument libraries should update the following line to
 # point to their own subpackage location
 # e.g.,
