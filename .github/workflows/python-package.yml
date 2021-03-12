@@ -29,6 +29,10 @@ jobs:
         pip install sgp4 pyEphem apexpy aacgmv2
         pip install --index-url https://test.pypi.org/simple/ pysat==3.0.0rc2
         pip install --no-binary :pysatMagVect: pysatMagVect
+    - name: Set up pysat
+      run: |
+        mkdir pysatData
+        python -m "pysat.params['data_dirs'] = 'pysatData'"
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
