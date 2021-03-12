@@ -51,7 +51,7 @@ install:
       conda install numpy==$NUMPY_VER;
     fi
   # Dependencies not available through conda, install through pip
-  - pip install --no-binary apexpy
+  - pip install --no-binary :apexpy: apexpy
   - pip install aacgmv2
   - pip install pyEphem
   - pip install sgp4
