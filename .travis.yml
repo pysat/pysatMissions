@@ -51,13 +51,19 @@ install:
       conda install numpy==$NUMPY_VER;
     fi
   # Dependencies not available through conda, install through pip
-  - pip install apexpy
   - pip install aacgmv2
   - pip install pyEphem
   - pip install sgp4
 
   # Get dependencies not provided by conda from pip (testing dependencies)
   - pip install -r test_requirements.txt
+
+  # Custom apexpy install
+  - cd ..
+  - echo 'cloning apexpy'
+  - git clone --single-branch --branch v3-0-rc1 https://github.com/aburrell/apexpy.git
+  - cd ./apexpy
+  - python setup.py install >/dev/null
 
   # Prepare modified pysat install
   - cd ..
