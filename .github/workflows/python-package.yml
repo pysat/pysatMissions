@@ -22,10 +22,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install flake8 pytest
+        python -m pip install flake8 pytest pytest-cov pytest-ordering
         # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         # Delete once pysat 3.0.0 is released, replace with above
-        pip install numpy scipy pandas xarray sgp4 pyEphem apexpy aacgmv2 portalocker
+        pip install numpy scipy pandas xarray netCDF4 portalocker
+        pip install sgp4 pyEphem apexpy aacgmv2
         pip install --index-url https://test.pypi.org/simple/ pysat==3.0.0rc2
         pip install --no-binary :pysatMagVect: pysatMagVect
     - name: Lint with flake8
