@@ -32,7 +32,7 @@ jobs:
     - name: Set up pysat
       run: |
         mkdir pysatData
-        python -m "import pysat; pysat.params['data_dirs'] = './pysatData'"
+        python -c "import pysat; pysat.params['data_dirs'] = './pysatData'"
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
