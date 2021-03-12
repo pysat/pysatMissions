@@ -11,7 +11,7 @@ class TestBasics():
     def setup(self):
         """Runs before every method to create a clean testing setup."""
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
-                                         sat_id='100', clean_level='clean')
+                                         inst_id='100', clean_level='clean')
 
     def teardown(self):
         """Clean up test environment after tests"""
@@ -19,7 +19,7 @@ class TestBasics():
 
     def test_add_aacgm_coordinates(self):
         """Test adding thermal plasma data to test inst"""
-        self.testInst.custom.attach(mm_magcoord.add_aacgm_coordinates,
+        self.testInst.custom_attach(mm_magcoord.add_aacgm_coordinates,
                                     kwargs={'glat_label': 'latitude',
                                             'glong_label': 'longitude',
                                             'alt_label': 'altitude'})
@@ -34,7 +34,7 @@ class TestBasics():
 
     def test_add_quasi_dipole_coordinates(self):
         """Test adding thermal plasma data to test inst"""
-        self.testInst.custom.attach(mm_magcoord.add_quasi_dipole_coordinates,
+        self.testInst.custom_attach(mm_magcoord.add_quasi_dipole_coordinates,
                                     kwargs={'glat_label': 'latitude',
                                             'glong_label': 'longitude',
                                             'alt_label': 'altitude'})

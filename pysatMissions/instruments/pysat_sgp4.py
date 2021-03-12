@@ -5,14 +5,13 @@ Two Line Elements (TLEs) and SGP4.
 
 """
 
-from __future__ import print_function
-from __future__ import absolute_import
 import datetime as dt
 import functools
 import pandas as pds
 
 import pysat
-
+from pysat import logger
+from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 
 # pysat required parameters
@@ -21,7 +20,7 @@ name = 'sgp4'
 # dictionary of data 'tags' and corresponding description
 tags = {'': 'Satellite simulation data set'}
 # dictionary of satellite IDs, list of corresponding tags
-sat_ids = {'': ['']}
+inst_ids = {'': ['']}
 _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 
@@ -32,11 +31,15 @@ def init(self):
 
     """
 
-    pass
+    self.acknowledgements = ''
+    self.references = ''
+    logger.info(self.acknowledgements)
+
+    return
 
 
-def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
-         TLE1=None, TLE2=None):
+def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
+         TLE1=None, TLE2=None, num_samples=None, freq='1S'):
     """
     Returns data and metadata in the format required by pysat. Generates
     position of satellite in ECI co-ordinates.
@@ -49,7 +52,7 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         File name that contains date in its name.
     tag : string
         Identifies a particular subset of satellite data
-    sat_id : string
+    inst_id : string
         Instrument satellite ID (accepts '' or a number (i.e., '10'), which
         specifies the number of seconds to simulate the satellite)
         (default = '')
@@ -66,12 +69,17 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         First string for Two Line Element. Must be in TLE format
     TLE2 : string
         Second string for Two Line Element. Must be in TLE format
+    num_samples : int
+        Number of samples per day
+    freq : str
+        Uses pandas.frequency string formatting ('1S', etc)
+        (default='1S')
 
     Returns
     -------
-    data : (pandas.DataFrame)
+    data : pandas.DataFrame
         Object containing satellite data
-    meta : (pysat.Meta)
+    meta : pysat.Meta
         Object containing metadata such as column names and units
 
     Example
@@ -100,17 +108,20 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     if TLE2 is not None:
         line2 = TLE2
 
+    if num_samples is None:
+        num_samples = 100
+
     # create satellite from TLEs and assuming a gravity model
     # according to module webpage, wgs72 is common
     satellite = twoline2rv(line1, line2, wgs72)
 
-    # Extract list of times from filenames and sat_id
-    times = mcore._get_times(fnames, sat_id)
+    # Extract list of times from filenames and inst_id
+    times, index, dates = ps_meth.generate_times(fnames, num_samples, freq=freq)
 
     # create list to hold satellite position, velocity
     position = []
     velocity = []
-    for timestep in times:
+    for timestep in index:
         # orbit propagator - computes x,y,z position and velocity
         pos, vel = satellite.propagate(timestep.year, timestep.month,
                                        timestep.day, timestep.hour,
@@ -125,7 +136,7 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                           'velocity_eci_x': velocity[::3],
                           'velocity_eci_y': velocity[1::3],
                           'velocity_eci_z': velocity[2::3]},
-                         index=times)
+                         index=index)
     data.index.name = 'Epoch'
 
     # TODO: add call for GEI/ECEF translation here
@@ -133,38 +144,39 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     return data, meta.copy()
 
 
-list_files = functools.partial(mcore._list_files)
-download = functools.partial(mcore._download)
+list_files = functools.partial(ps_meth.list_files, test_dates=_test_dates)
+download = functools.partial(ps_meth.download)
+clean = functools.partial(mcore._clean)
 
 # create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call
 meta = pysat.Meta()
-meta['Epoch'] = {'units': 'Milliseconds since 1970-1-1',
-                 'Bin_Location': 0.5,
-                 'notes': 'UTC time at middle of geophysical measurement.',
-                 'desc': 'UTC seconds',
-                 'long_name': 'Time index in milliseconds'}
-meta['position_eci_x'] = {'units': 'km',
-                          'long_name': 'ECI x-position',
-                          'desc': 'Earth Centered Inertial x-position of ' +
-                          'satellite.',
-                          'label': 'ECI-X'}
-meta['position_eci_y'] = {'units': 'km',
-                          'long_name': 'ECI y-position',
-                          'desc': 'Earth Centered Inertial y-position of ' +
-                          'satellite.',
-                          'label': 'ECI-Y'}
-meta['position_eci_z'] = {'units': 'km',
-                          'long_name': 'ECI z-position',
-                          'desc': 'Earth Centered Inertial z-position of ' +
-                          'satellite.',
-                          'label': 'ECI-Z'}
-meta['velocity_eci_x'] = {'units': 'km/s',
-                          'desc': 'Satellite velocity along ECI-x',
-                          'long_name': 'Satellite velocity ECI-x'}
-meta['velocity_eci_y'] = {'units': 'km/s',
-                          'desc': 'Satellite velocity along ECI-y',
-                          'long_name': 'Satellite velocity ECI-y'}
-meta['velocity_eci_z'] = {'units': 'km/s',
-                          'desc': 'Satellite velocity along ECI-z',
-                          'long_name': 'Satellite velocity ECI-z'}
+meta['Epoch'] = {
+    meta.labels.units: 'Milliseconds since 1970-1-1',
+    meta.labels.notes: 'UTC time at middle of geophysical measurement.',
+    meta.labels.desc: 'UTC seconds',
+    meta.labels.name: 'Time index in milliseconds'}
+meta['position_eci_x'] = {
+    meta.labels.units: 'km',
+    meta.labels.name: 'ECI x-position',
+    meta.labels.desc: 'Earth Centered Inertial x-position of satellite.'}
+meta['position_eci_y'] = {
+    meta.labels.units: 'km',
+    meta.labels.name: 'ECI y-position',
+    meta.labels.desc: 'Earth Centered Inertial y-position of satellite.'}
+meta['position_eci_z'] = {
+    meta.labels.units: 'km',
+    meta.labels.name: 'ECI z-position',
+    meta.labels.desc: 'Earth Centered Inertial z-position of satellite.'}
+meta['velocity_eci_x'] = {
+    meta.labels.units: 'km/s',
+    meta.labels.desc: 'Satellite velocity along ECI-x',
+    meta.labels.name: 'Satellite velocity ECI-x'}
+meta['velocity_eci_y'] = {
+    meta.labels.units: 'km/s',
+    meta.labels.desc: 'Satellite velocity along ECI-y',
+    meta.labels.name: 'Satellite velocity ECI-y'}
+meta['velocity_eci_z'] = {
+    meta.labels.units: 'km/s',
+    meta.labels.desc: 'Satellite velocity along ECI-z',
+    meta.labels.name: 'Satellite velocity ECI-z'}

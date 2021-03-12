@@ -7,20 +7,19 @@ satellite is in.
 
 """
 
-from __future__ import print_function
-from __future__ import absolute_import
 import datetime as dt
 import functools
 import numpy as np
 
 import ephem
+import pysatMagVect
 import pandas as pds
 import pysat
-import pysatMagVect
 
+from pysat import logger
+from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.methods import magcoord as mm_magcoord
-from pysatMissions.methods import empirical as mm_emp
 from pysatMissions.methods import spacecraft as mm_sc
 
 # pysat required parameters
@@ -29,7 +28,7 @@ name = 'ephem'
 # dictionary of data 'tags' and corresponding description
 tags = {'': 'Satellite simulation data set'}
 # dictionary of satellite IDs, list of corresponding tags
-sat_ids = {'': ['']}
+inst_ids = {'': ['']}
 _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 
@@ -46,33 +45,19 @@ def init(self):
 
     """
 
-    self.custom.attach(mm_magcoord.add_quasi_dipole_coordinates)
-    self.custom.attach(mm_magcoord.add_aacgm_coordinates)
-    self.custom.attach(mm_sc.calculate_ecef_velocity)
-    self.custom.attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
-    # project simulated vectors onto s/c basis
-    # IGRF
-    self.custom.attach(mm_emp.add_igrf)
-    # create metadata to be added along with vector projection
-    in_meta = {'desc': 'IGRF geomagnetic field expressed in the s/c basis.',
-               'units': 'nT'}
-    # project IGRF
-    self.custom.attach(mm_sc.project_ecef_vector_onto_sc,
-                       args=['B_ecef_x', 'B_ecef_y', 'B_ecef_z', 'B_sc_x',
-                             'B_sc_y', 'B_sc_z'],
-                       kwargs={'meta': [in_meta.copy(), in_meta.copy(),
-                                        in_meta.copy()]})
-    # Thermal Ion Parameters
-    self.custom.attach(mm_emp.add_iri_thermal_plasma)
-    # Thermal Neutral parameters
-    self.custom.attach(mm_emp.add_msis)
-    self.custom.attach(mm_emp.add_hwm_winds_and_ecef_vectors)
-    # project total wind vector
-    self.custom.attach(mm_emp.project_hwm_onto_sc)
+    self.custom_attach(mm_magcoord.add_quasi_dipole_coordinates)
+    self.custom_attach(mm_magcoord.add_aacgm_coordinates)
+    self.custom_attach(mm_sc.calculate_ecef_velocity)
+    self.custom_attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
+    self.acknowledgements = ''
+    self.references = ''
+    logger.info(self.acknowledgements)
+
+    return
 
 
-def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
-         TLE1=None, TLE2=None):
+def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
+         TLE1=None, TLE2=None, num_samples=None, freq='1S'):
     """
     Returns data and metadata in the format required by pysat. Generates
     position of satellite in both geographic and ECEF co-ordinates.
@@ -85,7 +70,7 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         File name that contains date in its name.
     tag : string
         Identifies a particular subset of satellite data
-    sat_id : string
+    inst_id : string
         Instrument satellite ID (accepts '' or a number (i.e., '10'), which
         specifies the number of seconds to simulate the satellite)
         (default = '')
@@ -102,17 +87,22 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         First string for Two Line Element. Must be in TLE format
     TLE2 : string
         Second string for Two Line Element. Must be in TLE format
+    num_samples : int
+        Number of samples per day
+    freq : str
+        Uses pandas.frequency string formatting ('1S', etc)
+        (default='1S')
 
     Returns
     -------
-    data : (pandas.DataFrame)
+    data : pandas.DataFrame
         Object containing satellite data
-    meta : (pysat.Meta)
+    meta : pysat.Meta
         Object containing metadata such as column names and units
 
     Example
     -------
-      inst = pysat.Instrument('pysat', 'sgp4',
+      inst = pysat.Instrument('pysat', 'epehm',
           TLE1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
           TLE2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452')
       inst.load(2018, 1)
@@ -133,8 +123,11 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     if TLE2 is not None:
         line2 = TLE2
 
-    # Extract list of times from filenames and sat_id
-    times = mcore._get_times(fnames, sat_id)
+    if num_samples is None:
+        num_samples = 100
+
+    # Extract list of times from filenames and inst_id
+    times, index, dates = ps_meth.generate_times(fnames, num_samples, freq=freq)
 
     # the observer's (ground station) position on the Earth surface
     site = ephem.Observer()
@@ -145,7 +138,7 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     # The first parameter in readtle() is the satellite name
     sat = ephem.readtle('pysat', line1, line2)
     output_params = []
-    for timestep in times:
+    for timestep in index:
         lp = {}
         site.date = timestep
         sat.compute(site)
@@ -160,14 +153,14 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         # sublongitude point
         lp['glong'] = np.degrees(sat.sublong)
         # elevation of sat in m, stored as km
-        lp['alt'] = sat.elevation/1000.
+        lp['alt'] = sat.elevation / 1000.
         # get ECEF position of satellite
         lp['x'], lp['y'], lp['z'] = pysatMagVect.geodetic_to_ecef(lp['glat'],
                                                                   lp['glong'],
                                                                   lp['alt'])
         output_params.append(lp)
 
-    output = pds.DataFrame(output_params, index=times)
+    output = pds.DataFrame(output_params, index=index)
     # modify input object to include calculated parameters
     # put data into DataFrame
     data = pds.DataFrame({'glong': output['glong'],
@@ -180,43 +173,42 @@ def load(fnames, tag=None, sat_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                           'obs_sat_el_angle': output['obs_sat_el_angle'],
                           'obs_sat_slant_range':
                           output['obs_sat_slant_range']},
-                         index=times)
+                         index=index)
     data.index.name = 'Epoch'
 
     return data, meta.copy()
 
 
-list_files = functools.partial(mcore._list_files)
-download = functools.partial(mcore._download)
+list_files = functools.partial(ps_meth.list_files, test_dates=_test_dates)
+download = functools.partial(ps_meth.download)
+clean = functools.partial(mcore._clean)
 
 # create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call
 meta = pysat.Meta()
-meta['Epoch'] = {'units': 'Milliseconds since 1970-1-1',
-                 'Bin_Location': 0.5,
-                 'notes': 'UTC time at middle of geophysical measurement.',
-                 'desc': 'UTC seconds',
-                 'long_name': 'Time index in milliseconds'}
-meta['glong'] = {'units': 'degrees',
-                 'long_name': 'Geodetic longitude',
-                 'desc': 'WGS84 geodetic longitude'}
-meta['glat'] = {'units': 'degrees',
-                'long_name': 'Geodetic latitude',
-                'desc': 'WGS84 geodetic latitude'}
-meta['alt'] = {'units': 'km',
-               'long_name': 'Geodetic height',
-               'desc': "WGS84 height above Earth's surface"}
-meta['position_ecef_x'] = {'units': 'km',
-                           'desc': 'ECEF x co-ordinate of satellite'}
-meta['position_ecef_y'] = {'units': 'km',
-                           'desc': 'ECEF y co-ordinate of satellite'}
-meta['position_ecef_z'] = {'units': 'km',
-                           'desc': 'ECEF z co-ordinate of satellite'}
-meta['obs_sat_az_angle'] = {'units': 'degrees',
-                            'desc': 'Azimuth of satellite from ground station'}
-meta['obs_sat_el_angle'] = {'units': 'degrees',
-                            'desc': 'Elevation of satellite from ground ' +
-                            'station'}
-meta['obs_sat_slant_range'] = {'units': 'km',
-                               'desc': 'Distance of satellite from ground ' +
-                               'station'}
+meta['Epoch'] = {
+    meta.labels.units: 'Milliseconds since 1970-1-1',
+    meta.labels.notes: 'UTC time at middle of geophysical measurement.',
+    meta.labels.desc: 'UTC seconds',
+    meta.labels.name: 'Time index in milliseconds'}
+meta['glong'] = {meta.labels.units: 'degrees',
+                 meta.labels.desc: 'WGS84 geodetic longitude'}
+meta['glat'] = {meta.labels.units: 'degrees',
+                meta.labels.desc: 'WGS84 geodetic latitude'}
+meta['alt'] = {meta.labels.units: 'km',
+               meta.labels.desc: "WGS84 height above Earth's surface"}
+meta['position_ecef_x'] = {meta.labels.units: 'km',
+                           meta.labels.desc: 'ECEF x co-ordinate of satellite'}
+meta['position_ecef_y'] = {meta.labels.units: 'km',
+                           meta.labels.desc: 'ECEF y co-ordinate of satellite'}
+meta['position_ecef_z'] = {meta.labels.units: 'km',
+                           meta.labels.desc: 'ECEF z co-ordinate of satellite'}
+meta['obs_sat_az_angle'] = {
+    meta.labels.units: 'degrees',
+    meta.labels.desc: 'Azimuth of satellite from ground station'}
+meta['obs_sat_el_angle'] = {
+    meta.labels.units: 'degrees',
+    meta.labels.desc: 'Elevation of satellite from ground station'}
+meta['obs_sat_slant_range'] = {
+    meta.labels.units: 'km',
+    meta.labels.desc: 'Distance of satellite from ground station'}
