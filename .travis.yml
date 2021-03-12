@@ -46,7 +46,7 @@ install:
   # - while read requirement; do conda install --yes $requirement; done < requirements.txt1
   # Check for custom numpy version install
   - if [ -z ${NUMPY_VER} ]; then
-      pip install numpy;
+      conda install numpy==1.19.0;
     else
       conda install numpy==$NUMPY_VER;
     fi
