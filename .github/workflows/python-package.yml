@@ -45,9 +45,8 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest --cov=pysatMissions/ --cov-report xml
+        pytest --cov=pysatMissions/
     - name: Publish results to coveralls
-      uses: coverallsapp/github-action@v1.1.2
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: coverage.xml
+      env:
+        GITHUB-TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: coveralls --rcfile=setup.cfg
