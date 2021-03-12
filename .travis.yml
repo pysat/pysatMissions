@@ -61,14 +61,14 @@ install:
   # Custom apexpy install
   - cd ..
   - echo 'cloning apexpy'
-  - git clone --single-branch --branch v3-0-rc1 https://github.com/aburrell/apexpy.git
+  - git clone --single-branch --branch main https://github.com/aburrell/apexpy.git
   - cd ./apexpy
   - python setup.py install >/dev/null
 
   # Prepare modified pysat install
   - cd ..
   - echo 'cloning pysat'
-  - git clone --single-branch --branch main https://github.com/pysat/pysat.git
+  - git clone --single-branch --branch v3-0-rc1 https://github.com/pysat/pysat.git
   - echo 'installing pysat'
   - cd ./pysat
   # set up data directory
