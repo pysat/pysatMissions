@@ -48,6 +48,6 @@ jobs:
         pytest --cov=pysatMissions/
     - name: Publish results to coveralls
       uses: coverallsapp/github-action@v1.1.2
-      env:
+      with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: setup.cfg
