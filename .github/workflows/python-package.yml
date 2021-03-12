@@ -46,3 +46,4 @@ jobs:
     - name: Test with pytest
       run: |
         pytest --cov=pysatMissions/
+        coveralls --rcfile=setup.cfg
