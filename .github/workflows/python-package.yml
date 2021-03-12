@@ -50,5 +50,4 @@ jobs:
       uses: coverallsapp/github-action@v1.1.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        coveralls --rcfile=setup.cfg
+        path-to-lcov: setup.cfg
