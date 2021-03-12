@@ -47,6 +47,7 @@ jobs:
       run: |
         pytest --cov=pysatMissions/
     - name: Publish results to coveralls
-      with:
+      env:
         GITHUB-TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: coveralls --rcfile=setup.cfg
+      run: |
+        coveralls --rcfile=setup.cfg
