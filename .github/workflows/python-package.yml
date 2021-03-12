@@ -25,7 +25,7 @@ jobs:
         python -m pip install flake8 pytest
         # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         # Delete once pysat 3.0.0 is released, replace with above
-        pip install numpy pandas sgp4 pyEphem apexpy aacgmv2 pysatMagVect
+        pip install numpy pandas sgp4 pyEphem apexpy aacgmv2 ommbv
         pip install --index-url https://test.pypi.org/simple/ pysat==3.0.0rc2
     - name: Lint with flake8
       run: |
