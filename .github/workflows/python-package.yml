@@ -13,8 +13,7 @@ jobs:
       matrix:
         python-version: [3.7, 3.8, 3.9]
         include:
-          - name: "NEP 029 minimum versions"
-            python: 3.7
+          - python: 3.6
             env: NUMPY_VER=1.17
 
     steps:
