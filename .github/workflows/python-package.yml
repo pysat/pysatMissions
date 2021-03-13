@@ -12,15 +12,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        python-version: [3.7, 3.8, 3.9]
+        numpy_ver: ['latest']
         include:
           - python: 3.6
             numpy_ver: 1.17
-          - python: 3.7
-            numpy_ver: 1.18
-          - python: 3.8
-            numpy_ver: 1.19
-          - python: 3.9
-            numpy_ver: 1.20
 
     steps:
     - uses: actions/checkout@v2
@@ -36,10 +32,10 @@ jobs:
         pip install -r test_requirements.txt
         # pip install -r requirements.txt
         # Delete once pysat 3.0.0 is released, replace with above
-        if [ -z ${"${NUMPY_VER##*[!0-9]*}"} ]; then
-          pip install numpy==$NUMPY_VER;
-        else
+        if [ ${"${NUMPY_VER}"} == 'latest']; then
           pip install numpy;
+        else
+          pip install numpy==$NUMPY_VER;
         fi
         pip install scipy pandas xarray netCDF4 portalocker dask toolz
         pip install sgp4 pyEphem apexpy aacgmv2
