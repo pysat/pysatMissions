@@ -10,11 +10,11 @@ jobs:
 
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: [3.7, 3.8, 3.9]
         include:
           - python: 3.6
-            env: NUMPY_VER=1.17
 
     steps:
     - uses: actions/checkout@v2
