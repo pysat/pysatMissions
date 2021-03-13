@@ -32,8 +32,7 @@ jobs:
         pip install -r test_requirements.txt
         # pip install -r requirements.txt
         # Delete once pysat 3.0.0 is released, replace with above
-        echo $NUMPY_VER
-        if [ ${"${NUMPY_VER}"} == 'latest']; then
+        if [ ${NUMPY_VER} == 'latest']; then
           pip install numpy;
         else
           pip install numpy==$NUMPY_VER;
