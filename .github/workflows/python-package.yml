@@ -39,8 +39,9 @@ jobs:
           pip install numpy==$NUMPY_VER;
         fi
         pip install scipy pandas xarray netCDF4 portalocker dask toolz
-        pip install sgp4 pyEphem apexpy aacgmv2
+        pip install sgp4 pyEphem aacgmv2
         pip install --index-url https://test.pypi.org/simple/ pysat==3.0.0rc2
+        pip install --no-binary :apexpy: apexpy
         pip install --no-binary :pysatMagVect: pysatMagVect
     - name: Set up pysat
       run: |
