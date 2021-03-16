@@ -39,31 +39,37 @@ jobs:
         pip install -r test_requirements.txt
         # pip install -r requirements.txt
         # Delete once pysat 3.0.0 is released, replace with above
+        python -c "import numpy; print(numpy.__version__)"
         if [ $NUMPY_VER = 'latest' ]; then
           pip install numpy --upgrade;
         else
           pip uninstall numpy
           pip install --no-binary :numpy: numpy==$NUMPY_VER;
         fi
+        python -c "import numpy; print(numpy.__version__)"
         pip install scipy pandas xarray netCDF4 portalocker dask toolz
         pip install sgp4 pyEphem aacgmv2
         pip install --index-url https://test.pypi.org/simple/ pysat==3.0.0rc2
         pip install --no-binary :apexpy: apexpy
         pip install --no-binary :pysatMagVect: pysatMagVect
+
     - name: Set up pysat
       run: |
         mkdir pysatData
         python -c "import pysat; pysat.params['data_dirs'] = './pysatData'"
+
     - name: Check Documentation
       run: |
         sphinx-build -E -b html docs dist/docs
         sphinx-build -b linkcheck docs dist/docs
+
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
     - name: Test with pytest
       run: |
         pytest --cov=pysatMissions/
