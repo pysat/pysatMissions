@@ -17,13 +17,10 @@ jobs:
         include:
           - python-version: 3.7
             numpy_ver: 1.16
-        include:
           - python-version: 3.7
             numpy_ver: 1.17
-        include:
           - python-version: 3.7
             numpy_ver: 1.18
-        include:
           - python-version: 3.7
             numpy_ver: 1.19
 
