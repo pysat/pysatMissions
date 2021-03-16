@@ -42,15 +42,13 @@ jobs:
         if [ $NUMPY_VER = 'latest' ]; then
           pip install numpy --upgrade;
         else
-          pip install --no-cache-dir --no-binary :numpy: numpy==$NUMPY_VER;
+          pip install --no-binary :numpy: numpy==$NUMPY_VER;
         fi
-        python -c "import numpy; print(numpy.__version__)"
         pip install scipy pandas xarray netCDF4 portalocker dask toolz
         pip install sgp4 pyEphem aacgmv2
         pip install --index-url https://test.pypi.org/simple/ pysat==3.0.0rc2
-        pip install --no-binary :apexpy: apexpy
+        pip install --no-binary :all: apexpy
         pip install --no-binary :pysatMagVect: pysatMagVect
-        python -c "import numpy; print(numpy.__version__)"
 
     - name: Set up pysat
       run: |
@@ -71,7 +69,6 @@ jobs:
 
     - name: Test with pytest
       run: |
-        python -c "import numpy; print(numpy.__version__)"
         pytest --cov=pysatMissions/
     - name: Publish results to coveralls
       env:
