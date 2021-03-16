@@ -16,7 +16,7 @@ jobs:
         numpy_ver: [latest]
         include:
           - python-version: 3.7
-            numpy_ver: 1.16
+            numpy_ver: 1.18
 
     name: Python ${{ matrix.python-version }} with numpy ${{ matrix.numpy_ver }}
     steps:
@@ -36,7 +36,7 @@ jobs:
         if [ $NUMPY_VER = 'latest' ]; then
           pip install numpy --upgrade;
         else
-          pip install --only-binary :numpy: numpy==$NUMPY_VER;
+          pip install numpy==$NUMPY_VER;
         fi
         pip install scipy pandas xarray netCDF4 portalocker dask toolz
         pip install sgp4 pyEphem apexpy aacgmv2
