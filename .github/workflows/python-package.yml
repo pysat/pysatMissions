@@ -7,7 +7,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-
+    name: Python ${{ matrix.python-version }} with numpy ${{ numpy_ver }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -16,7 +16,7 @@ jobs:
         numpy_ver: ['latest']
         include:
           - python: 3.7
-            numpy_ver: 1.17
+            numpy_ver: 1.17.1
 
     steps:
     - uses: actions/checkout@v2
