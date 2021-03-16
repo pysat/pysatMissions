@@ -35,7 +35,7 @@ jobs:
         if [ $NUMPY_VER = 'latest' ]; then
           pip install numpy;
         else
-          pip install numpy==$NUMPY_VER;
+          pip install numpy==${{ NUMPY_VER }};
         fi
         pip install scipy pandas xarray netCDF4 portalocker dask toolz
         pip install sgp4 pyEphem apexpy aacgmv2
