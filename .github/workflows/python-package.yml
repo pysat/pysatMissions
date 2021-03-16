@@ -16,7 +16,7 @@ jobs:
         numpy_ver: ['latest']
         include:
           - python: 3.7
-            numpy_ver: 1.17
+            numpy_ver: 1.16
 
     steps:
     - uses: actions/checkout@v2
