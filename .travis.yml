@@ -65,12 +65,8 @@ install:
   - cd ./apexpy
   - python setup.py install >/dev/null
 
-  # Prepare modified pysat install
-  - cd ..
-  - echo 'cloning pysat'
-  - git clone --single-branch --branch v3-0-rc1 https://github.com/pysat/pysat.git
-  - echo 'installing pysat'
-  - cd ./pysat
+  # Prepare pysat install
+  - pip install pysat
   # set up data directory
   - mkdir /home/travis/build/pysatData
   # install pysat
@@ -83,7 +79,6 @@ install:
   - pip install pysatMagVect >/dev/null
 
   # install pysatMissions
-  - cd ../pysatMissions
   - python setup.py install
 
 after_success:
