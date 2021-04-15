@@ -25,9 +25,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r test_requirements.txt
-        pip install -r requirements.txt
+        # pip install -r requirements.txt
         # Manually install for now
-        pip install --no-binary :aacgmv2: aacgmv2
+        pip install pysat
+        pip install sgp4 pyEphem aacgmv2
+        pip install --no-binary :apexpy: apexpy
         pip install --no-binary :pysatMagVect: pysatMagVect
 
     - name: Set up pysat
