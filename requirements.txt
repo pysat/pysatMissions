@@ -3,6 +3,5 @@ numpy
 pandas
 sgp4
 pyEphem
-OMMBV
 apexpy
 aacgmv2
