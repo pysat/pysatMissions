@@ -4,4 +4,3 @@ pandas
 sgp4
 pyEphem
 apexpy
-aacgmv2

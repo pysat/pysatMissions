@@ -26,7 +26,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r test_requirements.txt
         pip install -r requirements.txt
-        # Manually install for now -- needs updates to OMMBV
+        # Manually install for now
+        pip install --no-binary :aacgmv2: aacgmv2
         pip install --no-binary :pysatMagVect: pysatMagVect
 
     - name: Set up pysat
