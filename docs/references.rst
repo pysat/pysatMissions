@@ -46,8 +46,8 @@ Naval Research Laboratory Mass Spectrometer Incoherent Scatter radar Exobase (NR
 
 * Picone, J. M. (2002). NRLMSISE-00 empirical model of the atmosphere: Statistical comparisons and scientific issues. Journal ofGeophysical Research, 107(A12), 1468–SIA 15–16.
 
-**pysatMagVect**
+**OMMBV**
 
 ----
 
-`pysatMagVect <https://github.com/rstoneback/pysatMagVect>`_ calculates Orthogonal Multipole Magnetic Basis Vectors for the earth's magnetic field.
+`OMMBV <https://github.com/rstoneback/OMMBV>`_ calculates Orthogonal Multipole Magnetic Basis Vectors for the earth's magnetic field.
