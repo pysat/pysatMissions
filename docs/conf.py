@@ -20,8 +20,10 @@ from pysatMissions import __version__
 # -- Project information -----------------------------------------------------
 
 project = 'pysatMissions'
-copyright = '2020, Russell Stoneback'
-author = 'Jeff Klenzing \\and Russell Stoneback \\and Angeline Burrell'
+author = ', '.join(['Jeff Klenzing', 'Russell Stoneback', 'Angeline Burrell'])
+copyright = ', '.join(['2021', author])
+title = 'pysatMissions Documentation'
+description = 'Tools for generating simulated instruments in pysat.'
 
 # The short X.Y version
 version = __version__[::-1].partition('.')[2][::-1]
@@ -138,8 +140,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'pysatMissions.tex', 'pysatMissions Documentation',
-     'Jeff Klenzing', 'manual'),
+    (master_doc, 'pysatMissions.tex', title,
+     authors, 'manual'),
 ]
 
 
@@ -148,7 +150,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'pysatMissions', 'pysatMissions Documentation',
+    (master_doc, 'pysatMissions', title,
      [author], 1)
 ]
 
@@ -159,9 +161,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'pysatMissions', 'pysatMissions Documentation',
-     author, 'pysatMissions', 'One line description of project.',
-     'Miscellaneous'),
+    (master_doc, project, title,
+     authors, project, description,
+     'Space Physics'),
 ]
 
 
