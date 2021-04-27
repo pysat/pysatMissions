@@ -141,7 +141,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'pysatMissions.tex', title,
-     authors, 'manual'),
+     author, 'manual'),
 ]
 
 
@@ -162,7 +162,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, project, title,
-     authors, project, description,
+     author, project, description,
      'Space Physics'),
 ]
 
