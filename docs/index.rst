@@ -12,3 +12,4 @@ Welcome to pysatMissions's documentation!
    contributing.rst
    citing.rst
    references.rst
+   history.rst
