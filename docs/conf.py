@@ -40,16 +40,16 @@ release = __version__
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.todo',
-    'sphinx.ext.imgmath',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.napoleon',
-    'numpydoc',
-    'IPython.sphinxext.ipython_console_highlighting'
-]
+extensions = ['sphinx.ext.autodoc',
+              'sphinx.ext.intersphinx',
+              'sphinx.ext.doctest',
+              'sphinx.ext.todo',
+              'sphinx.ext.imgmath',
+              'sphinx.ext.autosummary',
+              'sphinx.ext.napoleon',
+              'numpydoc',
+              'IPython.sphinxext.ipython_console_highlighting',
+              'm2r2']
 
 numpydoc_show_class_members = False
 
