@@ -1,2 +1,4 @@
+m2r2
 numpydoc
 ipython
+sphinx-auto
