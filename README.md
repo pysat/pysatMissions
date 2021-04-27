@@ -7,7 +7,7 @@
 [![Documentation Status](https://readthedocs.org/projects/pysatMissions/badge/?version=latest)](http://pysatMissions.readthedocs.io/en/latest/?badge=latest)
 [![DOI](https://zenodo.org/badge/209358908.svg)](https://zenodo.org/badge/latestdoi/209358908)
 
-[![Build Status](https://travis-ci.com/pysat/pysatMissions.svg?branch=main)](https://travis-ci.com/pysat/pysatMissions)
+[![Build Status](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/pysat/pysatMissions/badge.svg?branch=main)](https://coveralls.io/github/pysat/pysatMissions?branch=main)
 [![Maintainability](https://api.codeclimate.com/v1/badges/83011911691b9d2076e9/maintainability)](https://codeclimate.com/github/pysat/pysatMissions/maintainability)
 
