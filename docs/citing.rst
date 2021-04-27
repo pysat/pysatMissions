@@ -28,4 +28,4 @@ pysatMissions
   version      = {v0.2.1},
   doi          = {10.5281/zenodo.3966508},
   url          = {https://doi.org/10.5281/zenodo.3966508}
-}
+  }
