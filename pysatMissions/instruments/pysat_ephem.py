@@ -37,11 +37,9 @@ def init(self):
     Adds custom calculations to orbit simulation.
     This routine is run once, and only once, upon instantiation.
 
-    Adds quasi-dipole coordiantes, velocity calculation in ECEF coords,
-    adds the attitude vectors of spacecraft assuming x is ram pointing and
-    z is generally nadir, adds ionospheric parameters from the Interational
-    Reference Ionosphere (IRI), as well as simulated winds from the
-    Horiontal Wind Model (HWM).
+    Adds custom routines for quasi-dipole coordinates, velocity calculation in
+    ECEF coords, and attitude vectors of spacecraft (assuming x is ram pointing
+    and z is generally nadir).
 
     """
 

@@ -26,8 +26,9 @@ _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 def init(self):
     """
-    Adds custom calculations to orbit simulation.
-    This routine is run once, and only once, upon instantiation.
+    Initializes the Instrument object with required values.
+
+    Runs once upon instantiation.
 
     """
 
