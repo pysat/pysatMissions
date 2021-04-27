@@ -16,11 +16,12 @@ import pysatMagVect
 import pandas as pds
 import pysat
 
-from pysat import logger
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.methods import magcoord as mm_magcoord
 from pysatMissions.methods import spacecraft as mm_sc
+
+logger = pysat.logger
 
 # pysat required parameters
 platform = 'pysat'
@@ -54,6 +55,10 @@ def init(self):
     return
 
 
+# Clean method
+clean = mcore._clean
+
+
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
          TLE1=None, TLE2=None, num_samples=None, freq='1S'):
     """
@@ -64,14 +69,14 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
 
     Parameters
     ----------
-    fnames : list-like collection
-        File name that contains date in its name.
-    tag : string
-        Identifies a particular subset of satellite data
-    inst_id : string
-        Instrument satellite ID (accepts '' or a number (i.e., '10'), which
-        specifies the number of seconds to simulate the satellite)
-        (default='')
+    fnames : list
+        List of filenames
+    tag : str or NoneType
+        Identifies a particular subset of satellite data (accepts '')
+        (default=None)
+    inst_id : str or NoneType
+        Instrument satellite ID (accepts '')
+        (default=None)
     obs_long: float
         Longitude of the observer on the Earth's surface
         (default=0.)
@@ -81,12 +86,12 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     obs_alt: float
         Altitude of the observer on the Earth's surface
         (default=0.)
-    TLE1 : string
-        First string for Two Line Element. Must be in TLE format
-    TLE2 : string
-        Second string for Two Line Element. Must be in TLE format
-    num_samples : int
-        Number of samples per day
+    TLE1 : string or NoneType
+        First string for Two Line Element. Must be in TLE format (default=None)
+    TLE2 : string or NoneType
+        Second string for Two Line Element. Must be in TLE format (default=None)
+    num_samples : int or NoneType
+        Number of samples per day (default=None)
     freq : str
         Uses pandas.frequency string formatting ('1S', etc)
         (default='1S')
@@ -181,7 +186,6 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
 
 list_files = functools.partial(ps_meth.list_files, test_dates=_test_dates)
 download = functools.partial(ps_meth.download)
-clean = functools.partial(mcore._clean)
 
 # create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call

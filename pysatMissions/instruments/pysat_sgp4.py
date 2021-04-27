@@ -10,9 +10,10 @@ import functools
 import pandas as pds
 
 import pysat
-from pysat import logger
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
+
+logger = pysat.logger
 
 # pysat required parameters
 platform = 'pysat'
@@ -37,6 +38,10 @@ def init(self):
     logger.info(self.acknowledgements)
 
     return
+
+
+# Clean method
+clean = mcore._clean
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
