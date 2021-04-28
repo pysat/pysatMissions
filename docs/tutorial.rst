@@ -23,6 +23,15 @@ registry.
   import pysatMissions
   pysat.utils.registry.register('pysatMissions.instruments.pysat_sgp4')
 
+or, to register all modules in pysat
+
+.. code:: python
+
+  import pysat
+  import pysatMissions
+  pysat.utils.registry.register_by_module(pysatMissions.instruments)
+
+
 **Orbital Propagators**
 
 Currently, two orbital propagators are included with pysatMissions. The
@@ -31,6 +40,17 @@ and velocity in ECI co-ordinates.  The pysat_ephem instrument uses the ephem
 pysat package to calculate an orbit in lat/lon/alt and ECEF co-ordinates.  As
 an example, it also loads a series of empirical models to provide simulated
 magnetic data as an aid for mission planning.
+
+The orbital propagators are activated by the load command, similar to any
+pysat instrument.  To generate a simulated hour of orbital information with a
+one-second cadence, run
+
+.. code:: python
+
+  sgp4 = pysat.Instrument('pysat', 'sgp4', num_samples=3600)
+  sgp4.load(2019, 1)
+
+
 
 **Empirical Models**
 
