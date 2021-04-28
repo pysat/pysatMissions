@@ -47,7 +47,7 @@ one-second cadence, run
 
 .. code:: python
 
-  sgp4 = pysat.Instrument('pysat', 'sgp4', num_samples=3600)
+  sgp4 = pysat.Instrument(inst_module=pysat_sgp4, num_samples=3600)
   sgp4.load(2019, 1)
 
 
