@@ -33,8 +33,14 @@ def init(self):
 
     """
 
-    self.acknowledgements = ''
-    self.references = ''
+    self.acknowledgements = ' '.join((
+        'The project uses the sgp4 library available at',
+        'https://github.com/brandon-rhodes/python-sgp4'))
+    self.references = ' '.join((
+        'Vallado, David A., Paul Crawford, Richard, Hujsak, and T.S. Kelso,',
+        '"Revisiting Spacetrack Report #3," presented at the AIAA/AAS',
+        'Astrodynamics Specialist Conference, Keystone, CO, 2006',
+        'August 21–24.'))
     logger.info(self.acknowledgements)
 
     return

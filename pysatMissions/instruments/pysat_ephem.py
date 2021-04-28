@@ -48,7 +48,9 @@ def init(self):
     self.custom_attach(mm_magcoord.add_aacgm_coordinates)
     self.custom_attach(mm_sc.calculate_ecef_velocity)
     self.custom_attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
-    self.acknowledgements = ''
+    self.acknowledgements = ' '.join((
+        'The project uses the pyephem library available at',
+        'https://github.com/brandon-rhodes/pyephem'))
     self.references = ''
     logger.info(self.acknowledgements)
 
