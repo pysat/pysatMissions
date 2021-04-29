@@ -9,7 +9,7 @@ References
 accessing the Altitude-Adjusted Corrected Geomagnetic (AACGM) coordinates.
 
 * Baker, K. B., & Wing, S. (1989). A new magnetic coordinate system for
-  conjugate studies at high latitudes. Journal ofGeophysical Research, 94,
+  conjugate studies at high latitudes. Journal of Geophysical Research, 94,
   9139–9143.
 * Shepherd, S. G. (2014). Altitude−adjusted corrected geomagnetic coordinates:
   Definition and functional approximations. Journal of Geophysical Research:
@@ -23,10 +23,10 @@ accessing the Altitude-Adjusted Corrected Geomagnetic (AACGM) coordinates.
 calculating magnetic apex coordinates.
 
 * Richmond, A. D. (1995). Ionospheric electrodynamics using magnetic apex
-  coordinates. Journal ofGeomagnetism and Geoelectricity, 47(2), 191–212.
+  coordinates. Journal of Geomagnetism and Geoelectricity, 47(2), 191–212.
 * Emmert, J. T., Richmond, A. D., & Drob, D. P. (2010). A computationally
   compact representation of magnetic-apex and quasi-dipole coordinates with
-  smooth base vectors. Journal ofGeophysical Research, 115, A08322.
+  smooth base vectors. Journal of Geophysical Research, 115, A08322.
   https://doi.org/10.1029/2010JA015326
 * Laundal, K. M., & Richmond, A. D. (2017). Magnetic coordinate systems. Space
   Science Reviews, 206, 27–59

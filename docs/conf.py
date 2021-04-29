@@ -140,7 +140,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'pysatMissions.tex', title,
+    (master_doc, '{:s}.tex'.format(project), title,
      author, 'manual'),
 ]
 
@@ -150,7 +150,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'pysatMissions', title,
+    (master_doc, project, title,
      [author], 1)
 ]
 
