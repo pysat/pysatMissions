@@ -1,9 +1,11 @@
 References
 ==========
 
-**aacgmv2**
+aacgmv2
+-------
 
------------
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1212694.svg
+   :target: https://doi.org/10.5281/zenodo.1212694
 
 `aacgmv2 <https://github.com/aburrell/aacgmv2>`_ is a python library for
 accessing the Altitude-Adjusted Corrected Geomagnetic (AACGM) coordinates.
@@ -15,9 +17,11 @@ accessing the Altitude-Adjusted Corrected Geomagnetic (AACGM) coordinates.
   Definition and functional approximations. Journal of Geophysical Research:
   Space Physics, 119, 7501–7521. https://doi.org/10.1002/2014JA020264
 
-**apexpy**
+apexpy
+------
 
-----------
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1214206.svg
+   :target: https://doi.org/10.5281/zenodo.1214206
 
 `apexpy <https://github.com/aburrell/apexpy>`_ is a python library for
 calculating magnetic apex coordinates.
@@ -31,9 +35,8 @@ calculating magnetic apex coordinates.
 * Laundal, K. M., & Richmond, A. D. (2017). Magnetic coordinate systems. Space
   Science Reviews, 206, 27–59
 
-**pysatMagVect**
-
-----
+pysatMagVect
+------------
 
 `pysatMagVect <https://github.com/rstoneback/pysatMagVect>`_ calculates
 Orthogonal Multipole Magnetic Basis Vectors for the earth's magnetic field.

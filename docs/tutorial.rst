@@ -2,10 +2,11 @@
 Tutorial
 ========
 
-**Set up sgp4 with pysat**
+Set up sgp4 with pysat
+----------------------
 
-The sgp4 instrument within pysatMissions is designed to be run like any pysat
-instrument.  To access, use
+The :ref:`pysat_sgp4` instrument within pysatMissions is designed to be run
+like any pysat instrument.  To access, use
 
 .. code:: python
 
@@ -14,8 +15,7 @@ instrument.  To access, use
 
   sgp4 = pysat.Instrument(inst_module=pysat_sgp4)
 
-For pysat 3.0.0 or greater, this can be permanently added via the instrument
-registry.
+This can be permanently added via the instrument registry.
 
 .. code:: python
 
@@ -32,14 +32,18 @@ or, to register all modules in pysat
   pysat.utils.registry.register_by_module(pysatMissions.instruments)
 
 
-**Orbital Propagators**
+For other instruments, simply replace the module name (in this case, pysat_sgp4)
+with the name of the desired instrument.
+
+Orbital Propagators
+-------------------
 
 Currently, two orbital propagators are included with pysatMissions. The
-pysat_sgp4 instrument uses the wgs72 gravity model to provide satellite position
-and velocity in ECI co-ordinates.  The pysat_ephem instrument uses the ephem
-pysat package to calculate an orbit in lat/lon/alt and ECEF co-ordinates.  As
-an example, it also loads a series of empirical models to provide simulated
-magnetic data as an aid for mission planning.
+:ref:`pysat_sgp4` instrument uses the wgs72 gravity model to provide satellite
+position and velocity in ECI co-ordinates.  The :ref:`pysat_ephem` instrument
+uses the ephem pysat package to calculate an orbit in lat/lon/alt and ECEF
+co-ordinates.  As an example, it also loads a series of empirical models to
+provide simulated magnetic data as an aid for mission planning.
 
 The orbital propagators are activated by the load command, similar to any
 pysat instrument.  To generate a simulated hour of orbital information with a
@@ -52,24 +56,26 @@ one-second cadence, run
 
 
 
-**Empirical Models**
+Empirical Models
+----------------
 
 A number of methods are included to invoke several python wrappers for empirical
 models.  This includes the aacgmv2, apexpy, and pysatMagVect models.  These
 methods can be added to any pysat instrument using the `custom` functions in
-pysat.
+pysat.  The example below adds the aacgmv2 coordinates to one of the test
+instruments in the core pysat package.
 
 .. code:: python
 
   import pysat
   from pysatMissions.methods import magcoord
 
-  ivm = pysat.Instrument(platform='cnofs', name='ivm')
-  ivm.custom_attach(magcoord.add_aacgm_coordinates,
-                    kwargs={'glat_label': 'glat',
-                            'glong_label': 'glon',
-                            'alt_label': 'altitude'})
+  inst = pysat.Instrument(platform='pysat', name='testing')
+  inst.custom_attach(magcoord.add_aacgm_coordinates,
+                     kwargs={'glat_label': 'latitude',
+                             'glong_label': 'longitude',
+                             'alt_label': 'altitude'})
 
-Note that the latitude, longitude, and altitude variable names  of the
-instrument must be specified since they are not identical to the default names
-in the function.
+Note that the latitude, longitude, and altitude variable names of the
+instrument should be specified since the dataset may use different variable
+names from those in the custom function.

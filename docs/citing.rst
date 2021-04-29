@@ -16,11 +16,11 @@ pysatMissions
 .. code-block:: latex
 
   @software{pysatMissions,
-  author       = {Jeff Klenzing and
-                  Russell Stoneback and
-                  Angeline Burrell and
-                  Matthew Depew and
-                  Carey Spence},
+  author       = {Klenzing, Jeff and
+                  Stoneback, Russell and
+                  Burrell, Angeline and
+                  Depew, Matthew and
+                  Spence, Carey},
   title        = {pysat/pysatMissions: Version 0.2.1},
   month        = jul,
   year         = 2020,
