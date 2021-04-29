@@ -12,6 +12,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import json
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
@@ -19,8 +20,10 @@ from pysatMissions import __version__
 
 # -- Project information -----------------------------------------------------
 
+zenodo = json.loads(open('../.zenodo.json').read())
+
 project = 'pysatMissions'
-author = ', '.join(['Jeff Klenzing', 'Russell Stoneback', 'Angeline Burrell'])
+author = ', '.join([x['name'] for x in zenodo['creators']])
 copyright = ', '.join(['2021', author])
 title = 'pysatMissions Documentation'
 description = 'Tools for generating simulated instruments in pysat.'
