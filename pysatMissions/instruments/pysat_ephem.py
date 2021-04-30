@@ -5,6 +5,17 @@ Two Line Elements (TLEs) and ephem. Satellite position is coupled
 to several space science models to simulate the atmosphere the
 satellite is in.
 
+Properties
+----------
+platform
+    'pysat'
+name
+    'ephem'
+tag
+    None supported
+inst_id
+    None supported
+
 """
 
 import datetime as dt

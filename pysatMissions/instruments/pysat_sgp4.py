@@ -3,6 +3,17 @@
 Produces satellite orbit data. Orbit is simulated using
 Two Line Elements (TLEs) and SGP4.
 
+Properties
+----------
+platform
+    'pysat'
+name
+    'sgp4'
+tag
+    None supported
+inst_id
+    None supported
+
 """
 
 import datetime as dt
