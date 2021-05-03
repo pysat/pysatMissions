@@ -17,15 +17,15 @@ pysatMissions uses common Python modules, as well as modules developed by
 and for the Space Physics community.  This module officially supports
 Python 3.7+ and pysat 3.0.0+.
 
- ================ =================
- Common modules   Community modules
- ================ =================
-  numpy            pysat>=3.0.0
-  pandas           aacgmv2
-                   apexpy
-                   pyEphem
-                   sgp4
- ================ =================
+ ================== ===============
+ Community modules   Common modules
+ ================== ===============
+  pysat>=3.0.0       numpy
+  aacgmv2            pandas
+  apexpy
+  pyEphem
+  sgp4
+ ================== ===============
 
 
  Installation Options
