@@ -55,15 +55,27 @@ def init(self):
 
     """
 
-    self.custom_attach(mm_magcoord.add_quasi_dipole_coordinates)
-    self.custom_attach(mm_magcoord.add_aacgm_coordinates)
-    self.custom_attach(mm_sc.calculate_ecef_velocity)
-    self.custom_attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
     self.acknowledgements = ' '.join((
         'The project uses the pyephem library available at',
         'https://github.com/brandon-rhodes/pyephem'))
-    self.references = ''
+    self.references = 'Please contact the pyephem project for references'
     logger.info(self.acknowledgements)
+
+    return
+
+
+def preprocess(self):
+    """
+    Add modeled magnetic field values and attitude vectors to spacecraft
+
+    Runs after load is invoked.
+
+    """
+
+    mm_magcoord.add_quasi_dipole_coordinates(self)
+    mm_magcoord.add_aacgm_coordinates(self)
+    mm_sc.calculate_ecef_velocity(self)
+    mm_sc.add_ram_pointing_sc_attitude_vectors(self)
 
     return
 
