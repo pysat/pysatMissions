@@ -12,6 +12,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import json
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
@@ -19,9 +20,13 @@ from pysatMissions import __version__
 
 # -- Project information -----------------------------------------------------
 
+zenodo = json.loads(open('../.zenodo.json').read())
+
 project = 'pysatMissions'
-copyright = '2020, Russell Stoneback'
-author = 'Jeff Klenzing \\and Russell Stoneback \\and Angeline Burrell'
+author = ', '.join([x['name'] for x in zenodo['creators']])
+copyright = ', '.join(['2021', author])
+title = 'pysatMissions Documentation'
+description = 'Tools for generating simulated instruments in pysat.'
 
 # The short X.Y version
 version = __version__[::-1].partition('.')[2][::-1]
@@ -38,16 +43,16 @@ release = __version__
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.todo',
-    'sphinx.ext.imgmath',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.napoleon',
-    'numpydoc',
-    'IPython.sphinxext.ipython_console_highlighting'
-]
+extensions = ['sphinx.ext.autodoc',
+              'sphinx.ext.intersphinx',
+              'sphinx.ext.doctest',
+              'sphinx.ext.todo',
+              'sphinx.ext.imgmath',
+              'sphinx.ext.autosummary',
+              'sphinx.ext.napoleon',
+              'numpydoc',
+              'IPython.sphinxext.ipython_console_highlighting',
+              'm2r2']
 
 numpydoc_show_class_members = False
 
@@ -84,7 +89,7 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -138,8 +143,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'pysatMissions.tex', 'pysatMissions Documentation',
-     'Jeff Klenzing', 'manual'),
+    (master_doc, '{:s}.tex'.format(project), title,
+     author, 'manual'),
 ]
 
 
@@ -148,7 +153,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'pysatMissions', 'pysatMissions Documentation',
+    (master_doc, project, title,
      [author], 1)
 ]
 
@@ -159,9 +164,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'pysatMissions', 'pysatMissions Documentation',
-     author, 'pysatMissions', 'One line description of project.',
-     'Miscellaneous'),
+    (master_doc, project, title,
+     author, project, description,
+     'Space Physics'),
 ]
 
 

@@ -1,4 +1,4 @@
-pysat
+pysat>=3.0
 numpy
 pandas
 sgp4

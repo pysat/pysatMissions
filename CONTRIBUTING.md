@@ -48,9 +48,9 @@ To set up `pysatMissions` for local development:
     git checkout -b name-of-your-bugfix-or-feature
 
    Now you can make your changes locally. Tests for new instruments are
-   performed automatically.  Tests for custom functions should be added to the
-   appropriately named file in ``pysatMissions/tests``.  For example, the averaging routines in avg.py are tested in ``pysatMissions/tests/test_avg.py``.  If no
-   test file exists, then you should create one.  This testing uses pytest, which
+   performed automatically.  Tests for custom functions should be added to
+   the appropriately named file in ``pysatMissions/tests``.  If no test
+   file exists, then you should create one.  This testing uses pytest, which
    will run tests on any python file in the test directory that starts with
    ``test_``.
 

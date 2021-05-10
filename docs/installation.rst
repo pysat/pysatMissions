@@ -2,45 +2,57 @@
 Installation
 ============
 
-**Starting from scratch**
+The following instructions will allow you to install pysatMissions.
 
-----
+Prerequisites
+-------------
 
-Python and associated packages for science are freely available. Convenient science python package setups are available from https://www.python.org/ and `Anaconda <https://www.anaconda.com/distribution/>`_. Anaconda also includes a developer environment. Core science packages such as numpy, scipy, pandas and many others may also be installed directly via pip or your favorite package manager.
-
-For educational users, developer environments from `Jet Brains <https://www.jetbrains.com/student/>`_ are available for free.
-
-
-**pysatMissions**
-
-----
-
-pysatMissions itself may be installed from a terminal command line via:
-
-.. code-block:: console
-
-   pip install pysatMissions
-
-Note that pysatMissions requires pysat to interact with the instruments and models here.  [Full Documentation for main package](http://pysat.readthedocs.io/en/latest/)
+.. image:: figures/poweredbypysat.png
+    :width: 150px
+    :align: right
+    :alt: powered by pysat Logo, blue planet with orbiting python and the logo superimposed
 
 
-**Note: pre-1.0.0 version**
+pysatMissions uses common Python modules, as well as modules developed by
+and for the Space Physics community.  This module officially supports
+Python 3.7+ and pysat 3.0.0+.
 
-----
+ ================== ===============
+ Community modules   Common modules
+ ================== ===============
+  pysat>=3.0.0       numpy
+  aacgmv2            pandas
+  apexpy
+  pyEphem
+  sgp4
+ ================== ===============
 
-pysatMissions is currently in an initial development phase.  Much of the API is being built off of the upcoming pysat 3.0.0 software in order to streamline the usage and test coverage.  This version of pysat is planned for release later this year.  Currently, you can access the develop version of this through github:
 
-.. code-block:: console
+ Installation Options
+ --------------------
 
-   git clone https://github.com/pysat/pysat.git
-   cd pysat
-   git checkout develop-3
-   python setup.py install
+ 1. Clone the git repository
+ ::
 
-It should be noted that this is a working branch and is subject to change.
 
-**A note on empirical models**
+    git clone https://github.com/pysat/pysatMissions.git
 
-----
 
-pysatMissions allows users to interact with a number of upper atmospheric empirical models through the pyglow package. However, pyglow currently requires manual install through git. While pysatMissions can be installed and used without pyglow, it should be installed by the user to access the pyglow methods. Please follow the install instructions at https://github.com/timduly4/pyglow.
+ 2. Install pysatMissions:
+    Change directories into the repository folder and run the setup.py file.
+    There are a few ways you can do this:
+
+    A. Install on the system (root privileges required)::
+
+
+         sudo python setup.py install
+
+    B. Install at the user level::
+
+
+         python setup.py install --user
+
+    C. Install with the intent to develop locally::
+
+
+         python setup.py develop --user

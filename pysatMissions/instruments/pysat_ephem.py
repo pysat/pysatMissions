@@ -5,6 +5,17 @@ Two Line Elements (TLEs) and ephem. Satellite position is coupled
 to several space science models to simulate the atmosphere the
 satellite is in.
 
+Properties
+----------
+platform
+    'pysat'
+name
+    'ephem'
+tag
+    None supported
+inst_id
+    None supported
+
 """
 
 import datetime as dt
@@ -16,11 +27,12 @@ import pysatMagVect
 import pandas as pds
 import pysat
 
-from pysat import logger
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.methods import magcoord as mm_magcoord
 from pysatMissions.methods import spacecraft as mm_sc
+
+logger = pysat.logger
 
 # pysat required parameters
 platform = 'pysat'
@@ -37,23 +49,39 @@ def init(self):
     Adds custom calculations to orbit simulation.
     This routine is run once, and only once, upon instantiation.
 
-    Adds quasi-dipole coordiantes, velocity calculation in ECEF coords,
-    adds the attitude vectors of spacecraft assuming x is ram pointing and
-    z is generally nadir, adds ionospheric parameters from the Interational
-    Reference Ionosphere (IRI), as well as simulated winds from the
-    Horiontal Wind Model (HWM).
+    Adds custom routines for quasi-dipole coordinates, velocity calculation in
+    ECEF coords, and attitude vectors of spacecraft (assuming x is ram pointing
+    and z is generally nadir).
 
     """
 
-    self.custom_attach(mm_magcoord.add_quasi_dipole_coordinates)
-    self.custom_attach(mm_magcoord.add_aacgm_coordinates)
-    self.custom_attach(mm_sc.calculate_ecef_velocity)
-    self.custom_attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
-    self.acknowledgements = ''
-    self.references = ''
+    self.acknowledgements = ' '.join((
+        'The project uses the pyephem library available at',
+        'https://github.com/brandon-rhodes/pyephem'))
+    self.references = 'Please contact the pyephem project for references'
     logger.info(self.acknowledgements)
 
     return
+
+
+def preprocess(self):
+    """
+    Add modeled magnetic field values and attitude vectors to spacecraft
+
+    Runs after load is invoked.
+
+    """
+
+    mm_magcoord.add_quasi_dipole_coordinates(self)
+    mm_magcoord.add_aacgm_coordinates(self)
+    mm_sc.calculate_ecef_velocity(self)
+    mm_sc.add_ram_pointing_sc_attitude_vectors(self)
+
+    return
+
+
+# Clean method
+clean = mcore._clean
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
@@ -66,29 +94,29 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
 
     Parameters
     ----------
-    fnames : list-like collection
-        File name that contains date in its name.
-    tag : string
-        Identifies a particular subset of satellite data
-    inst_id : string
-        Instrument satellite ID (accepts '' or a number (i.e., '10'), which
-        specifies the number of seconds to simulate the satellite)
-        (default = '')
+    fnames : list
+        List of filenames
+    tag : str or NoneType
+        Identifies a particular subset of satellite data (accepts '')
+        (default=None)
+    inst_id : str or NoneType
+        Instrument satellite ID (accepts '')
+        (default=None)
     obs_long: float
         Longitude of the observer on the Earth's surface
-        (default = 0.)
+        (default=0.)
     obs_lat: float
         Latitude of the observer on the Earth's surface
-        (default = 0.)
+        (default=0.)
     obs_alt: float
         Altitude of the observer on the Earth's surface
-        (default = 0.)
-    TLE1 : string
-        First string for Two Line Element. Must be in TLE format
-    TLE2 : string
-        Second string for Two Line Element. Must be in TLE format
-    num_samples : int
-        Number of samples per day
+        (default=0.)
+    TLE1 : string or NoneType
+        First string for Two Line Element. Must be in TLE format (default=None)
+    TLE2 : string or NoneType
+        Second string for Two Line Element. Must be in TLE format (default=None)
+    num_samples : int or NoneType
+        Number of samples per day (default=None)
     freq : str
         Uses pandas.frequency string formatting ('1S', etc)
         (default='1S')
@@ -102,10 +130,12 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
 
     Example
     -------
-      inst = pysat.Instrument('pysat', 'epehm',
-          TLE1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
-          TLE2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452')
-      inst.load(2018, 1)
+    ::
+
+          TLE1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'
+          TLE2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'
+          inst = pysat.Instrument('pysat', 'ephem', TLE1=TLE1, TLE2=TLE2)
+          inst.load(2018, 1)
 
     """
 
@@ -181,7 +211,6 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
 
 list_files = functools.partial(ps_meth.list_files, test_dates=_test_dates)
 download = functools.partial(ps_meth.download)
-clean = functools.partial(mcore._clean)
 
 # create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call

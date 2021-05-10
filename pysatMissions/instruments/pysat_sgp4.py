@@ -3,6 +3,17 @@
 Produces satellite orbit data. Orbit is simulated using
 Two Line Elements (TLEs) and SGP4.
 
+Properties
+----------
+platform
+    'pysat'
+name
+    'sgp4'
+tag
+    None supported
+inst_id
+    None supported
+
 """
 
 import datetime as dt
@@ -10,9 +21,10 @@ import functools
 import pandas as pds
 
 import pysat
-from pysat import logger
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
+
+logger = pysat.logger
 
 # pysat required parameters
 platform = 'pysat'
@@ -26,16 +38,27 @@ _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 def init(self):
     """
-    Adds custom calculations to orbit simulation.
-    This routine is run once, and only once, upon instantiation.
+    Initializes the Instrument object with required values.
+
+    Runs once upon instantiation.
 
     """
 
-    self.acknowledgements = ''
-    self.references = ''
+    self.acknowledgements = ' '.join((
+        'The project uses the sgp4 library available at',
+        'https://github.com/brandon-rhodes/python-sgp4'))
+    self.references = ' '.join((
+        'Vallado, David A., Paul Crawford, Richard, Hujsak, and T.S. Kelso,',
+        '"Revisiting Spacetrack Report #3," presented at the AIAA/AAS',
+        'Astrodynamics Specialist Conference, Keystone, CO, 2006',
+        'August 21–24.'))
     logger.info(self.acknowledgements)
 
     return
+
+
+# Clean method
+clean = mcore._clean
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
@@ -55,16 +78,16 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     inst_id : string
         Instrument satellite ID (accepts '' or a number (i.e., '10'), which
         specifies the number of seconds to simulate the satellite)
-        (default = '')
+        (default='')
     obs_long: float
         Longitude of the observer on the Earth's surface
-        (default = 0.)
+        (default=0.)
     obs_lat: float
         Latitude of the observer on the Earth's surface
-        (default = 0.)
+        (default=0.)
     obs_alt: float
         Altitude of the observer on the Earth's surface
-        (default = 0.)
+        (default=0.)
     TLE1 : string
         First string for Two Line Element. Must be in TLE format
     TLE2 : string
@@ -84,10 +107,12 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
 
     Example
     -------
-      inst = pysat.Instrument('pysat', 'sgp4',
-          TLE1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
-          TLE2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452')
-      inst.load(2018, 1)
+    ::
+
+          TLE1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'
+          TLE2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'
+          inst = pysat.Instrument('pysat', 'sgp4', TLE1=TLE1, TLE2=TLE2)
+          inst.load(2018, 1)
 
     """
 
