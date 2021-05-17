@@ -5,15 +5,15 @@ Tutorial
 Set up sgp4 with pysat
 ----------------------
 
-The :ref:`pysat_sgp4` instrument within pysatMissions is designed to be run
+The :ref:`missions_sgp4` instrument within pysatMissions is designed to be run
 like any pysat instrument.  To access, use
 
 .. code:: python
 
   import pysat
-  from pysatMissions.instruments import pysat_sgp4
+  from pysatMissions.instruments import missions_sgp4
 
-  sgp4 = pysat.Instrument(inst_module=pysat_sgp4)
+  sgp4 = pysat.Instrument(inst_module=missions_sgp4)
 
 This can be permanently added via the instrument registry.
 
@@ -21,7 +21,7 @@ This can be permanently added via the instrument registry.
 
   import pysat
   import pysatMissions
-  pysat.utils.registry.register('pysatMissions.instruments.pysat_sgp4')
+  pysat.utils.registry.register('pysatMissions.instruments.missions_sgp4')
 
 or, to register all modules in pysat
 
@@ -32,15 +32,15 @@ or, to register all modules in pysat
   pysat.utils.registry.register_by_module(pysatMissions.instruments)
 
 
-For other instruments, simply replace the module name (in this case, pysat_sgp4)
+For other instruments, simply replace the module name (in this case, missions_sgp4)
 with the name of the desired instrument.
 
 Orbital Propagators
 -------------------
 
 Currently, two orbital propagators are included with pysatMissions. The
-:ref:`pysat_sgp4` instrument uses the wgs72 gravity model to provide satellite
-position and velocity in ECI co-ordinates.  The :ref:`pysat_ephem` instrument
+:ref:`missions_sgp4` instrument uses the wgs72 gravity model to provide satellite
+position and velocity in ECI co-ordinates.  The :ref:`missions_ephem` instrument
 uses the ephem pysat package to calculate an orbit in lat/lon/alt and ECEF
 co-ordinates.  As an example, it also loads a series of empirical models to
 provide simulated magnetic data as an aid for mission planning.
@@ -51,7 +51,7 @@ one-second cadence, run
 
 .. code:: python
 
-  sgp4 = pysat.Instrument(inst_module=pysat_sgp4, num_samples=3600)
+  sgp4 = pysat.Instrument(inst_module=missions_sgp4, num_samples=3600)
   sgp4.load(2019, 1)
 
 

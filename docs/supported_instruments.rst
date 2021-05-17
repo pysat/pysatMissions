@@ -1,18 +1,18 @@
 Supported Instruments
 =====================
 
-.. _pysat_ephem:
+.. _missions_ephem:
 
 Pysat ephem
 -----------
 
-.. automodule:: pysatMissions.instruments.pysat_ephem
+.. automodule:: pysatMissions.instruments.missions_ephem
    :members:
 
-.. _pysat_sgp4:
+.. _missions_sgp4:
 
 Pysat SGP4
 ----------
 
-.. automodule:: pysatMissions.instruments.pysat_sgp4
+.. automodule:: pysatMissions.instruments.missions_sgp4
    :members:
