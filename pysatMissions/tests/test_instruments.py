@@ -1,3 +1,5 @@
+import datetime as dt
+import numpy as np
 import tempfile
 
 import pytest
@@ -66,3 +68,21 @@ class TestInstruments(InstTestClass):
         pysat.params.data['data_dirs'] = self.saved_path
         self.tempdir.cleanup()
         del self.inst_loc, self.saved_path, self.tempdir
+
+    # Custom package unit tests can be added here
+
+    @pytest.mark.parametrize("inst_dict", [x for x in instruments['download']])
+    @pytest.mark.parametrize("kwarg,output", [(None, 1), ('10s', 10)])
+    def test_inst_cadence(self, inst_dict, kwarg, output):
+        """Test operation of cadence keyword, including default behavior"""
+
+        if kwarg:
+            self.test_inst = pysat.Instrument(
+                inst_module=inst_dict['inst_module'], cadence=kwarg)
+        else:
+            self.test_inst = pysat.Instrument(
+                inst_module=inst_dict['inst_module'])
+
+        self.test_inst.load(2019, 1)
+        cadence = np.diff(self.test_inst.data.index.to_pydatetime())
+        assert np.all(cadence == dt.timedelta(seconds=output))

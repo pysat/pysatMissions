@@ -85,7 +85,7 @@ clean = mcore._clean
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
-         TLE1=None, TLE2=None, num_samples=None, freq='1S'):
+         TLE1=None, TLE2=None, num_samples=None, cadence='1S'):
     """
     Returns data and metadata in the format required by pysat. Generates
     position of satellite in both geographic and ECEF co-ordinates.
@@ -117,7 +117,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         Second string for Two Line Element. Must be in TLE format (default=None)
     num_samples : int or NoneType
         Number of samples per day (default=None)
-    freq : str
+    cadence : str
         Uses pandas.frequency string formatting ('1S', etc)
         (default='1S')
 
@@ -157,7 +157,8 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         num_samples = 100
 
     # Extract list of times from filenames and inst_id
-    times, index, dates = ps_meth.generate_times(fnames, num_samples, freq=freq)
+    times, index, dates = ps_meth.generate_times(fnames, num_samples,
+                                                 freq=cadence)
 
     # the observer's (ground station) position on the Earth surface
     site = ephem.Observer()
