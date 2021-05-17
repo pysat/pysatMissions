@@ -6,7 +6,7 @@ Two Line Elements (TLEs) and SGP4.
 Properties
 ----------
 platform
-    'pysat'
+    'missions'
 name
     'sgp4'
 tag
@@ -27,7 +27,7 @@ from pysatMissions.instruments import _core as mcore
 logger = pysat.logger
 
 # pysat required parameters
-platform = 'pysat'
+platform = 'missions'
 name = 'sgp4'
 # dictionary of data 'tags' and corresponding description
 tags = {'': 'Satellite simulation data set'}
