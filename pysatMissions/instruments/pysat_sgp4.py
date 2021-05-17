@@ -62,7 +62,7 @@ clean = mcore._clean
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
-         TLE1=None, TLE2=None, num_samples=None, freq='1S'):
+         TLE1=None, TLE2=None, num_samples=None, cadence='1S'):
     """
     Returns data and metadata in the format required by pysat. Generates
     position of satellite in ECI co-ordinates.
@@ -94,7 +94,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         Second string for Two Line Element. Must be in TLE format
     num_samples : int
         Number of samples per day
-    freq : str
+    cadence : str
         Uses pandas.frequency string formatting ('1S', etc)
         (default='1S')
 
@@ -141,7 +141,8 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     satellite = twoline2rv(line1, line2, wgs72)
 
     # Extract list of times from filenames and inst_id
-    times, index, dates = ps_meth.generate_times(fnames, num_samples, freq=freq)
+    times, index, dates = ps_meth.generate_times(fnames, num_samples,
+                                                 freq=cadence)
 
     # create list to hold satellite position, velocity
     position = []
