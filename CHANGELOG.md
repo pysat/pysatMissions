@@ -2,11 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.3.0] - 2020-12-03
+## [0.3.0] - 2021-05-17
 - Update sat_id to inst_id for pysat 3.0 compatibility
 - migrate pyglow interface to pysatIncubator
 - Style updates for consistency with pysat 3.0
   - Use `cadence` instead of `freq`
+  - Use 'missions' as the platform name ('pysat' now reserved for core code)
 - Migrate CI testing to Github Actions
 
 ## [0.2.1] - 2020-07-29

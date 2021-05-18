@@ -3,8 +3,8 @@ Introduction
 ============
 
 pysatMissions allows users to run build simulated satellites for Two-Line
-Elements (TLE) and add empirical data.  It includes the pysat_ephem and
-pysat_sgp4 instrument modules which can be imported into pysat.
+Elements (TLE) and add empirical data.  It includes the missions_ephem and
+missions_sgp4 instrument modules which can be imported into pysat.
 
 Main Features
 -------------

@@ -8,7 +8,7 @@ satellite is in.
 Properties
 ----------
 platform
-    'pysat'
+    'missions'
 name
     'ephem'
 tag
@@ -35,7 +35,7 @@ from pysatMissions.methods import spacecraft as mm_sc
 logger = pysat.logger
 
 # pysat required parameters
-platform = 'pysat'
+platform = 'missions'
 name = 'ephem'
 # dictionary of data 'tags' and corresponding description
 tags = {'': 'Satellite simulation data set'}
