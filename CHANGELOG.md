@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - Use `cadence` instead of `freq`
   - Use 'missions' as the platform name ('pysat' now reserved for core code)
 - Migrate CI testing to Github Actions
+- Use OMMBV instead of pysatMagVect
 
 ## [0.2.1] - 2020-07-29
 - Use conda to manage Travis CI environment
