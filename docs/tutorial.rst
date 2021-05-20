@@ -60,7 +60,7 @@ Empirical Models
 ----------------
 
 A number of methods are included to invoke several python wrappers for empirical
-models.  This includes the aacgmv2, apexpy, and pysatMagVect models.  These
+models.  This includes the aacgmv2, apexpy, and OMMBV models.  These
 methods can be added to any pysat instrument using the `custom` functions in
 pysat.  The example below adds the aacgmv2 coordinates to one of the test
 instruments in the core pysat package.
