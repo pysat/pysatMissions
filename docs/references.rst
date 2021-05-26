@@ -35,8 +35,8 @@ calculating magnetic apex coordinates.
 * Laundal, K. M., & Richmond, A. D. (2017). Magnetic coordinate systems. Space
   Science Reviews, 206, 27–59
 
-pysatMagVect
+OMMBV
 ------------
 
-`pysatMagVect <https://github.com/rstoneback/pysatMagVect>`_ calculates
+`OMMBV <https://github.com/rstoneback/OMMBV>`_ calculates
 Orthogonal Multipole Magnetic Basis Vectors for the earth's magnetic field.

@@ -27,7 +27,7 @@ jobs:
         pip install -r test_requirements.txt
         pip install -r requirements.txt
         # Manual installs required
-        pip install --no-binary :pysatMagVect: pysatMagVect
+        pip install --no-binary :OMMBV: OMMBV
 
     - name: Set up pysat
       run: |
