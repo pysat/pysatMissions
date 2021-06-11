@@ -1,7 +1,7 @@
-pysat>=3.0
-numpy
-pandas
-sgp4
-pyEphem
 apexpy
 aacgmv2
+numpy
+pandas
+pysat>=3.0
+pyEphem
+sgp4
