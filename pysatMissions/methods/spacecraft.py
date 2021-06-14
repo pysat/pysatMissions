@@ -40,13 +40,13 @@ def add_ram_pointing_sc_attitude_vectors(inst):
 
     """
 
-    # ram pointing is along velocity vector
+    # Ram pointing is along velocity vector
     inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'] = \
         OMMBV.normalize_vector(inst['velocity_ecef_x'],
                                inst['velocity_ecef_y'],
                                inst['velocity_ecef_z'])
 
-    # begin with z along Nadir (towards Earth)
+    # Begin with z along Nadir (towards Earth)
     # if orbit isn't perfectly circular, then the s/c z vector won't
     # point exactly along nadir. However, nadir pointing is close enough
     # to the true z (in the orbital plane) that we can use it to get y,
@@ -65,13 +65,13 @@ def add_ram_pointing_sc_attitude_vectors(inst):
                             inst['sc_xhat_ecef_x'],
                             inst['sc_xhat_ecef_y'],
                             inst['sc_xhat_ecef_z'])
-    # normalize since Xhat and Zhat from above may not be orthogonal
+    # Normalize since Xhat and Zhat from above may not be orthogonal
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
         OMMBV.normalize_vector(inst['sc_yhat_ecef_x'],
                                inst['sc_yhat_ecef_y'],
                                inst['sc_yhat_ecef_z'])
 
-    # strictly, need to recalculate Zhat so that it is consistent with RHS
+    # Strictly, need to recalculate Zhat so that it is consistent with RHS
     # just created
     # Z = X x Y
     inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \

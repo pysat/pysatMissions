@@ -136,7 +136,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     if num_samples is None:
         num_samples = 100
 
-    # create satellite from TLEs and assuming a gravity model
+    # Create satellite from TLEs and assuming a gravity model
     # according to module webpage, wgs72 is common
     satellite = twoline2rv(line1, line2, wgs72)
 
@@ -144,7 +144,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     times, index, dates = ps_meth.generate_times(fnames, num_samples,
                                                  freq=cadence)
 
-    # create list to hold satellite position, velocity
+    # Create list to hold satellite position, velocity
     position = []
     velocity = []
     for timestep in index:
@@ -155,7 +155,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         position.extend(pos)
         velocity.extend(vel)
 
-    # put data into DataFrame
+    # Put data into DataFrame
     data = pds.DataFrame({'position_eci_x': position[::3],
                           'position_eci_y': position[1::3],
                           'position_eci_z': position[2::3],
@@ -174,7 +174,7 @@ list_files = functools.partial(ps_meth.list_files, test_dates=_test_dates)
 download = functools.partial(ps_meth.download)
 clean = functools.partial(mcore._clean)
 
-# create metadata corresponding to variables in load routine just above
+# Create metadata corresponding to variables in load routine just above
 # made once here rather than regenerate every load call
 meta = pysat.Meta()
 meta['Epoch'] = {

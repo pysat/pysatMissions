@@ -147,7 +147,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                      '48567-4 0  9998'))
     line2 = ''.join(('2 25544  51.6402 181.0633 0004018  88.8954  22.2246 ',
                      '15.54059185113452'))
-    # use ISS defaults if not provided by user
+    # Use ISS defaults if not provided by user
     if TLE1 is not None:
         line1 = TLE1
     if TLE2 is not None:
@@ -160,7 +160,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     times, index, dates = ps_meth.generate_times(fnames, num_samples,
                                                  freq=cadence)
 
-    # the observer's (ground station) position on the Earth surface
+    # The observer's (ground station) position on the Earth surface
     site = ephem.Observer()
     site.lon = str(obs_long)
     site.lat = str(obs_lat)
@@ -192,8 +192,8 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         output_params.append(lp)
 
     output = pds.DataFrame(output_params, index=index)
-    # modify input object to include calculated parameters
-    # put data into DataFrame
+    # Modify input object to include calculated parameters
+    # Put data into DataFrame
     data = pds.DataFrame({'glong': output['glong'],
                           'glat': output['glat'],
                           'alt': output['alt'],
