@@ -16,22 +16,24 @@ import json
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
-from pysatMissions import __version__
 
 # -- Project information -----------------------------------------------------
 
-zenodo = json.loads(open('../.zenodo.json').read())
-
 project = 'pysatMissions'
+title = '{:s} Documentation'.format(project)
+zenodo = json.loads(open('../.zenodo.json').read())
 author = ', '.join([x['name'] for x in zenodo['creators']])
 copyright = ', '.join(['2021', author])
-title = 'pysatMissions Documentation'
 description = 'Tools for generating simulated instruments in pysat.'
 
 # The short X.Y version
-version = __version__[::-1].partition('.')[2][::-1]
-# The full version, including alpha/beta/rc tags
-release = __version__
+module_dir = os.path.split(os.path.abspath(os.path.dirname(__file__)))[0]
+version_file = os.path.join(module_dir, project, 'version.txt')
+with open(version_file, 'r') as fin:
+    version = fin.read().strip()
+
+# The full version, including alpha/beta/rc tags.
+release = '{:s}-alpha'.format(version)
 
 
 # -- General configuration ---------------------------------------------------
