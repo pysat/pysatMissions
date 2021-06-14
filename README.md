@@ -27,6 +27,20 @@ Documentation
 
 # Installation
 
+### Prerequisites
+
+pysatMissions uses common Python modules, as well as modules developed by
+and for the Space Physics community.  This module officially supports
+Python 3.7+.  
+
+| Common modules | Community modules |
+| -------------- | ----------------- |
+| numpy          | apexpy            |
+| pandas         | aacgmv2           |
+| pyEphem        | OMMBV             |
+| sgp4           | pysat>=3.0        |
+
+
 One way to install is through pip.  Just type
 
 ```
