@@ -147,6 +147,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                      '48567-4 0  9998'))
     line2 = ''.join(('2 25544  51.6402 181.0633 0004018  88.8954  22.2246 ',
                      '15.54059185113452'))
+
     # Use ISS defaults if not provided by user
     if TLE1 is not None:
         line1 = TLE1
@@ -173,19 +174,22 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         lp = {}
         site.date = timestep
         sat.compute(site)
-        # parameters relative to the ground station
+
+        # Parameters relative to the ground station
         lp['obs_sat_az_angle'] = ephem.degrees(sat.az)
         lp['obs_sat_el_angle'] = ephem.degrees(sat.alt)
-        # total distance away
+
+        # Total distance between transmitter and receiver
         lp['obs_sat_slant_range'] = sat.range
-        # satellite location
-        # sub latitude point
+
+        # Satellite location (sub-latitude and sub-longitude)
         lp['glat'] = np.degrees(sat.sublat)
-        # sublongitude point
         lp['glong'] = np.degrees(sat.sublong)
-        # elevation of sat in m, stored as km
-        lp['alt'] = sat.elevation / 1000.
-        # get ECEF position of satellite
+
+        # Elevation of satellite in m, converted to km
+        lp['alt'] = sat.elevation / 1000.0
+
+        # Get ECEF position of satellite
         lp['x'], lp['y'], lp['z'] = OMMBV.geodetic_to_ecef(lp['glat'],
                                                            lp['glong'],
                                                            lp['alt'])
@@ -213,8 +217,8 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
 list_files = functools.partial(ps_meth.list_files, test_dates=_test_dates)
 download = functools.partial(ps_meth.download)
 
-# create metadata corresponding to variables in load routine just above
-# made once here rather than regenerate every load call
+# Create metadata corresponding to variables in load routine just above.
+# Defined here here rather than above to avoid regeneration at every load call.
 meta = pysat.Meta()
 meta['Epoch'] = {
     meta.labels.units: 'Milliseconds since 1970-1-1',

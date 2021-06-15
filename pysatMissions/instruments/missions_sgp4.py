@@ -136,7 +136,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     if num_samples is None:
         num_samples = 100
 
-    # Create satellite from TLEs and assuming a gravity model
+    # Create satellite from TLEs and assuming a gravity model;
     # according to module webpage, wgs72 is common
     satellite = twoline2rv(line1, line2, wgs72)
 
