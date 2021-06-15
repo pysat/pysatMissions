@@ -3,7 +3,7 @@ Supported Instruments
 
 .. _missions_ephem:
 
-Pysat ephem
+Missions ephem
 -----------
 
 .. automodule:: pysatMissions.instruments.missions_ephem
@@ -11,7 +11,7 @@ Pysat ephem
 
 .. _missions_sgp4:
 
-Pysat SGP4
+Missions SGP4
 ----------
 
 .. automodule:: pysatMissions.instruments.missions_sgp4

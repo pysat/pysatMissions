@@ -35,8 +35,8 @@ Python 3.7+.
 
 | Common modules | Community modules |
 | -------------- | ----------------- |
-| numpy          | aacgmv2            |
-| pandas         | apexpy           |
+| numpy          | aacgmv2           |
+| pandas         | apexpy            |
 | pyEphem        | OMMBV             |
 | sgp4           | pysat>=3.0        |
 
