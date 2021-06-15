@@ -35,8 +35,8 @@ Python 3.7+.
 
 | Common modules | Community modules |
 | -------------- | ----------------- |
-| numpy          | apexpy            |
-| pandas         | aacgmv2           |
+| numpy          | aacgmv2            |
+| pandas         | apexpy           |
 | pyEphem        | OMMBV             |
 | sgp4           | pysat>=3.0        |
 
@@ -64,7 +64,7 @@ python setup.py install
 
 Note: pre-1.0.0 version
 ------------------
-pysatNASA is currently in an initial development phase and requires pysat 3.0.0.  
+pysatMissions is currently in an initial development phase and requires pysat 3.0.0.  
 
 # Using with pysat
 

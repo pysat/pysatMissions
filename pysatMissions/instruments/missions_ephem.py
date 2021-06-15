@@ -34,13 +34,15 @@ from pysatMissions.methods import spacecraft as mm_sc
 
 logger = pysat.logger
 
-# pysat required parameters
+# -------------------------------
+# Required Instrument attributes
 platform = 'missions'
 name = 'ephem'
-# dictionary of data 'tags' and corresponding description
 tags = {'': 'Satellite simulation data set'}
-# dictionary of satellite IDs, list of corresponding tags
 inst_ids = {'': ['']}
+
+# ------------------
+# Testing attributes
 _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 

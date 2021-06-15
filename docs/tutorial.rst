@@ -40,9 +40,9 @@ Orbital Propagators
 
 Currently, two orbital propagators are included with pysatMissions. The
 :ref:`missions_sgp4` instrument uses the wgs72 gravity model to provide satellite
-position and velocity in ECI co-ordinates.  The :ref:`missions_ephem` instrument
+position and velocity in ECI coordinates.  The :ref:`missions_ephem` instrument
 uses the ephem pysat package to calculate an orbit in lat/lon/alt and ECEF
-co-ordinates.  As an example, it also loads a series of empirical models to
+coordinates.  As an example, it also loads a series of empirical models to
 provide simulated magnetic data as an aid for mission planning.
 
 The orbital propagators are activated by the load command, similar to any
