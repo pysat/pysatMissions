@@ -1,6 +1,6 @@
 aacgmv2
 apexpy
-OMMBV
+OMMBV>=0.5.5
 numpy
 pandas
 pysat>=3.0
