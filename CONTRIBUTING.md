@@ -122,4 +122,4 @@ For merging, you should:
    with the exception of single sentences in a block, which may then omit the
    final period
  * When casting is necessary, use `np.int64` and `np.float64` to ensure operating
-    system agnosticism
+   system agnosticism
