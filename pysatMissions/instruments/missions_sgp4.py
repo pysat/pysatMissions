@@ -167,7 +167,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                          index=index)
     data.index.name = 'Epoch'
 
-    # TODO: add call for GEI/ECEF translation here
+    # TODO: add call for GEI/ECEF translation here => #56
 
     return data, meta.copy()
 
