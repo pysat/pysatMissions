@@ -1,6 +1,6 @@
 <div align="left">
         <img height="0" width="0px">
-        <img width="20%" src="https://raw.githubusercontent.com/pysat/pysatSeasons/main/poweredbypysat.png" alt="pysat" title="pysat"</img>
+        <img width="20%" src="https://raw.githubusercontent.com/pysat/pysatMissions/docs/figures/missions-draft-logo.jpeg" alt="pysat Missions logo - the python snakes dreaming of a spaceship" title="pysatMissions"</img>
 </div>
 
 # pysatMissions
@@ -11,7 +11,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/pysat/pysatMissions/badge.svg?branch=main)](https://coveralls.io/github/pysat/pysatMissions?branch=main)
 [![Maintainability](https://api.codeclimate.com/v1/badges/83011911691b9d2076e9/maintainability)](https://codeclimate.com/github/pysat/pysatMissions/maintainability)
 
-pysatMissions allows users to run build simulated satellites for Two-Line Elements (TLE) and add empirical data.  It includes the pysat_ephem and pysat_sgp4 instrument modules which can be imported into pysat.
+pysatMissions allows users to run build simulated satellites for Two-Line Elements (TLE) and add empirical data.  It includes the missions_ephem and mission_sgp4 instrument modules which can be imported into pysat.
 
 Main Features
 -------------
