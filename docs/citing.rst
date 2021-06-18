@@ -11,7 +11,7 @@ pysatMissions
 
 * Jeff Klenzing, Russell Stoneback, Angeline Burrell, Matthew Depew,
   & Carey Spence. (2020, July 29). pysat/pysatMissions: Version 0.2.1
-  (Version v0.2.1). Zenodo. http://doi.org/10.5281/zenodo.3966508
+  (Version v0.2.1). Zenodo. https://doi.org/10.5281/zenodo.3966508
 
 .. code-block:: latex
 
