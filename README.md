@@ -1,31 +1,45 @@
 <div align="left">
         <img height="0" width="0px">
-        <img width="20%" src="/poweredbypysat.png" alt="pysat" title="pysat"</img>
+        <img width="20%" src="https://raw.githubusercontent.com/pysat/pysatMissions/docs/figures/missions-draft-logo.jpeg" alt="pysat Missions logo - the python snakes dreaming of a spaceship" title="pysatMissions"</img>
 </div>
 
 # pysatMissions
 [![Documentation Status](https://readthedocs.org/projects/pysatmissions/badge/?version=latest)](https://pysatmissions.readthedocs.io/en/latest/?badge=latest)
 [![DOI](https://zenodo.org/badge/209358908.svg)](https://zenodo.org/badge/latestdoi/209358908)
 
-[![Build Status](https://travis-ci.org/pysat/pysatMissions.svg?branch=main)](https://travis-ci.org/pysat/pysatMissions)
+[![Build Status](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/pysat/pysatMissions/badge.svg?branch=main)](https://coveralls.io/github/pysat/pysatMissions?branch=main)
 [![Maintainability](https://api.codeclimate.com/v1/badges/83011911691b9d2076e9/maintainability)](https://codeclimate.com/github/pysat/pysatMissions/maintainability)
 
-pysatMissions allows users to run build simulated satellites for Two-Line Elements (TLE) and add empirical data.  It includes the pysat_ephem and pysat_sgp4 instrument modules which can be imported into pysat.
+pysatMissions allows users to run build simulated satellites for Two-Line Elements (TLE) and add empirical data.  It includes the missions_ephem and mission_sgp4 instrument modules which can be imported into pysat.
 
 Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
 - Import ionosphere and thermosphere model values through pyglow
 - Import magnetic coordinates through apexpy and aacgmv2
-- Import geomagnetic basis vectors through pysatMagVect
+- Import geomagnetic basis vectors through OMMBV
 
 Documentation
 ---------------------
-[Full Documentation for main package](http://pysat.readthedocs.io/en/latest/)
+[Full Documentation for main package](https://pysat.readthedocs.io/en/latest/)
 
 
 # Installation
+
+### Prerequisites
+
+pysatMissions uses common Python modules, as well as modules developed by
+and for the Space Physics community.  This module officially supports
+Python 3.7+.  
+
+| Common modules | Community modules |
+| -------------- | ----------------- |
+| numpy          | aacgmv2           |
+| pandas         | apexpy            |
+| pyEphem        | OMMBV             |
+| sgp4           | pysat>=3.0        |
+
 
 One way to install is through pip.  Just type
 
@@ -49,19 +63,8 @@ python setup.py install
 ```
 
 Note: pre-1.0.0 version
-------------------
-pysatMissions is currently in an initial development phase.  Much of the API is being built off of the upcoming pysat 3.0.0 software in order to streamline the usage and test coverage.  This version of pysat is planned for release later this year.  Currently, you can access the develop version of this through github:
-```
-git clone https://github.com/pysat/pysat.git
-cd pysat
-git checkout develop-3
-python setup.py install
-```
-It should be noted that this is a working branch and is subject to change.
-
-A note on empirical models
---------------------------
-pysatMissions allows users to interact with a number of upper atmospheric empirical models through the [pyglow](https://github.com/timduly4/pyglow) package.  However, pyglow currently requires manual install through git.  While pysatMissions can be installed and used without pyglow, it should be installed by the user to access the pyglow methods.  Please follow the install instructions at https://github.com/timduly4/pyglow.
+-----------------------
+pysatMissions is currently in an initial development phase and requires pysat 3.0.0.  
 
 # Using with pysat
 
@@ -69,20 +72,16 @@ The instrument modules are portable and designed to be run like any pysat instru
 
 ```
 import pysat
-from pysatMissions.instruments import pysat_ephem
+from pysatMissions.instruments import missions_ephem
 
-simInst = pysat.Instrument(inst_module=pysat_ephem)
+simInst = pysat.Instrument(inst_module=missions_ephem)
 ```
-
-The methods that run empirical models can also be exported to any pysat instrument. For instance, to add thermal plasma predictions from the IRI model to the C/NOFS IVM instrument, one can invoke
+Another way to use the instruments in an external repository is to register the instruments.  This only needs to be done the first time you load an instrument.  Afterward, pysat will identify them using the `platform` and `name` keywords.
 
 ```
 import pysat
-from pysatMissions.methods import empirical
+import pysatMissions
 
-ivm = pysat.Instrument(platform='cnofs', name='ivm')
-ivm.custom.attach(empirical.add_iri_thermal_plasma, 'modify',
-               glat_label='glat',
-               glong_label='glon', alt_label='altitude')
+pysat.utils.registry.register_by_module(pysatMissions.instruments)
+simInst = pysat.Instrument('missions', 'ephem')
 ```
-Once the custom function is added, the model will automatically be run when the dataset is loaded.

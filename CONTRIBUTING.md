@@ -48,9 +48,9 @@ To set up `pysatMissions` for local development:
     git checkout -b name-of-your-bugfix-or-feature
 
    Now you can make your changes locally. Tests for new instruments are
-   performed automatically.  Tests for custom functions should be added to the
-   appropriately named file in ``pysatMissions/tests``.  For example, the averaging routines in avg.py are tested in ``pysatMissions/tests/test_avg.py``.  If no
-   test file exists, then you should create one.  This testing uses pytest, which
+   performed automatically.  Tests for custom functions should be added to
+   the appropriately named file in ``pysatMissions/tests``.  If no test
+   file exists, then you should create one.  This testing uses pytest, which
    will run tests on any python file in the test directory that starts with
    ``test_``.
 
@@ -80,11 +80,46 @@ For merging, you should:
 
 1. Include an example for use
 2. Add a note to ``CHANGELOG.md`` about the changes
-3. Ensure that all checks passed (current checks include Travis-CI
+3. Ensure that all checks passed (current checks include GitHub Actions
    and Coveralls) [1]_
 
 .. [1] If you don't have all the necessary Python versions available locally or
        have trouble building all the testing environments, you can rely on
-       Travis to run the tests for each change you add in the pull request.
-       Because testing here will delay tests by other developers, please ensure
-       that the code passes all tests on your local system first.
+       GitHub Actions to run the tests for each change you add in the pull
+       request. Because testing here will delay tests by other developers,
+       please ensure that the code passes all tests on your local system first.
+
+ Project Style Guidelines
+ ^^^^^^^^^^^^^^^^^^^^^^^^
+
+ In general, pysat follows PEP8 and numpydoc guidelines.  Pytest runs the unit
+ and integration tests, flake8 checks for style, and sphinx-build performs
+ documentation tests.  However, there are certain additional style elements that
+ have been settled on to ensure the project maintains a consistent coding style.
+ These include:
+
+ * Line breaks should occur before a binary operator (ignoring flake8 W503)
+ * Combine long strings using `join`
+ * Preferably break long lines on open parentheses rather than using `\`
+ * Use no more than 80 characters per line
+ * Avoid using Instrument class key attribute names as unrelated variable names:
+   `platform`, `name`, `tag`, and `inst_id`
+ * The pysat logger is imported into each sub-module and provides status updates
+   at the info and warning levels (as appropriate)
+ * Several dependent packages have common nicknames, including:
+   * `import datetime as dt`
+   * `import numpy as np`
+   * `import pandas as pds`
+   * `import xarray as xr`
+ * All classes should have `__repr__` and `__str__` functions
+ * Docstrings use `Note` instead of `Notes`
+ * Try to avoid creating a try/except statement where except passes
+ * Use setup and teardown in test classes
+ * Use pytest parametrize in test classes when appropriate
+ * Provide testing class methods with informative failure statements and
+   descriptive, one-line docstrings
+ * Block and inline comments should use proper English grammar and punctuation
+   with the exception of single sentences in a block, which may then omit the
+   final period
+ * When casting is necessary, use `np.int64` and `np.float64` to ensure operating
+   system agnosticism

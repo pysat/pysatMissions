@@ -4,7 +4,7 @@ for pysat instruments.
 """
 
 import numpy as np
-import pysatMagVect
+import OMMBV
 
 
 def add_ram_pointing_sc_attitude_vectors(inst):
@@ -40,96 +40,96 @@ def add_ram_pointing_sc_attitude_vectors(inst):
 
     """
 
-    # ram pointing is along velocity vector
+    # Ram pointing is along velocity vector
     inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'] = \
-        pysatMagVect.normalize_vector(inst['velocity_ecef_x'],
-                                      inst['velocity_ecef_y'],
-                                      inst['velocity_ecef_z'])
+        OMMBV.normalize_vector(inst['velocity_ecef_x'],
+                               inst['velocity_ecef_y'],
+                               inst['velocity_ecef_z'])
 
-    # begin with z along Nadir (towards Earth)
+    # Begin with z along Nadir (towards Earth)
     # if orbit isn't perfectly circular, then the s/c z vector won't
     # point exactly along nadir. However, nadir pointing is close enough
     # to the true z (in the orbital plane) that we can use it to get y,
     # and use x and y to get the real z
     inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        pysatMagVect.normalize_vector(-inst['position_ecef_x'],
-                                      -inst['position_ecef_y'],
-                                      -inst['position_ecef_z'])
+        OMMBV.normalize_vector(-inst['position_ecef_x'],
+                               -inst['position_ecef_y'],
+                               -inst['position_ecef_z'])
 
     # get y vector assuming right hand rule
     # Z x X = Y
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        pysatMagVect.cross_product(inst['sc_zhat_ecef_x'],
-                                   inst['sc_zhat_ecef_y'],
-                                   inst['sc_zhat_ecef_z'],
-                                   inst['sc_xhat_ecef_x'],
-                                   inst['sc_xhat_ecef_y'],
-                                   inst['sc_xhat_ecef_z'])
-    # normalize since Xhat and Zhat from above may not be orthogonal
+        OMMBV.cross_product(inst['sc_zhat_ecef_x'],
+                            inst['sc_zhat_ecef_y'],
+                            inst['sc_zhat_ecef_z'],
+                            inst['sc_xhat_ecef_x'],
+                            inst['sc_xhat_ecef_y'],
+                            inst['sc_xhat_ecef_z'])
+    # Normalize since Xhat and Zhat from above may not be orthogonal
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        pysatMagVect.normalize_vector(inst['sc_yhat_ecef_x'],
-                                      inst['sc_yhat_ecef_y'],
-                                      inst['sc_yhat_ecef_z'])
+        OMMBV.normalize_vector(inst['sc_yhat_ecef_x'],
+                               inst['sc_yhat_ecef_y'],
+                               inst['sc_yhat_ecef_z'])
 
-    # strictly, need to recalculate Zhat so that it is consistent with RHS
+    # Strictly, need to recalculate Zhat so that it is consistent with RHS
     # just created
     # Z = X x Y
     inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        pysatMagVect.cross_product(inst['sc_xhat_ecef_x'],
-                                   inst['sc_xhat_ecef_y'],
-                                   inst['sc_xhat_ecef_z'],
-                                   inst['sc_yhat_ecef_x'],
-                                   inst['sc_yhat_ecef_y'],
-                                   inst['sc_yhat_ecef_z'])
+        OMMBV.cross_product(inst['sc_xhat_ecef_x'],
+                            inst['sc_xhat_ecef_y'],
+                            inst['sc_xhat_ecef_z'],
+                            inst['sc_yhat_ecef_x'],
+                            inst['sc_yhat_ecef_y'],
+                            inst['sc_yhat_ecef_z'])
 
     # Adding metadata
-    inst.meta['sc_xhat_ecef_x'] = {'units': '',
-                                   'desc': 'S/C attitude (x-direction, ram) ' +
-                                   'unit vector, expressed in ECEF basis, ' +
-                                   'x-component'}
-    inst.meta['sc_xhat_ecef_y'] = {'units': '',
-                                   'desc': 'S/C attitude (x-direction, ram) ' +
-                                   'unit vector, expressed in ECEF basis, ' +
-                                   'y-component'}
-    inst.meta['sc_xhat_ecef_z'] = {'units': '',
-                                   'desc': 'S/C attitude (x-direction, ram) ' +
-                                   'unit vector, expressed in ECEF basis, ' +
-                                   'z-component'}
+    inst.meta['sc_xhat_ecef_x'] = {
+        'units': '',
+        'desc': ' '.join(('S/C attitude (x-direction, ram) unit vector,',
+                          'expressed in ECEF basis, x-component'))}
+    inst.meta['sc_xhat_ecef_y'] = {
+        'units': '',
+        'desc': ' '.join(('S/C attitude (x-direction, ram) unit vector,',
+                          'expressed in ECEF basis, y-component'))}
+    inst.meta['sc_xhat_ecef_z'] = {
+        'units': '',
+        'desc': ' '.join(('S/C attitude (x-direction, ram) unit vector,',
+                          'expressed in ECEF basis, z-component'))}
 
-    inst.meta['sc_zhat_ecef_x'] = {'units': '',
-                                   'desc': 'S/C attitude (z-direction, ' +
-                                   'generally nadir) unit vector, expressed ' +
-                                   'in ECEF basis, x-component'}
-    inst.meta['sc_zhat_ecef_y'] = {'units': '',
-                                   'desc': 'S/C attitude (z-direction, ' +
-                                   'generally nadir) unit vector, expressed ' +
-                                   'in ECEF basis, y-component'}
-    inst.meta['sc_zhat_ecef_z'] = {'units': '',
-                                   'desc': 'S/C attitude (z-direction, ' +
-                                   'generally nadir) unit vector, expressed ' +
-                                   'in ECEF basis, z-component'}
+    inst.meta['sc_zhat_ecef_x'] = {
+        'units': '',
+        'desc': ' '.join(('S/C attitude (z-direction, generally nadir) unit',
+                          'vector, expressed in ECEF basis, x-component'))}
+    inst.meta['sc_zhat_ecef_y'] = {
+        'units': '',
+        'desc': ' '.join(('S/C attitude (z-direction, generally nadir) unit',
+                          'vector, expressed in ECEF basis, y-component'))}
+    inst.meta['sc_zhat_ecef_z'] = {
+        'units': '',
+        'desc': ' '.join(('S/C attitude (z-direction, generally nadir) unit',
+                          'vector, expressed in ECEF basis, z-component'))}
 
-    inst.meta['sc_yhat_ecef_x'] = {'units': '',
-                                   'desc': 'S/C attitude (y-direction, ' +
-                                   'generally south) unit vector, expressed ' +
-                                   'in ECEF basis, x-component'}
-    inst.meta['sc_yhat_ecef_y'] = {'units': '',
-                                   'desc': 'S/C attitude (y-direction, ' +
-                                   'generally south) unit vector, expressed ' +
-                                   'in ECEF basis, y-component'}
-    inst.meta['sc_yhat_ecef_z'] = {'units': '',
-                                   'desc': 'S/C attitude (y-direction, ' +
-                                   'generally south) unit vector, expressed ' +
-                                   'in ECEF basis, z-component'}
+    inst.meta['sc_yhat_ecef_x'] = {
+        'units': '',
+        'desc': ' '.join(('S/C attitude (y-direction, generally south) unit',
+                          'vector, expressed in ECEF basis, x-component'))}
+    inst.meta['sc_yhat_ecef_y'] = {
+        'units': '',
+        'desc': ' '.join(('S/C attitude (y-direction, generally south) unit',
+                          'vector, expressed in ECEF basis, y-component'))}
+    inst.meta['sc_yhat_ecef_z'] = {
+        'units': '',
+        'desc': ' '.join(('S/C attitude (y-direction, generally south) unit',
+                          'vector, expressed in ECEF basis, z-component'))}
 
     # check what magnitudes we get
-    mag = np.sqrt(inst['sc_zhat_ecef_x']**2 + inst['sc_zhat_ecef_y']**2 +
-                  inst['sc_zhat_ecef_z']**2)
+    mag = np.sqrt(inst['sc_zhat_ecef_x']**2 + inst['sc_zhat_ecef_y']**2
+                  + inst['sc_zhat_ecef_z']**2)
     idx, = np.where((mag < .999999999) | (mag > 1.000000001))
     if len(idx) > 0:
         print(mag[idx])
-        raise RuntimeError('Unit vector generation failure. Not sufficently ' +
-                           'orthogonal.')
+        raise RuntimeError(' '.join(('Unit vector generation failure. Not',
+                                     'sufficently orthogonal.')))
 
     return
 
@@ -158,7 +158,7 @@ def calculate_ecef_velocity(inst):
     """
 
     def get_vel_from_pos(x):
-        vel = (x.values[2:] - x.values[0:-2])/2.
+        vel = (x.values[2:] - x.values[0:-2]) / 2.
         return vel
 
     vel_x = get_vel_from_pos(inst['position_ecef_x'])
@@ -170,14 +170,17 @@ def calculate_ecef_velocity(inst):
     inst[1:-1, 'velocity_ecef_z'] = vel_z
 
     inst.meta['velocity_ecef_x'] = {'units': 'km/s',
-                                    'desc': 'Velocity of satellite ' +
-                                    'calculated with respect to ECEF frame.'}
+                                    'desc': ' '.join(('Velocity of satellite',
+                                                      'calculated with respect',
+                                                      'to ECEF frame.'))}
     inst.meta['velocity_ecef_y'] = {'units': 'km/s',
-                                    'desc': 'Velocity of satellite ' +
-                                    'calculated with respect to ECEF frame.'}
+                                    'desc': ' '.join(('Velocity of satellite',
+                                                      'calculated with respect',
+                                                      'to ECEF frame.'))}
     inst.meta['velocity_ecef_z'] = {'units': 'km/s',
-                                    'desc': 'Velocity of satellite ' +
-                                    'calculated with respect to ECEF frame.'}
+                                    'desc': ' '.join(('Velocity of satellite',
+                                                      'calculated with respect',
+                                                      'to ECEF frame.'))}
     return
 
 
@@ -210,19 +213,11 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
 
     # TODO: add checks for existence of ecef labels in inst
 
-    x, y, z = \
-        pysatMagVect.project_ecef_vector_onto_basis(inst[x_label],
-                                                    inst[y_label],
-                                                    inst[z_label],
-                                                    inst['sc_xhat_ecef_x'],
-                                                    inst['sc_xhat_ecef_y'],
-                                                    inst['sc_xhat_ecef_z'],
-                                                    inst['sc_yhat_ecef_x'],
-                                                    inst['sc_yhat_ecef_y'],
-                                                    inst['sc_yhat_ecef_z'],
-                                                    inst['sc_zhat_ecef_x'],
-                                                    inst['sc_zhat_ecef_y'],
-                                                    inst['sc_zhat_ecef_z'])
+    x, y, z = OMMBV.project_ecef_vector_onto_basis(
+        inst[x_label], inst[y_label], inst[z_label],
+        inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'],
+        inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'],
+        inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'])
     inst[new_x_label] = x
     inst[new_y_label] = y
     inst[new_z_label] = z

@@ -1,78 +1,88 @@
-# -*- coding: utf-8 -*-
-"""
-Basic test of the instrument objects in pysatMissions
-
-To be replaced once pysat testing techniques are finalized
-"""
-
 import datetime as dt
 import numpy as np
+import tempfile
+
+import pytest
+
 import pysat
+# Make sure to import your instrument package here
+# e.g.,
+import pysatMissions
+
+# Import the test classes from pysat
+from pysat.utils import generate_instrument_list
+from pysat.tests.instrument_test_class import InstTestClass
 
 
-class TestSGP4():
-    def setup(self):
-        """Runs before every method to create a clean testing setup."""
-        from pysatMissions.instruments import pysat_sgp4
-        self.testInst = pysat.Instrument(inst_module=pysat_sgp4, sat_id='100')
-        self.targets1 = ['position_eci_x', 'position_eci_y', 'position_eci_z',
-                         'velocity_eci_x', 'velocity_eci_y', 'velocity_eci_z']
-        self.targets2 = []
+saved_path = pysat.params['data_dirs']
 
-    def teardown(self):
-        """Clean up test environment after tests"""
-        del self
+# Developers for instrument libraries should update the following line to
+# point to their own subpackage location
+# e.g.,
+# instruments = generate_instrument_list(inst_loc=mypackage.inst)
+instruments = generate_instrument_list(inst_loc=pysatMissions.instruments)
 
-    def test_basic_instrument_load(self):
-        """Checks if instrument loads proper data and metadata"""
-        # Check if instrument is instrument
-        assert isinstance(self.testInst, pysat._instrument.Instrument)
-
-        self.testInst.load(date=dt.datetime(2018, 1, 1))
-        # Check for completeness of first set of targets
-        for target in self.targets1:
-            # Check if data is added
-            assert target in self.testInst.data.keys()
-            assert not np.isnan(self.testInst[target]).any()
-            # Check if metadata is added
-            assert target in self.testInst.meta.data.index
-        # Check for completeness of second set of targets
-        for target in self.targets2:
-            # Check if data is added
-            assert target in self.testInst.data.keys()
-            # First and last values are NaN if related to velocity
-            assert not np.isnan(self.testInst[target][1:-1]).any()
-            assert np.isnan(self.testInst[target][0])
-            assert np.isnan(self.testInst[target][-1])
-            # Check if metadata is added
-            assert target in self.testInst.meta.data.index
+# The following lines apply the custom instrument lists to each type of test
+method_list = [func for func in dir(InstTestClass)
+               if callable(getattr(InstTestClass, func))]
+# Search tests for iteration via pytestmark, update instrument list
+for method in method_list:
+    if hasattr(getattr(InstTestClass, method), 'pytestmark'):
+        # Get list of names of pytestmarks
+        n_args = len(getattr(InstTestClass, method).pytestmark)
+        names = [getattr(InstTestClass, method).pytestmark[j].name
+                 for j in range(0, n_args)]
+        # Add instruments from your library
+        if 'all_inst' in names:
+            mark = pytest.mark.parametrize("inst_name", instruments['names'])
+            getattr(InstTestClass, method).pytestmark.append(mark)
+        elif 'download' in names:
+            mark = pytest.mark.parametrize("inst_dict", instruments['download'])
+            getattr(InstTestClass, method).pytestmark.append(mark)
+        elif 'no_download' in names:
+            mark = pytest.mark.parametrize("inst_dict",
+                                           instruments['no_download'])
+            getattr(InstTestClass, method).pytestmark.append(mark)
 
 
-class TestEphem(TestSGP4):
-    def setup(self):
-        """Runs before every method to create a clean testing setup."""
-        # NOTE: aacgm not checked here because undefined near the equator
-        # TODO: add check for aacgm values
-        from pysatMissions.instruments import pysat_ephem
-        self.testInst = pysat.Instrument(inst_module=pysat_ephem, tag='all',
-                                         sat_id='100')
-        self.targets1 = ['glong', 'glat', 'alt', 'obs_sat_slant_range',
-                         'obs_sat_az_angle', 'obs_sat_el_angle',
-                         'position_ecef_x', 'position_ecef_y', 'position_ecef_z',
-                         'qd_lat', 'qd_long', 'mlt',
-                         'e_temp', 'frac_dens_h', 'frac_dens_he', 'frac_dens_o',
-                         'ion_dens', 'ion_temp',
-                         'B', 'B_east', 'B_north', 'B_up', 'B_ecef_x',
-                         'B_ecef_y', 'B_ecef_z',
-                         'Nn', 'Nn_H', 'Nn_He', 'Nn_N', 'Nn_N2', 'Nn_O', 'Nn_O2',
-                         'Nn_Ar', 'Tn_msis',
-                         'total_wind_x', 'total_wind_y', 'total_wind_z']
-        self.targets2 = ['velocity_ecef_x', 'velocity_ecef_y', 'velocity_ecef_z',
-                         'sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z',
-                         'sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z',
-                         'sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z',
-                         'sim_wind_sc_x', 'sim_wind_sc_y', 'sim_wind_sc_z']
+class TestInstruments(InstTestClass):
+    """Uses class level setup and teardown so that all tests use the same
+    temporary directory. We do not want to geneate a new tempdir for each test,
+    as the load tests need to be the same as the download tests.
+    """
 
-    def teardown(self):
-        """Clean up test environment after tests"""
-        del self
+    def setup_class(self):
+        """Runs once before the tests to initialize the testing setup."""
+        # Make sure to use a temporary directory so that the user's setup is not
+        # altered
+        self.tempdir = tempfile.TemporaryDirectory()
+        self.saved_path = pysat.params['data_dirs']
+        pysat.params.data['data_dirs'] = [self.tempdir.name]
+        # Developers for instrument libraries should update the following line
+        # to point to their own subpackage location, e.g.,
+        # self.inst_loc = mypackage.instruments
+        self.inst_loc = pysatMissions.instruments
+
+    def teardown_class(self):
+        """Runs once to clean up testing from this class."""
+        pysat.params.data['data_dirs'] = self.saved_path
+        self.tempdir.cleanup()
+        del self.inst_loc, self.saved_path, self.tempdir
+
+    # Custom package unit tests can be added here
+
+    @pytest.mark.parametrize("inst_dict", [x for x in instruments['download']])
+    @pytest.mark.parametrize("kwarg,output", [(None, 1), ('10s', 10)])
+    def test_inst_cadence(self, inst_dict, kwarg, output):
+        """Test operation of cadence keyword, including default behavior"""
+
+        if kwarg:
+            self.test_inst = pysat.Instrument(
+                inst_module=inst_dict['inst_module'], cadence=kwarg)
+        else:
+            self.test_inst = pysat.Instrument(
+                inst_module=inst_dict['inst_module'])
+
+        self.test_inst.load(2019, 1)
+        cadence = np.diff(self.test_inst.data.index.to_pydatetime())
+        assert np.all(cadence == dt.timedelta(seconds=output))

@@ -1,5 +1,5 @@
-"""Provides default routines for projecting aacgmv2 and apexpy model values onto locations
-from pysat instruments.
+"""Provides default routines for projecting aacgmv2 and apexpy model values onto
+locations from pysat instruments.
 
 """
 
@@ -113,7 +113,7 @@ def add_quasi_dipole_coordinates(inst, glat_label='glat', glong_label='glong',
     mlt = []
     for lat, lon, alt, time in zip(inst[glat_label], inst[glong_label],
                                    inst[alt_label], inst.data.index):
-        # quasi-dipole latitude and longitude from geodetic coords
+        # Quasi-dipole latitude and longitude from geodetic coords
         tlat, tlon = ap.geo2qd(lat, lon, alt)
         qd_lat.append(tlat)
         qd_lon.append(tlon)

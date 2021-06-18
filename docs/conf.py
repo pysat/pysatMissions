@@ -4,7 +4,7 @@
 #
 # This file does only contain a selection of the most common options. For a
 # full list see the documentation:
-# http://www.sphinx-doc.org/en/master/config
+# https://www.sphinx-doc.org/en/master/config
 
 # -- Path setup --------------------------------------------------------------
 
@@ -12,21 +12,28 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import json
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
-from pysatMissions import __version__
 
 # -- Project information -----------------------------------------------------
 
 project = 'pysatMissions'
-copyright = '2020, Russell Stoneback'
-author = 'Jeff Klenzing \\and Russell Stoneback \\and Angeline Burrell'
+title = '{:s} Documentation'.format(project)
+zenodo = json.loads(open('../.zenodo.json').read())
+author = ', '.join([x['name'] for x in zenodo['creators']])
+copyright = ', '.join(['2021', author])
+description = 'Tools for generating simulated instruments in pysat.'
 
 # The short X.Y version
-version = __version__[::-1].partition('.')[2][::-1]
-# The full version, including alpha/beta/rc tags
-release = __version__
+module_dir = os.path.split(os.path.abspath(os.path.dirname(__file__)))[0]
+version_file = os.path.join(module_dir, project, 'version.txt')
+with open(version_file, 'r') as fin:
+    version = fin.read().strip()
+
+# The full version, including alpha/beta/rc tags.
+release = '{:s}-alpha'.format(version)
 
 
 # -- General configuration ---------------------------------------------------
@@ -38,17 +45,16 @@ release = __version__
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.todo',
-    'sphinx.ext.imgmath',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.napoleon',
-    'recommonmark',
-    'numpydoc',
-    'IPython.sphinxext.ipython_console_highlighting'
-]
+extensions = ['sphinx.ext.autodoc',
+              'sphinx.ext.intersphinx',
+              'sphinx.ext.doctest',
+              'sphinx.ext.todo',
+              'sphinx.ext.imgmath',
+              'sphinx.ext.autosummary',
+              'sphinx.ext.napoleon',
+              'numpydoc',
+              'IPython.sphinxext.ipython_console_highlighting',
+              'm2r2']
 
 numpydoc_show_class_members = False
 
@@ -85,7 +91,7 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -117,41 +123,35 @@ htmlhelp_basename = 'pysatMissionsdoc'
 
 # -- Options for LaTeX output ------------------------------------------------
 
-latex_elements = {
-    # The paper size ('letterpaper' or 'a4paper').
-    #
-    # 'papersize': 'letterpaper',
+# The paper size ('letterpaper' or 'a4paper').
+#
+# 'papersize': 'letterpaper',
 
-    # The font size ('10pt', '11pt' or '12pt').
-    #
-    # 'pointsize': '10pt',
+# The font size ('10pt', '11pt' or '12pt').
+#
+# 'pointsize': '10pt',
 
-    # Additional stuff for the LaTeX preamble.
-    #
-    # 'preamble': '',
+# Additional stuff for the LaTeX preamble.
+#
+# 'preamble': '',
 
-    # Latex figure (float) alignment
-    #
-    # 'figure_align': 'htbp',
-}
+# Latex figure (float) alignment
+#
+# 'figure_align': 'htbp',
+latex_elements = {}
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (master_doc, 'pysatMissions.tex', 'pysatMissions Documentation',
-     'Jeff Klenzing', 'manual'),
-]
+latex_documents = [(master_doc, '{:s}.tex'.format(project), title,
+                    author, 'manual')]
 
 
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'pysatMissions', 'pysatMissions Documentation',
-     [author], 1)
-]
+man_pages = [(master_doc, project, title, [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------------
@@ -159,11 +159,8 @@ man_pages = [
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
-texinfo_documents = [
-    (master_doc, 'pysatMissions', 'pysatMissions Documentation',
-     author, 'pysatMissions', 'One line description of project.',
-     'Miscellaneous'),
-]
+texinfo_documents = [(master_doc, project, title, author, project, description,
+                      'Space Physics')]
 
 
 # -- Options for Epub output -------------------------------------------------
