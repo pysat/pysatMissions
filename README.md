@@ -72,9 +72,9 @@ The instrument modules are portable and designed to be run like any pysat instru
 
 ```
 import pysat
-from pysatMissions.instruments import pysat_ephem
+from pysatMissions.instruments import missions_ephem
 
-simInst = pysat.Instrument(inst_module=pysat_ephem)
+simInst = pysat.Instrument(inst_module=missions_ephem)
 ```
 Another way to use the instruments in an external repository is to register the instruments.  This only needs to be done the first time you load an instrument.  Afterward, pysat will identify them using the `platform` and `name` keywords.
 
@@ -83,5 +83,5 @@ import pysat
 import pysatMissions
 
 pysat.utils.registry.register_by_module(pysatMissions.instruments)
-simInst = pysat.Instrument('pysat', 'ephem')
+simInst = pysat.Instrument('missions', 'ephem')
 ```
