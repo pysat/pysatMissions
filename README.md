@@ -4,7 +4,7 @@
 </div>
 
 # pysatMissions
-[![Documentation Status](https://readthedocs.org/projects/pysatMissions/badge/?version=latest)](https://pysatMissions.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/pysatmissions/badge/?version=latest)](https://pysatmissions.readthedocs.io/en/latest/?badge=latest)
 [![DOI](https://zenodo.org/badge/209358908.svg)](https://zenodo.org/badge/latestdoi/209358908)
 
 [![Build Status](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
