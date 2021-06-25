@@ -40,7 +40,7 @@ jobs:
         # Manual install of OMMBV
         pip install --no-binary :OMMBV: OMMBV
 
-   - name: Install NEP29 dependencies
+    - name: Install NEP29 dependencies
       if: ${{ matrix.numpy_ver != 'latest'}}
       run: |
         pip install --no-binary :numpy: numpy==${{ matrix.numpy_ver }}
