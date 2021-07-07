@@ -1,6 +1,15 @@
 import numpy as np
 
 
+def check_orbital_params(inclination=None, eccentricity=None, raan=None,
+                         arg_perigee=None, mean_anomaly=None, mean_motion=None):
+    """Check that a complete set of orbital parameters exist"""
+
+    params = [inclination, eccentricity, raan, arg_perigee, mean_anomaly,
+              mean_motion]
+    return not any(v is None for v in params)
+
+
 def convert_to_keplerian(alt_periapsis, alt_apoapsis=None, planet='Earth'):
     """Calculate orbital eccentricity from periapsis and apoapsis
 
