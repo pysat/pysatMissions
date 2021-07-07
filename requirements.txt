@@ -1,5 +1,4 @@
 aacgmv2
-apexpy
 numpy
 pandas<1.2.6
 pysat>=3.0
