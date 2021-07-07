@@ -13,11 +13,6 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         python-version: [3.8, 3.9]
-        numpy_ver: [latest]
-        include:
-          - python-version: 3.7
-            numpy_ver: 1.17
-            os: ubuntu-latest
 
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -39,11 +34,6 @@ jobs:
 
         # Manual install of OMMBV
         pip install --no-binary :OMMBV: OMMBV
-
-    - name: Install NEP29 dependencies
-      if: ${{ matrix.numpy_ver != 'latest'}}
-      run: |
-        pip install --no-binary :numpy: numpy==${{ matrix.numpy_ver }}
 
     - name: Set up pysat
       run: |
