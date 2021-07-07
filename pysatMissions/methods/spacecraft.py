@@ -4,7 +4,15 @@ for pysat instruments.
 """
 
 import numpy as np
-import OMMBV
+import sys
+import warnings
+
+try:
+    import OMMBV
+except ImportError:
+    pass
+
+ommbv_message = "OMMBV is not installed correctly"
 
 
 def add_ram_pointing_sc_attitude_vectors(inst):
@@ -39,6 +47,10 @@ def add_ram_pointing_sc_attitude_vectors(inst):
         the scalar product of each attitude vector with each component of ECEF.
 
     """
+
+    if "OMMBV" not in sys.modules:
+        warnings.warn(ommbv_message, stacklevel=2)
+        return
 
     # Ram pointing is along velocity vector
     inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'] = \
@@ -157,6 +169,10 @@ def calculate_ecef_velocity(inst):
 
     """
 
+    if "OMMBV" not in sys.modules:
+        warnings.warn(ommbv_message, stacklevel=2)
+        return
+
     def get_vel_from_pos(x):
         vel = (x.values[2:] - x.values[0:-2]) / 2.
         return vel
@@ -212,6 +228,10 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
     """
 
     # TODO: add checks for existence of ecef labels in inst
+
+    if "OMMBV" not in sys.modules:
+        warnings.warn(ommbv_message, stacklevel=2)
+        return
 
     x, y, z = OMMBV.project_ecef_vector_onto_basis(
         inst[x_label], inst[y_label], inst[z_label],
