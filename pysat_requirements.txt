@@ -1,6 +1,6 @@
 dask
 netCDF4<1.5.7
-numpy<1.17
+numpy
 pandas<1.2.6
 portalocker
 scipy
