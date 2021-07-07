@@ -149,8 +149,8 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     # format of TLEs is fixed and available from wikipedia...
     # lines encode list of orbital elements of an Earth-orbiting object
     # for a given point in time
-    line1 = ('1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998')
-    line2 = ('2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452')
+    line1 = '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'
+    line2 = '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'
     # use ISS defaults if not provided by user
     if TLE1 is not None:
         line1 = TLE1
