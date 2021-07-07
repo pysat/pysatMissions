@@ -1,6 +1,6 @@
 aacgmv2
 apexpy
-numpy<1.17
+numpy
 pandas<1.2.6
 pysat>=3.0
 pyEphem
