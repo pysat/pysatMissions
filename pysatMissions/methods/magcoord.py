@@ -4,7 +4,13 @@ locations from pysat instruments.
 """
 
 import aacgmv2
-import apexpy
+try:
+    import apexpy
+except ImportError:
+    # Problem with install, turn this function off
+    pass
+import sys
+import warnings
 
 
 def add_aacgm_coordinates(inst, glat_label='glat', glong_label='glong',
@@ -105,6 +111,10 @@ def add_quasi_dipole_coordinates(inst, glat_label='glat', glong_label='glong',
         kwargs={'glat_label': 'custom_label'})
 
     """
+
+    if 'apexpy' not in sys.modules:
+        warnings.warn("Apexpy not installed. Do not pass go.", stacklevel=2)
+        return
 
     ap = apexpy.Apex(date=inst.date)
 
