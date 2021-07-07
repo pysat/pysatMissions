@@ -34,6 +34,7 @@ jobs:
 
         # Manual install of OMMBV
         pip install --no-binary :OMMBV: OMMBV
+        pip install --no-binary :apexpy: apexpy
 
     - name: Set up pysat
       run: |
