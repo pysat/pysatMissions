@@ -1,10 +1,15 @@
 """
-Handles the default pysat functions for simulated instruments
+Handles the default pysat functions for simulated instruments.
 """
 
 
 def _clean(self):
-    """Cleaning function.  Simple pass since data is generated locally.
+    """Pass through since cleaning is not needed.
+
+    Note
+    ----
+    Required for pysat standards compliance.
+
     """
 
     return

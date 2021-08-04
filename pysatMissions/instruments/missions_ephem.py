@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Produces satellite orbit data. Orbit is simulated using
-Two Line Elements (TLEs) and ephem. Satellite position is coupled
-to several space science models to simulate the atmosphere the
+Produce satellite orbit data.
+
+Orbit is simulated using Two Line Elements (TLEs) and ephem. Satellite position
+is coupled to several space science models to simulate the atmosphere the
 satellite is in.
 
 Properties
@@ -21,9 +22,13 @@ inst_id
 import datetime as dt
 import functools
 import numpy as np
+import sys
 
 import ephem
-import OMMBV
+try:
+    import OMMBV
+except ImportError:
+    pass
 import pandas as pds
 import pysat
 
@@ -48,9 +53,9 @@ _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 def init(self):
     """
-    Adds custom calculations to orbit simulation.
-    This routine is run once, and only once, upon instantiation.
+    Add custom calculations to orbit simulation.
 
+    This routine is run once, and only once, upon instantiation.
     Adds custom routines for quasi-dipole coordinates, velocity calculation in
     ECEF coords, and attitude vectors of spacecraft (assuming x is ram pointing
     and z is generally nadir).
@@ -68,7 +73,7 @@ def init(self):
 
 def preprocess(self):
     """
-    Add modeled magnetic field values and attitude vectors to spacecraft
+    Add modeled magnetic field values and attitude vectors to spacecraft.
 
     Runs after load is invoked.
 
@@ -89,9 +94,10 @@ clean = mcore._clean
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
          TLE1=None, TLE2=None, num_samples=None, cadence='1S'):
     """
-    Returns data and metadata in the format required by pysat. Generates
-    position of satellite in both geographic and ECEF co-ordinates.
+    Generate position of satellite in both geographic and ECEF co-ordinates.
 
+    Note
+    ----
     Routine is directly called by pysat and not the user.
 
     Parameters
@@ -192,9 +198,10 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         lp['alt'] = sat.elevation / 1000.0
 
         # Get ECEF position of satellite
-        lp['x'], lp['y'], lp['z'] = OMMBV.geodetic_to_ecef(lp['glat'],
-                                                           lp['glong'],
-                                                           lp['alt'])
+        if "OMMBV" in sys.modules:
+            lp['x'], lp['y'], lp['z'] = OMMBV.geodetic_to_ecef(lp['glat'],
+                                                               lp['glong'],
+                                                               lp['alt'])
         output_params.append(lp)
 
     output = pds.DataFrame(output_params, index=index)

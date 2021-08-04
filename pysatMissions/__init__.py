@@ -1,5 +1,19 @@
-from __future__ import print_function
-from __future__ import absolute_import
+"""
+Core library for pysatMissions.
+
+pysatMissions allows users to run build simulated satellites for Two-Line
+Elements (TLE) and add empirical data.  It includes the `missions_ephem` and
+`mission_sgp4` instrument modules which can be imported into pysat.
+
+Main Features
+-------------
+- Simulate satellite orbits from TLEs and add data from empirical models
+- Import ionosphere and thermosphere model values through pyglow
+- Import magnetic coordinates through apexpy and aacgmv2
+- Import geomagnetic basis vectors through OMMBV
+
+"""
+
 import logging
 import os
 

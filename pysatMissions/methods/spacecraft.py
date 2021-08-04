@@ -1,5 +1,4 @@
-"""Provides default routines for projecting values onto vectors
-for pysat instruments.
+"""Default routines for projecting values onto vectors for pysat instruments.
 
 """
 
@@ -136,7 +135,7 @@ def add_ram_pointing_sc_attitude_vectors(inst):
 
 def calculate_ecef_velocity(inst):
     """
-    Calculates spacecraft velocity in ECEF frame.
+    Calculate spacecraft velocity in ECEF frame.
 
     Presumes that the spacecraft velocity in ECEF is in
     the input instrument object as position_ecef_*. Uses a symmetric
@@ -187,7 +186,7 @@ def calculate_ecef_velocity(inst):
 def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
                                 new_x_label, new_y_label, new_z_label,
                                 meta=None):
-    """Express input vector using s/c attitude directions
+    """Express input vector using s/c attitude directions.
 
     x - ram pointing
     y - generally southward
