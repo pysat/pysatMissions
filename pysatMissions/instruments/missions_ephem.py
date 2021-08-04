@@ -22,13 +22,9 @@ inst_id
 import datetime as dt
 import functools
 import numpy as np
-import sys
 
 import ephem
-try:
-    import OMMBV
-except ImportError:
-    pass
+import OMMBV
 import pandas as pds
 import pysat
 
@@ -198,10 +194,9 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         lp['alt'] = sat.elevation / 1000.0
 
         # Get ECEF position of satellite
-        if "OMMBV" in sys.modules:
-            lp['x'], lp['y'], lp['z'] = OMMBV.geodetic_to_ecef(lp['glat'],
-                                                               lp['glong'],
-                                                               lp['alt'])
+        lp['x'], lp['y'], lp['z'] = OMMBV.geodetic_to_ecef(lp['glat'],
+                                                           lp['glong'],
+                                                           lp['alt'])
         output_params.append(lp)
 
     output = pds.DataFrame(output_params, index=index)
