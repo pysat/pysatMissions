@@ -9,7 +9,7 @@ import apexpy
 def add_aacgm_coordinates(inst, glat_label='glat', glong_label='glong',
                           alt_label='alt'):
     """
-    Add AACGM coordinates to instrument object via AACGMV2 package.
+    Add AACGM coordinates to instrument object using AACGMV2 package.
 
     The Altitude Adjusted Corrected Geomagnetic Coordinates library is used
     to calculate the latitude, longitude, and local time
