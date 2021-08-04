@@ -38,7 +38,7 @@ Python 3.7+.
 | numpy          | aacgmv2           |
 | pandas         | apexpy            |
 | pyEphem        | OMMBV             |
-| sgp4           | pysat>=3.0        |
+| sgp4>=2.7      | pysat>=3.0        |
 
 
 One way to install is through pip.  Just type

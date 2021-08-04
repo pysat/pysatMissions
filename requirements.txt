@@ -4,4 +4,4 @@ numpy
 pandas
 pysat>=3.0
 pyEphem
-sgp4
+sgp4>=2.7

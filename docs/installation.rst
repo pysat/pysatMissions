@@ -23,7 +23,7 @@ Python 3.7+ and pysat 3.0.0+.
   numpy            aacgmv2
   pandas           apexpy
   pyEphem          OMMBV
-  sgp4             pysat>=3.0
+  sgp4>=2.7        pysat>=3.0
  ================ ==================
 
 
