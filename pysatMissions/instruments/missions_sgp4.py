@@ -25,6 +25,7 @@ import pysat
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.instruments.methods import orbits
+from sgp4.api import jday, Satrec, SGP4_ERRORS, WGS72
 
 logger = pysat.logger
 
@@ -139,19 +140,14 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
 
     """
 
-    # wgs72 is the most commonly used gravity model in satellite tracking
-    # community
-    from sgp4.earth_gravity import wgs72
-    from sgp4.api import jday, Satrec, SGP4_ERRORS, WGS72
-    from sgp4.io import twoline2rv
-
     # TLEs (Two Line Elements for ISS)
     # format of TLEs is fixed and available from wikipedia...
     # lines encode list of orbital elements of an Earth-orbiting object
     # for a given point in time
     line1 = '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'
     line2 = '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'
-    # use ISS defaults if not provided by user
+
+    # If provided, use user-specified TLEs.  Otherwise use ISS defaults above.
     if TLE1 is not None:
         line1 = TLE1
     if TLE2 is not None:
@@ -167,58 +163,38 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     epoch = (dates[0] - dt.datetime(1949, 12, 31)).days
     jd, _ = jday(dates[0].year, dates[0].month, dates[0].day, 0, 0, 0)
 
-    # Create satellite from TLEs and assuming a gravity model;
-    # according to module webpage, wgs72 is common
     if inclination:
         # If an inclination is provided, specify by Keplerian elements
         eccentricity, mean_motion = orbits.convert_to_keplerian(alt_periapsis,
                                                                 alt_apoapsis)
         satellite = Satrec()
+        # according to module webpage, wgs72 is common
         satellite.sgp4init(WGS72, 'i', 0, epoch, drag_coeff, 0, 0,
                            eccentricity, np.radians(arg_perigee),
                            np.radians(inclination), np.radians(mean_anomaly),
                            mean_motion, np.radians(raan))
-        jd = jd * np.ones(len(times))
-        fr = times / 86400.
-
-        err_code, position, velocity = satellite.sgp4_array(jd, fr)
-
-        # Check all propagated values for errors in propagation
-        for i in range(1, 7):
-            if np.any(err_code == i):
-                raise ValueError(SGP4_ERRORS[i])
-
-        # Put data into DataFrame
-        data = pds.DataFrame({'position_eci_x': position[:, 0],
-                              'position_eci_y': position[:, 1],
-                              'position_eci_z': position[:, 2],
-                              'velocity_eci_x': velocity[:, 0],
-                              'velocity_eci_y': velocity[:, 1],
-                              'velocity_eci_z': velocity[:, 2]},
-                             index=index)
     else:
         # Otherwise, use TLEs
-        satellite = twoline2rv(line1, line2, wgs72)
+        satellite = Satrec.twoline2rv(line1, line2)
 
-        # Create list to hold satellite position, velocity
-        position = []
-        velocity = []
-        for timestep in index:
-            # orbit propagator - computes x,y,z position and velocity
-            pos, vel = satellite.propagate(timestep.year, timestep.month,
-                                           timestep.day, timestep.hour,
-                                           timestep.minute, timestep.second)
-            position.extend(pos)
-            velocity.extend(vel)
+    jd = jd * np.ones(len(times))
+    fr = times / 86400.
 
-        # Put data into DataFrame
-        data = pds.DataFrame({'position_eci_x': position[::3],
-                              'position_eci_y': position[1::3],
-                              'position_eci_z': position[2::3],
-                              'velocity_eci_x': velocity[::3],
-                              'velocity_eci_y': velocity[1::3],
-                              'velocity_eci_z': velocity[2::3]},
-                             index=index)
+    err_code, position, velocity = satellite.sgp4_array(jd, fr)
+
+    # Check all propagated values for errors in propagation
+    for i in range(1, 7):
+        if np.any(err_code == i):
+            raise ValueError(SGP4_ERRORS[i])
+
+    # Put data into DataFrame
+    data = pds.DataFrame({'position_eci_x': position[:, 0],
+                          'position_eci_y': position[:, 1],
+                          'position_eci_z': position[:, 2],
+                          'velocity_eci_x': velocity[:, 0],
+                          'velocity_eci_y': velocity[:, 1],
+                          'velocity_eci_z': velocity[:, 2]},
+                         index=index)
     data.index.name = 'Epoch'
 
     # TODO: add call for GEI/ECEF translation here => #56
