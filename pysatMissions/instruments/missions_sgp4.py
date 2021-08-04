@@ -66,13 +66,12 @@ def init(self):
 clean = mcore._clean
 
 
-def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
+def load(fnames, tag=None, inst_id=None,
          TLE1=None, TLE2=None, alt_periapsis=None, alt_apoapsis=None,
-         inclination=None, raan=None, arg_perigee=None, mean_anomaly=None,
+         inclination=None, raan=None, arg_periapsis=None, mean_anomaly=None,
          drag_coeff=None, num_samples=None, cadence='1S'):
     """
-    Returns data and metadata in the format required by pysat. Generates
-    position of satellite in ECI co-ordinates.
+    Generate position of satellite in ECI co-ordinates.
 
     Routine is directly called by pysat and not the user.
 
@@ -86,15 +85,6 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         Instrument satellite ID (accepts '' or a number (i.e., '10'), which
         specifies the number of seconds to simulate the satellite)
         (default='')
-    obs_long: float
-        Longitude of the observer on the Earth's surface
-        (default=0.)
-    obs_lat: float
-        Latitude of the observer on the Earth's surface
-        (default=0.)
-    obs_alt: float
-        Altitude of the observer on the Earth's surface
-        (default=0.)
     TLE1 : string
         First string for Two Line Element. Must be in TLE format
     TLE2 : string
@@ -108,8 +98,8 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         Orbital Inclination in degrees (default=None)
     raan : float
         Right Ascension of the Ascending Node in degrees (default=None)
-    arg_perigee : float
-        Argument of Perigee in degrees (default=None)
+    arg_periapsis : float
+        Argument of Periapsis in degrees (default=None)
     mean_anomaly : float
         The fraction of an elliptical orbit's period that has elapsed since the
         orbiting body passed periapsis
@@ -170,7 +160,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         satellite = Satrec()
         # according to module webpage, wgs72 is common
         satellite.sgp4init(WGS72, 'i', 0, epoch, drag_coeff, 0, 0,
-                           eccentricity, np.radians(arg_perigee),
+                           eccentricity, np.radians(arg_periapsis),
                            np.radians(inclination), np.radians(mean_anomaly),
                            mean_motion, np.radians(raan))
     else:
