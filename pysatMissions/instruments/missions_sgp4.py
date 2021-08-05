@@ -167,7 +167,7 @@ def load(fnames, tag=None, inst_id=None,
                            mean_motion, np.radians(raan))
     else:
         # Otherwise, use TLEs
-        satellite = Satrec.twoline2rv(line1, line2)
+        satellite = Satrec.twoline2rv(line1, line2, whichconst=WGS72)
 
     jd = jd * np.ones(len(times))
     fr = times / 86400.
