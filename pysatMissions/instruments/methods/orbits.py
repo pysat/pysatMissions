@@ -19,7 +19,8 @@ def _check_orbital_params(kwargs=None):
         warnings.warn(' '.join(['Cannot use both Keplerians and TLEs.',
                                 'Defaulting to Keplerians.']))
 
-def _get_params(planet='Earth'):
+
+def _get_constants(planet='Earth'):
     """Retrieve planetary constants for calculations.
 
     Parameters
@@ -72,7 +73,7 @@ def convert_to_keplerian(alt_periapsis, alt_apoapsis=None, planet='Earth'):
 
     """
 
-    radius, mass, gravity = _get_params(planet)
+    radius, mass, gravity = _get_constants(planet)
     if alt_apoapsis is None:
         alt_apoapsis = alt_periapsis
 
@@ -111,7 +112,7 @@ def convert_from_keplerian(eccentricity, mean_motion, planet='Earth'):
 
     """
 
-    radius, mass, gravity = _get_params(planet)
+    radius, mass, gravity = _get_constants(planet)
     # Convert mean_motion to rad / second before computing
     semimajor = (gravity * mass / (mean_motion / 60)**2)
     # Convert distance to km
