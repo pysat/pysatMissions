@@ -3,7 +3,15 @@ import warnings
 
 
 def _check_orbital_params(kwargs=None):
-    """Check that a complete set of unconflicted orbital parameters exist."""
+    """Check that a complete set of unconflicted orbital parameters exist.
+
+    Parameters
+    ----------
+    kwargs : dict
+        Dictionary of optional kwargs passed through upon initialization
+        of pysat instrument.
+
+    """
 
     elements = list(kwargs['load'].keys())
 
@@ -18,6 +26,8 @@ def _check_orbital_params(kwargs=None):
     if all(v in elements for v in tles) and all(v in elements for v in keplerians):
         warnings.warn(' '.join(['Cannot use both Keplerians and TLEs.',
                                 'Defaulting to Keplerians.']))
+
+    return
 
 
 def _get_constants(planet='Earth'):
