@@ -227,26 +227,31 @@ def load(fnames, tag=None, inst_id=None,
             meta.labels.desc: 'Satellite velocity along ECI-{:}'.format(v)}
         meta['position_ecef_{:}'.format(v)] = {
             meta.labels.units: 'km',
-            meta.labels.notes: 'Calculated using geospacepy-lite',
+            meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
             meta.labels.name: 'ECEF {:}-position'.format(v),
             meta.labels.desc: 'Earth Centered Earth Fixed {:}-position'.format(v)}
+        meta['velocity_ecef_{:}'.format(v)] = {
+            meta.labels.units: 'km',
+            meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
+            meta.labels.name: 'ECEF {:}-velocity'.format(v),
+            meta.labels.desc: 'Earth Centered Earth Fixed {:}-velocity'.format(v)}
     meta['latitude'] = {
         meta.labels.units: 'degrees',
-        meta.labels.notes: 'Calculated using geospacepy-lite',
+        meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
         meta.labels.name: 'Geodetic Latitude',
         meta.labels.desc: 'Geodetic Latitude of satellite',
         meta.labels.min_val: -90.,
         meta.labels.max_val: 90.}
     meta['longitude'] = {
         meta.labels.units: 'degrees',
-        meta.labels.notes: 'Calculated using geospacepy-lite',
+        meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
         meta.labels.name: 'Geodetic Longitude',
         meta.labels.desc: 'Geodetic Longitude of satellite',
-        meta.labels.min_value: -180.,
-        meta.labels.max_value: 180.}
+        meta.labels.min_val: -180.,
+        meta.labels.max_val: 180.}
     meta['altitude'] = {
         meta.labels.units: 'km',
-        meta.labels.notes: 'Calculated using geospacepy-lite',
+        meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
         meta.labels.name: 'Altitude',
         meta.labels.desc: 'Altitude of satellite above an ellipsoidal Earth'}
 
