@@ -29,6 +29,11 @@ jobs:
         pip install -r requirements.txt
         # Manual install of OMMBV
         pip install --no-binary :OMMBV: OMMBV
+        # Manual install of geospacepy-lite
+        git clone https://github.com/lkilcommons/geospacepy-lite.git
+        cd geospacepy-lite
+        python setup.py install
+        cd ..
 
     - name: Set up pysat
       run: |
