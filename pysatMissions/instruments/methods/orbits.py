@@ -1,14 +1,23 @@
 import numpy as np
+import warnings
 
 
-def check_orbital_params(inclination=None, eccentricity=None, raan=None,
-                         arg_perigee=None, mean_anomaly=None, mean_motion=None):
-    """Check that a complete set of orbital parameters exist."""
+def _check_orbital_params(kwargs=None):
+    """Check that a complete set of unconflicted orbital parameters exist."""
 
-    params = [inclination, eccentricity, raan, arg_perigee, mean_anomaly,
-              mean_motion]
-    return not any(v is None for v in params)
+    elements = list(kwargs['load'].keys())
 
+    keplerians = ['alt_periapsis', 'alt_apoapsis', 'inclination', 'drag_coeff',
+                  'arg_periapsis', 'raan', 'mean_anomaly']
+    tles = ['TLE1', 'TLE2']
+    errmsg = 'Insufficient kwargs.  Kwarg group requires {:}'
+    for group in [tles, keplerians]:
+        if any(v in elements for v in group):
+            if not all(v in elements for v in group):
+                raise KeyError(errmsg.format(', '.join(group)))
+    if all(v in elements for v in tles) and all(v in elements for v in keplerians):
+        warnings.warn(' '.join(['Cannot use both Keplerians and TLEs.',
+                                'Defaulting to Keplerians.']))
 
 def _get_params(planet='Earth'):
     """Retrieve planetary constants for calculations.

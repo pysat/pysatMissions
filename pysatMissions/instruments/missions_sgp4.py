@@ -49,6 +49,8 @@ def init(self):
 
     """
 
+    orbits._check_orbital_params(self.kwargs)
+
     self.acknowledgements = ' '.join((
         'The project uses the sgp4 library available at',
         'https://github.com/brandon-rhodes/python-sgp4'))
