@@ -183,11 +183,12 @@ def load(fnames, tag=None, inst_id=None,
 
     # Add ECEF values to instrument.
 
-    ecef = conv_sph.eci2ecef(position, (jd + fr))
+    pos_ecef = conv_sph.eci2ecef(position, (jd + fr))
+    vel_ecef = conv_sph.eci2ecef(velocity, (jd + fr))
 
     # Convert to latitude, longitude, altitude.
     # Ellipsoidal conversions require input in meters.
-    lat, lon, alt = conv_ell.ecef_cart2geodetic(ecef * 1000.)
+    lat, lon, alt = conv_ell.ecef_cart2geodetic(pos_ecef * 1000.)
 
     # Put data into DataFrame
     data = pds.DataFrame({'position_eci_x': position[:, 0],
@@ -196,9 +197,12 @@ def load(fnames, tag=None, inst_id=None,
                           'velocity_eci_x': velocity[:, 0],
                           'velocity_eci_y': velocity[:, 1],
                           'velocity_eci_z': velocity[:, 2],
-                          'position_ecef_x': ecef[:, 0],
-                          'position_ecef_y': ecef[:, 1],
-                          'position_ecef_z': ecef[:, 2],
+                          'position_ecef_x': pos_ecef[:, 0],
+                          'position_ecef_y': pos_ecef[:, 1],
+                          'position_ecef_z': pos_ecef[:, 2],
+                          'velocity_ecef_x': vel_ecef[:, 0],
+                          'velocity_ecef_y': vel_ecef[:, 1],
+                          'velocity_ecef_z': vel_ecef[:, 2],
                           'latitude': lat,
                           'longitude': lon,
                           'altitude': alt / 1000.},  # Convert altitude to km
