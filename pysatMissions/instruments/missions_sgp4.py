@@ -186,7 +186,7 @@ def load(fnames, tag=None, inst_id=None,
     pos_ecef = conv_sph.eci2ecef(position, (jd + fr))
     vel_ecef = conv_sph.eci2ecef(velocity, (jd + fr))
 
-    # Convert to latitude, longitude, altitude.
+    # Convert to geodetic latitude, longitude, altitude.
     # Ellipsoidal conversions require input in meters.
     lat, lon, alt = conv_ell.ecef_cart2geodetic(pos_ecef * 1000.)
 
