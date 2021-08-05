@@ -26,6 +26,8 @@ from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.instruments.methods import orbits
 from sgp4.api import jday, Satrec, SGP4_ERRORS, WGS72
+from geospacepy import terrestrial_spherical as conv_sph
+from geospacepy import terrestrial_ellipsoidal as conv_ell
 
 logger = pysat.logger
 
@@ -146,7 +148,7 @@ def load(fnames, tag=None, inst_id=None,
         line2 = TLE2
 
     if num_samples is None:
-        num_samples = 100
+        num_samples = 86400
 
     # Extract list of times from filenames and inst_id
     times, index, dates = ps_meth.generate_times(fnames, num_samples,
@@ -179,13 +181,27 @@ def load(fnames, tag=None, inst_id=None,
         if np.any(err_code == i):
             raise ValueError(SGP4_ERRORS[i])
 
+    # Add ECEF values to instrument.
+
+    ecef = conv_sph.eci2ecef(position, (jd + fr))
+
+    # Convert to latitude, longitude, altitude.
+    # Ellipsoidal conversions require input in meters.
+    lat, lon, alt = conv_ell.ecef_cart2geodetic(ecef * 1000.)
+
     # Put data into DataFrame
     data = pds.DataFrame({'position_eci_x': position[:, 0],
                           'position_eci_y': position[:, 1],
                           'position_eci_z': position[:, 2],
                           'velocity_eci_x': velocity[:, 0],
                           'velocity_eci_y': velocity[:, 1],
-                          'velocity_eci_z': velocity[:, 2]},
+                          'velocity_eci_z': velocity[:, 2],
+                          'position_ecef_x': ecef[:, 0],
+                          'position_ecef_y': ecef[:, 1],
+                          'position_ecef_z': ecef[:, 2],
+                          'latitude': lat,
+                          'longitude': lon,
+                          'altitude': alt / 1000.},  # Convert altitude to km
                          index=index)
     data.index.name = 'Epoch'
 
@@ -196,32 +212,39 @@ def load(fnames, tag=None, inst_id=None,
         meta.labels.notes: 'UTC time at middle of geophysical measurement.',
         meta.labels.desc: 'UTC seconds',
         meta.labels.name: 'Time index in milliseconds'}
-    meta['position_eci_x'] = {
+    for v in ['x', 'y', 'z']:
+        meta['position_eci_{:}'.format(v)] = {
+            meta.labels.units: 'km',
+            meta.labels.name: 'ECI {:}-position'.format(v),
+            meta.labels.desc: 'Earth Centered Inertial {:}-position'.format(v)}
+        meta['velocity_eci_{:}'.format(v)] = {
+            meta.labels.units: 'km/s',
+            meta.labels.name: 'Satellite velocity ECI-{:}'.format(v),
+            meta.labels.desc: 'Satellite velocity along ECI-{:}'.format(v)}
+        meta['position_ecef_{:}'.format(v)] = {
+            meta.labels.units: 'km',
+            meta.labels.notes: 'Calculated using geospacepy-lite',
+            meta.labels.name: 'ECEF {:}-position'.format(v),
+            meta.labels.desc: 'Earth Centered Earth Fixed {:}-position'.format(v)}
+    meta['latitude'] = {
+        meta.labels.units: 'degrees',
+        meta.labels.notes: 'Calculated using geospacepy-lite',
+        meta.labels.name: 'Geodetic Latitude',
+        meta.labels.desc: 'Geodetic Latitude of satellite',
+        meta.labels.min_val: -90.,
+        meta.labels.max_val: 90.}
+    meta['longitude'] = {
+        meta.labels.units: 'degrees',
+        meta.labels.notes: 'Calculated using geospacepy-lite',
+        meta.labels.name: 'Geodetic Longitude',
+        meta.labels.desc: 'Geodetic Longitude of satellite',
+        meta.labels.min_value: -180.,
+        meta.labels.max_value: 180.}
+    meta['altitude'] = {
         meta.labels.units: 'km',
-        meta.labels.name: 'ECI x-position',
-        meta.labels.desc: 'Earth Centered Inertial x-position of satellite.'}
-    meta['position_eci_y'] = {
-        meta.labels.units: 'km',
-        meta.labels.name: 'ECI y-position',
-        meta.labels.desc: 'Earth Centered Inertial y-position of satellite.'}
-    meta['position_eci_z'] = {
-        meta.labels.units: 'km',
-        meta.labels.name: 'ECI z-position',
-        meta.labels.desc: 'Earth Centered Inertial z-position of satellite.'}
-    meta['velocity_eci_x'] = {
-        meta.labels.units: 'km/s',
-        meta.labels.desc: 'Satellite velocity along ECI-x',
-        meta.labels.name: 'Satellite velocity ECI-x'}
-    meta['velocity_eci_y'] = {
-        meta.labels.units: 'km/s',
-        meta.labels.desc: 'Satellite velocity along ECI-y',
-        meta.labels.name: 'Satellite velocity ECI-y'}
-    meta['velocity_eci_z'] = {
-        meta.labels.units: 'km/s',
-        meta.labels.desc: 'Satellite velocity along ECI-z',
-        meta.labels.name: 'Satellite velocity ECI-z'}
-
-    # TODO: add call for GEI/ECEF translation here => #56
+        meta.labels.notes: 'Calculated using geospacepy-lite',
+        meta.labels.name: 'Altitude',
+        meta.labels.desc: 'Altitude of satellite above an ellipsoidal Earth'}
 
     return data, meta
 
