@@ -68,7 +68,7 @@ class TestBasics():
     def test_add_ram_pointing_sc_attitude_vectors(self):
         """Test `add_ram_pointing_sc_attitude_vectors` helper function."""
 
-        # TODO: check if calculations are correct
+        # TODO: check if calculations are correct => #64
         self.testInst.custom_attach(mm_sc.calculate_ecef_velocity)
         self.testInst.custom_attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
         self.testInst.load(date=dt.datetime(2009, 1, 1))
@@ -89,7 +89,7 @@ class TestBasics():
     def test_project_ecef_vector_onto_sc(self):
         """Test `project_ecef_vector_onto_sc` helper function."""
 
-        # TODO: check if calculations are correct
+        # TODO: check if calculations are correct => #64
         self.testInst.custom_attach(mm_sc.calculate_ecef_velocity)
         self.testInst.custom_attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
         self.testInst.custom_attach(add_fake_data)

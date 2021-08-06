@@ -206,7 +206,7 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
         Dicts contain metadata to be assigned.
     """
 
-    # TODO: add checks for existence of ecef labels in inst
+    # TODO: add checks for existence of ecef labels in inst => #65
 
     x, y, z = OMMBV.project_ecef_vector_onto_basis(
         inst[x_label], inst[y_label], inst[z_label],
