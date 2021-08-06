@@ -155,7 +155,7 @@ def load(fnames, tag=None, inst_id=None,
     epoch = (dates[0] - dt.datetime(1949, 12, 31)).days
     jd, _ = jday(dates[0].year, dates[0].month, dates[0].day, 0, 0, 0)
 
-    if inclination:
+    if inclination is not None:
         # If an inclination is provided, specify by Keplerian elements
         eccentricity, mean_motion = orbits.convert_to_keplerian(alt_periapsis,
                                                                 alt_apoapsis)
