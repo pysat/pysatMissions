@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Produce satellite orbit data.
+"""Produce satellite orbit data.
 
 Orbit is simulated using Two Line Elements (TLEs) and ephem. Satellite position
 is coupled to several space science models to simulate the atmosphere the
@@ -48,8 +47,7 @@ _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 
 def init(self):
-    """
-    Add custom calculations to orbit simulation.
+    """Add custom calculations to orbit simulation.
 
     This routine is run once, and only once, upon instantiation.
     Adds custom routines for quasi-dipole coordinates, velocity calculation in
@@ -68,8 +66,7 @@ def init(self):
 
 
 def preprocess(self):
-    """
-    Add modeled magnetic field values and attitude vectors to spacecraft.
+    """Add modeled magnetic field values and attitude vectors to spacecraft.
 
     Runs after load is invoked.
 
@@ -89,8 +86,7 @@ clean = mcore._clean
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
          TLE1=None, TLE2=None, num_samples=None, cadence='1S'):
-    """
-    Generate position of satellite in both geographic and ECEF co-ordinates.
+    """Generate position of satellite in both geographic and ECEF co-ordinates.
 
     Note
     ----

@@ -1,6 +1,4 @@
-"""
-Provides the instrument modules to be used with pysat.
-"""
+"""Provides the instrument modules to be used with pysat."""
 
 from pysatMissions.instruments import missions_ephem, missions_sgp4
 

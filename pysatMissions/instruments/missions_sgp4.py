@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Produce satellite orbit data.
+"""Produce satellite orbit data.
 
 Orbit is simulated using Two Line Elements (TLEs) and SGP4.
 
@@ -66,8 +65,7 @@ clean = mcore._clean
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
          TLE1=None, TLE2=None, num_samples=None, cadence='1S'):
-    """
-    Generate position of satellite in ECI co-ordinates.
+    """Generate position of satellite in ECI co-ordinates.
 
     Note
     ----

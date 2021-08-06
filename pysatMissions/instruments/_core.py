@@ -1,6 +1,4 @@
-"""
-Handles the default pysat functions for simulated instruments.
-"""
+"""Handles the default pysat functions for simulated instruments."""
 
 
 def _clean(self):

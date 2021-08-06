@@ -1,5 +1,4 @@
-"""
-Core library for pysatMissions.
+"""Core library for pysatMissions.
 
 pysatMissions allows users to run build simulated satellites for Two-Line
 Elements (TLE) and add empirical data.  It includes the `missions_ephem` and
