@@ -1,5 +1,4 @@
-"""
-Unit and Integration Tests for each instrument module.
+"""Unit and Integration Tests for each instrument module.
 
 Note
 ----
