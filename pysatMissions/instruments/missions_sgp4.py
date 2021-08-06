@@ -70,10 +70,10 @@ def init(self):
 clean = mcore._clean
 
 
-def load(fnames, tag=None, inst_id=None,
-         TLE1=None, TLE2=None, alt_periapsis=None, alt_apoapsis=None,
+def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
+         alt_periapsis=None, alt_apoapsis=None,
          inclination=None, raan=0., arg_periapsis=0., mean_anomaly=0.,
-         bstar=0., num_samples=None, cadence='1S'):
+         bstar=0., one_orbit=False, num_samples=None, cadence='1S'):
     """
     Generate position of satellite in ECI co-ordinates.
 
@@ -121,6 +121,9 @@ def load(fnames, tag=None, inst_id=None,
     bstar : float
         Inverse of the ballistic coefficient. Used to model satellite drag.
         Measured in inverse distance (1 / earth radius). (default=None)
+    one_orbit : bool
+        Flag to override num_samples and only provide a single orbit.
+        (default=False)
     num_samples : int
         Number of samples per day
     cadence : str
@@ -158,7 +161,7 @@ def load(fnames, tag=None, inst_id=None,
     if TLE2 is not None:
         line2 = TLE2
 
-    if num_samples is None:
+    if (num_samples is None) or one_orbit:
         num_samples = 86400
 
     # Extract list of times from filenames and inst_id
@@ -181,6 +184,12 @@ def load(fnames, tag=None, inst_id=None,
     else:
         # Otherwise, use TLEs
         satellite = Satrec.twoline2rv(line1, line2, WGS72)
+        mean_motion = satellite.mean_motion
+
+    if one_orbit:
+        ind = times <= (2 * np.pi / mean_motion * 60)
+        times = times[ind]
+        index = index[ind]
 
     jd = jd * np.ones(len(times))
     fr = times / 86400.
