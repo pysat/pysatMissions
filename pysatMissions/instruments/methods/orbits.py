@@ -15,7 +15,7 @@ def _check_orbital_params(kwargs=None):
 
     elements = list(kwargs['load'].keys())
 
-    keplerians = ['alt_periapsis', 'alt_apoapsis', 'inclination', 'drag_coeff',
+    keplerians = ['alt_periapsis', 'alt_apoapsis', 'inclination', 'bstar',
                   'arg_periapsis', 'raan', 'mean_anomaly']
     tles = ['TLE1', 'TLE2']
     errmsg = 'Insufficient kwargs.  Kwarg group requires {:}'

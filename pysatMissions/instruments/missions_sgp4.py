@@ -71,7 +71,7 @@ clean = mcore._clean
 def load(fnames, tag=None, inst_id=None,
          TLE1=None, TLE2=None, alt_periapsis=None, alt_apoapsis=None,
          inclination=None, raan=None, arg_periapsis=None, mean_anomaly=None,
-         drag_coeff=None, num_samples=None, cadence='1S'):
+         bstar=None, num_samples=None, cadence='1S'):
     """
     Generate position of satellite in ECI co-ordinates.
 
@@ -106,8 +106,9 @@ def load(fnames, tag=None, inst_id=None,
         The fraction of an elliptical orbit's period that has elapsed since the
         orbiting body passed periapsis
         (default=None)
-    drag_coeff : float
-        Drag coefficient (default=None)
+    bstar : float
+        Inverse of the ballistic coefficient. Used to model satellite drag.
+        Measured in inverse distance (1 / earth radius). (default=None)
     num_samples : int
         Number of samples per day
     cadence : str
@@ -161,7 +162,7 @@ def load(fnames, tag=None, inst_id=None,
                                                                 alt_apoapsis)
         satellite = Satrec()
         # according to module webpage, wgs72 is common
-        satellite.sgp4init(WGS72, 'i', 0, epoch, drag_coeff, 0, 0,
+        satellite.sgp4init(WGS72, 'i', 0, epoch, bstar, 0, 0,
                            eccentricity, np.radians(arg_periapsis),
                            np.radians(inclination), np.radians(mean_anomaly),
                            mean_motion, np.radians(raan))
