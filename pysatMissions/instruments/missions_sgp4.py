@@ -72,8 +72,8 @@ clean = mcore._clean
 
 def load(fnames, tag=None, inst_id=None,
          TLE1=None, TLE2=None, alt_periapsis=None, alt_apoapsis=None,
-         inclination=None, raan=None, arg_periapsis=None, mean_anomaly=None,
-         drag_coeff=None, num_samples=None, cadence='1S'):
+         inclination=None, raan=0., arg_periapsis=0., mean_anomaly=0.,
+         drag_coeff=0., num_samples=None, cadence='1S'):
     """
     Generate position of satellite in ECI co-ordinates.
 

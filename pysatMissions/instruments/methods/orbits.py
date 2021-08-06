@@ -15,8 +15,7 @@ def _check_orbital_params(kwargs=None):
 
     elements = list(kwargs['load'].keys())
 
-    keplerians = ['alt_periapsis', 'alt_apoapsis', 'inclination', 'drag_coeff',
-                  'arg_periapsis', 'raan', 'mean_anomaly']
+    keplerians = ['alt_periapsis', 'inclination']
     tles = ['TLE1', 'TLE2']
     errmsg = 'Insufficient kwargs.  Kwarg group requires {:}'
     for group in [tles, keplerians]:
@@ -49,7 +48,7 @@ def _get_constants(planet='Earth'):
         Newton's gravitational constant
     """
 
-    radius = {'Earth': 6371}
+    radius = {'Earth': 6371.2}
     mass = {'Earth': 5.9742e24}
     gravity = 6.6743e-11
 
