@@ -92,7 +92,7 @@ class TestInstruments(InstTestClass):
     @pytest.mark.parametrize(
         "kw_dict",
         [{'inclination': 13, 'alt_periapsis': 400, 'alt_apoapsis': 850,
-          'drag_coeff': 0, 'arg_periapsis': 0., 'raan': 0., 'mean_anomaly': 0.},
+          'bstar': 0, 'arg_periapsis': 0., 'raan': 0., 'mean_anomaly': 0.},
          {'TLE1': '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
           'TLE2': '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'}
          ])
@@ -125,7 +125,7 @@ class TestInstruments(InstTestClass):
     @pytest.mark.parametrize(
         "kw_dict",
         [{'inclination': 13, 'alt_periapsis': 400, 'alt_apoapsis': 850,
-          'drag_coeff': 0, 'arg_periapsis': 0., 'raan': 0., 'mean_anomaly': 0.,
+          'bstar': 0, 'arg_periapsis': 0., 'raan': 0., 'mean_anomaly': 0.,
           'TLE1': '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
           'TLE2': '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'}
          ])

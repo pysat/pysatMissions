@@ -73,7 +73,7 @@ clean = mcore._clean
 def load(fnames, tag=None, inst_id=None,
          TLE1=None, TLE2=None, alt_periapsis=None, alt_apoapsis=None,
          inclination=None, raan=0., arg_periapsis=0., mean_anomaly=0.,
-         drag_coeff=0., num_samples=None, cadence='1S'):
+         bstar=0., num_samples=None, cadence='1S'):
     """
     Generate position of satellite in ECI co-ordinates.
 
@@ -101,15 +101,26 @@ def load(fnames, tag=None, inst_id=None,
     inclination : float
         Orbital Inclination in degrees (default=None)
     raan : float
-        Right Ascension of the Ascending Node in degrees (default=None)
+        Right Ascension of the Ascending Node (RAAN) in degrees. This defines
+        the orientation of the orbital plane to the generalized reference frame.
+        The Ascending Node is the point in the orbit where the spacecraft passes
+        through the plane of reference moving northward.  For Earth orbits, the
+        location of the RAAN is defined as the angle eastward of the First Point
+        of Aries.
+        (default=None)
     arg_periapsis : float
-        Argument of Periapsis in degrees (default=None)
+        Argument of Periapsis in degrees.  This defines the orientation of the
+        ellipse in the orbital plane, as an angle measured from the ascending
+        node to the periapsis  (default=None)
     mean_anomaly : float
         The fraction of an elliptical orbit's period that has elapsed since the
-        orbiting body passed periapsis
+        orbiting body passed periapsis.  Note that this is a "fictitious angle"
+        (input in degrees) which defines the location of the spacecraft in the
+        orbital plane based on the orbital period.
         (default=None)
-    drag_coeff : float
-        Drag coefficient (default=None)
+    bstar : float
+        Inverse of the ballistic coefficient. Used to model satellite drag.
+        Measured in inverse distance (1 / earth radius). (default=None)
     num_samples : int
         Number of samples per day
     cadence : str
@@ -157,13 +168,13 @@ def load(fnames, tag=None, inst_id=None,
     epoch = (dates[0] - dt.datetime(1949, 12, 31)).days
     jd, _ = jday(dates[0].year, dates[0].month, dates[0].day, 0, 0, 0)
 
-    if inclination:
+    if inclination is not None:
         # If an inclination is provided, specify by Keplerian elements
         eccentricity, mean_motion = orbits.convert_to_keplerian(alt_periapsis,
                                                                 alt_apoapsis)
         satellite = Satrec()
         # according to module webpage, wgs72 is common
-        satellite.sgp4init(WGS72, 'i', 0, epoch, drag_coeff, 0, 0,
+        satellite.sgp4init(WGS72, 'i', 0, epoch, bstar, 0, 0,
                            eccentricity, np.radians(arg_periapsis),
                            np.radians(inclination), np.radians(mean_anomaly),
                            mean_motion, np.radians(raan))

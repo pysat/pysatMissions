@@ -34,7 +34,7 @@ def _get_constants(planet='Earth'):
 
     Parameters
     ----------
-    planet : string
+    planet : str
         The name of the planet of interest.
         (default='Earth')
 
@@ -68,7 +68,7 @@ def convert_to_keplerian(alt_periapsis, alt_apoapsis=None, planet='Earth'):
     alt_apoapsis : float or NoneType
         The highest altitude from the mean planet surface along the orbit (km)
         If None, assumed to be equal to periapsis. (default=None)
-    planet : string
+    planet : str
         The name of the planet of interest.  Used for radial calculations and
         mass.
         (default='Earth')
