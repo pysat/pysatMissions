@@ -39,8 +39,7 @@ _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 
 def init(self):
-    """
-    Initialize the Instrument object with required values.
+    """Initialize the Instrument object with required values.
 
     Runs once upon instantiation.
 
