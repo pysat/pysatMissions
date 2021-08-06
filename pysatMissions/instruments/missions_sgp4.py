@@ -186,9 +186,11 @@ def load(fnames, tag=None, inst_id=None,
     pos_ecef = conv_sph.eci2ecef(position, (jd + fr))
     vel_ecef = conv_sph.eci2ecef(velocity, (jd + fr))
 
+    # Convert to geocentric latitude, longitude, altitude.
+    lat, lon, rad = conv_sph.ecef_cart2spherical(pos_ecef)
     # Convert to geodetic latitude, longitude, altitude.
     # Ellipsoidal conversions require input in meters.
-    lat, lon, alt = conv_ell.ecef_cart2geodetic(pos_ecef * 1000.)
+    geod_lat, geod_lon, geod_alt = conv_ell.ecef_cart2geodetic(pos_ecef * 1000.)
 
     # Put data into DataFrame
     data = pds.DataFrame({'position_eci_x': position[:, 0],
@@ -205,7 +207,10 @@ def load(fnames, tag=None, inst_id=None,
                           'velocity_ecef_z': vel_ecef[:, 2],
                           'latitude': lat,
                           'longitude': lon,
-                          'altitude': alt / 1000.},  # Convert altitude to km
+                          'mean_altitude': rad - 6371.2,
+                          'geod_latitude': geod_lat,
+                          'geod_longitude': geod_lon,
+                          'geod_altitude': geod_alt / 1000.},  # Convert altitude to km
                          index=index)
     data.index.name = 'Epoch'
 
