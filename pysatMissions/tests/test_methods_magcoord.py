@@ -14,10 +14,12 @@ class TestBasics():
         """Create a clean testing setup before each method."""
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
                                          num_samples=100, clean_level='clean')
+        return
 
     def teardown(self):
         """Clean up test environment after each method."""
         del self
+        return
 
     def test_add_aacgm_coordinates(self):
         """Test adding thermal plasma data to test inst."""
@@ -33,6 +35,7 @@ class TestBasics():
             assert not np.isnan(self.testInst[target]).any()
             # Check if metadata is added
             assert target in self.testInst.meta.data.index
+        return
 
     def test_add_quasi_dipole_coordinates(self):
         """Test adding thermal plasma data to test inst."""
@@ -48,3 +51,4 @@ class TestBasics():
             assert not np.isnan(self.testInst[target]).any()
             # Check if metadata is added
             assert target in self.testInst.meta.data.index
+        return

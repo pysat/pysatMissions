@@ -75,12 +75,14 @@ class TestInstruments(InstTestClass):
         # to point to their own subpackage location, e.g.,
         # self.inst_loc = mypackage.instruments
         self.inst_loc = pysatMissions.instruments
+        return
 
     def teardown_class(self):
         """Clean up downloaded files and parameters from tests."""
         pysat.params.data['data_dirs'] = self.saved_path
         self.tempdir.cleanup()
         del self.inst_loc, self.saved_path, self.tempdir
+        return
 
     # Custom package unit tests can be added here
 
@@ -99,3 +101,4 @@ class TestInstruments(InstTestClass):
         self.test_inst.load(2019, 1)
         cadence = np.diff(self.test_inst.data.index.to_pydatetime())
         assert np.all(cadence == dt.timedelta(seconds=output))
+        return
