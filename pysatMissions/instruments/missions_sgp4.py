@@ -99,12 +99,22 @@ def load(fnames, tag=None, inst_id=None,
     inclination : float
         Orbital Inclination in degrees (default=None)
     raan : float
-        Right Ascension of the Ascending Node in degrees (default=None)
+        Right Ascension of the Ascending Node (RAAN) in degrees. This defines
+        the orientation of the orbital plane to the generalized reference frame.
+        The Ascending Node is the point in the orbit where the spacecraft passes
+        through the plane of reference moving northward.  For Earth orbits, the
+        location of the RAAN is defined as the angle eastward of the First Point
+        of Aries.
+        (default=None)
     arg_periapsis : float
-        Argument of Periapsis in degrees (default=None)
+        Argument of Periapsis in degrees.  This defines the orientation of the
+        ellipse in the orbital plane, as an angle measured from the ascending
+        node to the periapsis  (default=None)
     mean_anomaly : float
         The fraction of an elliptical orbit's period that has elapsed since the
-        orbiting body passed periapsis
+        orbiting body passed periapsis.  Note that this is a "fictitious angle"
+        (input in degrees) which defines the location of the spacecraft in the
+        orbital plane based on the orbital period.
         (default=None)
     bstar : float
         Inverse of the ballistic coefficient. Used to model satellite drag.
