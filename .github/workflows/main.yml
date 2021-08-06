@@ -29,11 +29,6 @@ jobs:
         pip install -r requirements.txt
         # Manual install of OMMBV
         pip install --no-binary :OMMBV: OMMBV
-        # Manual install of geospacepy-lite
-        git clone https://github.com/lkilcommons/geospacepy-lite.git
-        cd geospacepy-lite
-        python setup.py install
-        cd ..
 
     - name: Set up pysat
       run: |
@@ -41,10 +36,10 @@ jobs:
         python -c "import pysat; pysat.params['data_dirs'] = 'pysatData'"
 
     - name: Test PEP8 compliance
-      run: flake8 ./pysatMissions/* --count --select=E,F,W --show-source --statistics
+      run: flake8 . --count --select=E,F,W --show-source --statistics
 
     - name: Evaluate complexity
-      run: flake8 ./pysatMissions/* --count --exit-zero --max-complexity=10 --statistics
+      run: flake8 . --count --exit-zero --max-complexity=10 --statistics
 
     - name: Test with pytest
       run: |
