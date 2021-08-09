@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Produce satellite orbit data.
-
-Orbit is simulated using Two Line Elements (TLEs) and SGP4.
+"""Simulate satellite orbit data using Two Line Elements (TLEs) and SGP4.
 
 Properties
 ----------
