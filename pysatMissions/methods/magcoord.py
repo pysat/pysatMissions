@@ -1,5 +1,4 @@
-"""
-Routines for projecting aacgmv2 and apexpy model values onto pysat instruments.
+"""Routines for projecting aacgmv2 and apexpy model values onto pysat instruments.
 """
 
 import aacgmv2
