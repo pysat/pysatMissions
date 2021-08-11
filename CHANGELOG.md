@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 * Update sgp4 interface to use new syntax for initialization from TLEs
 * Include conversions to geodetic latitude / longitude / altitude for sgp4
 * Improve metadata generation in missions_sgp4
+* Documentation
+  * Improve docstrings throughout
+* Testing
+  * Add style check for docstrings
 
 ## [0.2.2] - 2021-06-18
 * Migrate pyglow interface to pysatIncubator

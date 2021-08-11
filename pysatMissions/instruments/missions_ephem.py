@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-Produces satellite orbit data. Orbit is simulated using
-Two Line Elements (TLEs) and ephem. Satellite position is coupled
-to several space science models to simulate the atmosphere the
+"""Produce satellite orbit data.
+
+Orbit is simulated using Two Line Elements (TLEs) and ephem. Satellite position
+is coupled to several space science models to simulate the atmosphere the
 satellite is in.
 
 Properties
@@ -47,10 +47,9 @@ _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 
 def init(self):
-    """
-    Adds custom calculations to orbit simulation.
-    This routine is run once, and only once, upon instantiation.
+    """Add custom calculations to orbit simulation.
 
+    This routine is run once, and only once, upon instantiation.
     Adds custom routines for quasi-dipole coordinates, velocity calculation in
     ECEF coords, and attitude vectors of spacecraft (assuming x is ram pointing
     and z is generally nadir).
@@ -67,8 +66,7 @@ def init(self):
 
 
 def preprocess(self):
-    """
-    Add modeled magnetic field values and attitude vectors to spacecraft
+    """Add modeled magnetic field values and attitude vectors to spacecraft.
 
     Runs after load is invoked.
 
@@ -88,10 +86,10 @@ clean = mcore._clean
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
          TLE1=None, TLE2=None, num_samples=None, cadence='1S'):
-    """
-    Returns data and metadata in the format required by pysat. Generates
-    position of satellite in both geographic and ECEF co-ordinates.
+    """Generate position of satellite in both geographic and ECEF co-ordinates.
 
+    Note
+    ----
     Routine is directly called by pysat and not the user.
 
     Parameters

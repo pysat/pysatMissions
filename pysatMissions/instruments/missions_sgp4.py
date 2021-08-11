@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Produces satellite orbit data. Orbit is simulated using
-Two Line Elements (TLEs) and SGP4.
+"""Simulate satellite orbit data using Two Line Elements (TLEs) and SGP4.
 
 Properties
 ----------
@@ -44,8 +42,7 @@ _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 
 def init(self):
-    """
-    Initialize the Instrument object with required values.
+    """Initialize the Instrument object with required values.
 
     Runs once upon instantiation.
 
@@ -74,9 +71,10 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
          alt_periapsis=None, alt_apoapsis=None,
          inclination=None, raan=0., arg_periapsis=0., mean_anomaly=0.,
          bstar=0., one_orbit=False, num_samples=None, cadence='1S'):
-    """
-    Generate position of satellite in ECI co-ordinates.
+    """Generate position of satellite in ECI co-ordinates.
 
+    Note
+    ----
     Routine is directly called by pysat and not the user.
 
     Parameters
