@@ -23,7 +23,7 @@ def add_eci(inst):
 
 
 def add_fake_data(inst):
-    """Add arbitrary vector to pysat_testing instrument."""
+    """Add an arbitrary vector to a pysat_testing instrument."""
 
     inst['ax'] = np.ones(9)
     inst['ay'] = np.zeros(9)
