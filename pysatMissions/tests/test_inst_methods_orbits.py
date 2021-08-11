@@ -1,10 +1,10 @@
 """Unit tests for `pysatMissions.instruments.methods.orbits`."""
 
-import pytest
 import pysatMissions.instruments.methods.orbits as mm_orbits
+import pytest
 
 
-class TestBasics():
+class TestBasics(object):
     """Unit tests for conversion to/from Keplerian elements."""
 
     def setup(self):
