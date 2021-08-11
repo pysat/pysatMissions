@@ -23,7 +23,7 @@ import pysat
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.instruments.methods import orbits
-from sgp4.api import jday, Satrec, SGP4_ERRORS, WGS72
+from sgp4.api import api as sapi
 
 logger = pysat.logger
 
@@ -162,21 +162,21 @@ def load(fnames, tag=None, inst_id=None,
                                                  freq=cadence)
     # Calculate epoch for orbital propagator
     epoch = (dates[0] - dt.datetime(1949, 12, 31)).days
-    jd, _ = jday(dates[0].year, dates[0].month, dates[0].day, 0, 0, 0)
+    jd, _ = sapi.jday(dates[0].year, dates[0].month, dates[0].day, 0, 0, 0)
 
     if inclination is not None:
         # If an inclination is provided, specify by Keplerian elements
         eccentricity, mean_motion = orbits.convert_to_keplerian(alt_periapsis,
                                                                 alt_apoapsis)
-        satellite = Satrec()
+        satellite = sapi.Satrec()
         # according to module webpage, wgs72 is common
-        satellite.sgp4init(WGS72, 'i', 0, epoch, bstar, 0, 0,
+        satellite.sgp4init(sapi.WGS72, 'i', 0, epoch, bstar, 0, 0,
                            eccentricity, np.radians(arg_periapsis),
                            np.radians(inclination), np.radians(mean_anomaly),
                            mean_motion, np.radians(raan))
     else:
         # Otherwise, use TLEs
-        satellite = Satrec.twoline2rv(line1, line2, WGS72)
+        satellite = sapi.Satrec.twoline2rv(line1, line2, sapi.WGS72)
 
     jd = jd * np.ones(len(times))
     fr = times / 86400.
@@ -186,7 +186,7 @@ def load(fnames, tag=None, inst_id=None,
     # Check all propagated values for errors in propagation
     for i in range(1, 7):
         if np.any(err_code == i):
-            raise ValueError(SGP4_ERRORS[i])
+            raise ValueError(sapi.SGP4_ERRORS[i])
 
     # Put data into DataFrame
     data = pds.DataFrame({'position_eci_x': position[:, 0],

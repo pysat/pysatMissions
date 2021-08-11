@@ -1,17 +1,17 @@
 """Unit tests for `pysatMissions.instruments.methods.orbits`."""
 
-import pytest
 import pysatMissions.instruments.methods.orbits as mm_orbits
+import pytest
 
 
-class TestBasics():
+class TestBasics(object):
     """Unit tests for conversion to/from Keplerian elements."""
 
     def setup(self):
         """Create a clean testing setup before each method."""
         self.orbit = {'inclination': 13, 'apogee': 850, 'perigee': 400,
-                      'eccentricity': 0.032161234991424,
-                      'mean_motion': 0.0647469462135}
+                      'eccentricity': 0.032160315599897085,
+                      'mean_motion': 0.06474416985702029}
         return
 
     def teardown(self):
