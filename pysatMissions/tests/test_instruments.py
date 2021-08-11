@@ -18,8 +18,8 @@ import pysat
 import pysatMissions
 
 # Import the test classes from pysat
-from pysat.utils import generate_instrument_list
 from pysat.tests.instrument_test_class import InstTestClass
+from pysat.utils import generate_instrument_list
 
 
 saved_path = pysat.params['data_dirs']
