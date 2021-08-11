@@ -23,7 +23,7 @@ import pysat
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.instruments.methods import orbits
-from sgp4.api import api as sapi
+from sgp4 import api as sapi
 
 logger = pysat.logger
 
