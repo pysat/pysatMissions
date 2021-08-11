@@ -66,6 +66,7 @@ class TestInstruments(InstTestClass):
 
     def setup_class(self):
         """Initialize the testing setup once before all tests are run."""
+
         # Make sure to use a temporary directory so that the user's setup is not
         # altered
         self.tempdir = tempfile.TemporaryDirectory()
@@ -79,6 +80,7 @@ class TestInstruments(InstTestClass):
 
     def teardown_class(self):
         """Clean up downloaded files and parameters from tests."""
+
         pysat.params.data['data_dirs'] = self.saved_path
         self.tempdir.cleanup()
         del self.inst_loc, self.saved_path, self.tempdir
