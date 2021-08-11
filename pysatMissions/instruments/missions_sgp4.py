@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Produces satellite orbit data. Orbit is simulated using
-Two Line Elements (TLEs) and SGP4.
+"""Simulate satellite orbit data using Two Line Elements (TLEs) and SGP4.
 
 Properties
 ----------
@@ -39,8 +37,7 @@ _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 
 def init(self):
-    """
-    Initializes the Instrument object with required values.
+    """Initialize the Instrument object with required values.
 
     Runs once upon instantiation.
 
@@ -65,10 +62,10 @@ clean = mcore._clean
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
          TLE1=None, TLE2=None, num_samples=None, cadence='1S'):
-    """
-    Returns data and metadata in the format required by pysat. Generates
-    position of satellite in ECI co-ordinates.
+    """Generate position of satellite in ECI co-ordinates.
 
+    Note
+    ----
     Routine is directly called by pysat and not the user.
 
     Parameters
@@ -167,7 +164,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                          index=index)
     data.index.name = 'Epoch'
 
-    # TODO: add call for GEI/ECEF translation here => #56
+    # TODO(#56): add call for GEI/ECEF translation here
 
     return data, meta.copy()
 

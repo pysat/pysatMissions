@@ -1,15 +1,11 @@
-"""Provides default routines for projecting values onto vectors
-for pysat instruments.
-
-"""
+"""Default routines for projecting values onto vectors for pysat instruments."""
 
 import numpy as np
 import OMMBV
 
 
 def add_ram_pointing_sc_attitude_vectors(inst):
-    """
-    Add attitude vectors for spacecraft assuming ram pointing.
+    """Add attitude vectors for spacecraft assuming ram pointing.
 
     Presumes spacecraft is pointed along the velocity vector (x), z is
     generally nadir pointing (positive towards Earth), and y completes the
@@ -135,8 +131,7 @@ def add_ram_pointing_sc_attitude_vectors(inst):
 
 
 def calculate_ecef_velocity(inst):
-    """
-    Calculates spacecraft velocity in ECEF frame.
+    """Calculate spacecraft velocity in ECEF frame.
 
     Presumes that the spacecraft velocity in ECEF is in
     the input instrument object as position_ecef_*. Uses a symmetric
@@ -187,7 +182,7 @@ def calculate_ecef_velocity(inst):
 def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
                                 new_x_label, new_y_label, new_z_label,
                                 meta=None):
-    """Express input vector using s/c attitude directions
+    """Express input vector using s/c attitude directions.
 
     x - ram pointing
     y - generally southward
@@ -211,7 +206,7 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
         Dicts contain metadata to be assigned.
     """
 
-    # TODO: add checks for existence of ecef labels in inst
+    # TODO(#65): add checks for existence of ecef labels in inst
 
     x, y, z = OMMBV.project_ecef_vector_onto_basis(
         inst[x_label], inst[y_label], inst[z_label],

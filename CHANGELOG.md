@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - XXXX-XX-XX
+* Documentation
+  * Improve docstrings throughout
+* Testing
+  * Add style check for docstrings
+
 ## [0.2.2] - 2021-06-18
 * Migrate pyglow interface to pysatIncubator
 * Style updates for consistency with pysat 3.0
