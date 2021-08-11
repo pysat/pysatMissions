@@ -1,3 +1,5 @@
+"""Methods to convert orbital information for propagators."""
+
 import numpy as np
 import warnings
 
