@@ -1,3 +1,5 @@
+"""Methods to convert orbital information for propagators."""
+
 import numpy as np
 import warnings
 
@@ -15,8 +17,7 @@ def _check_orbital_params(kwargs=None):
 
     elements = list(kwargs['load'].keys())
 
-    keplerians = ['alt_periapsis', 'alt_apoapsis', 'inclination', 'bstar',
-                  'arg_periapsis', 'raan', 'mean_anomaly']
+    keplerians = ['alt_periapsis', 'inclination']
     tles = ['TLE1', 'TLE2']
     errmsg = 'Insufficient kwargs.  Kwarg group requires {:}'
     for group in [tles, keplerians]:
@@ -44,12 +45,12 @@ def _get_constants(planet='Earth'):
     radius : float (km)
         The average radius to the surface of a planet.
     mass : float (kg)
-        The avergae mass of the planet.
+        The average mass of the planet.
     gravity : float (m**3 kg / s**2)
         Newton's gravitational constant
     """
 
-    radius = {'Earth': 6371}
+    radius = {'Earth': 6371.2}
     mass = {'Earth': 5.9742e24}
     gravity = 6.6743e-11
 
