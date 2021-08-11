@@ -183,7 +183,7 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
     else:
         # Otherwise, use TLEs
         satellite = sapi.Satrec.twoline2rv(line1, line2, sapi.WGS72)
-        mean_motion = satellite.mean_motion
+        mean_motion = satellite.mm
 
     if one_orbit:
         ind = times <= (2 * np.pi / mean_motion * 60)
