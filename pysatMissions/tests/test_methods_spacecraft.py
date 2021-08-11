@@ -31,7 +31,7 @@ def add_fake_data(inst):
     return
 
 
-class TestBasics():
+class TestBasics(object):
     """Unit tests for aacgmv2 methods."""
 
     def setup(self):

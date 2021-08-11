@@ -7,7 +7,7 @@ import pysat
 import pysatMissions.methods.magcoord as mm_magcoord
 
 
-class TestBasics():
+class TestBasics(object):
     """Main testing class for aacgmv2."""
 
     def setup(self):
