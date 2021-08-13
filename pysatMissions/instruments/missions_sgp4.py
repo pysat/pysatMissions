@@ -24,8 +24,8 @@ from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.instruments.methods import orbits
 
-from geospacepy import terrestrial_spherical as conv_sph
 from geospacepy import terrestrial_ellipsoidal as conv_ell
+from geospacepy import terrestrial_spherical as conv_sph
 from sgp4 import api as sapi
 
 logger = pysat.logger
