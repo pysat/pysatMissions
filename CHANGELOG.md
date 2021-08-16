@@ -2,7 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## [0.3.0] - XXXX-XX-XX
+## [0.3.0] - 2021-06-24
+* Add Keplerian orbital inputs into missions_sgp4
+* Update sgp4 interface to use new syntax for initialization from TLEs
+* Improve metadata generation in missions_sgp4
 * Documentation
   * Improve docstrings throughout
 * Testing

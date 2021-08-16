@@ -9,6 +9,7 @@ Imports test methods from pysat.tests.instrument_test_class
 import datetime as dt
 import numpy as np
 import tempfile
+import warnings
 
 import pytest
 
@@ -76,6 +77,7 @@ class TestInstruments(InstTestClass):
         # to point to their own subpackage location, e.g.,
         # self.inst_loc = mypackage.instruments
         self.inst_loc = pysatMissions.instruments
+        self.stime = pysatMissions.instruments.missions_sgp4._test_dates['']['']
         return
 
     def teardown_class(self):
@@ -83,7 +85,7 @@ class TestInstruments(InstTestClass):
 
         pysat.params.data['data_dirs'] = self.saved_path
         self.tempdir.cleanup()
-        del self.inst_loc, self.saved_path, self.tempdir
+        del self.inst_loc, self.saved_path, self.tempdir, self.stime
         return
 
     # Custom package unit tests can be added here
@@ -100,7 +102,61 @@ class TestInstruments(InstTestClass):
             self.test_inst = pysat.Instrument(
                 inst_module=inst_dict['inst_module'])
 
-        self.test_inst.load(2019, 1)
+        self.test_inst.load(date=self.stime)
         cadence = np.diff(self.test_inst.data.index.to_pydatetime())
         assert np.all(cadence == dt.timedelta(seconds=output))
+        return
+
+    @pytest.mark.parametrize(
+        "kw_dict",
+        [{'inclination': 13, 'alt_periapsis': 400, 'alt_apoapsis': 850,
+          'bstar': 0, 'arg_periapsis': 0., 'raan': 0., 'mean_anomaly': 0.},
+         {'TLE1': '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
+          'TLE2': '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'}
+         ])
+    def test_sgp4_options(self, kw_dict):
+        """Test optional keywords for sgp4."""
+
+        target = 'Fake Data to be cleared'
+        self.test_inst = pysat.Instrument(
+            inst_module=pysatMissions.instruments.missions_sgp4,
+            **kw_dict)
+        self.test_inst.data = [target]
+        self.test_inst.load(date=self.stime)
+        # If target is cleared, load has run successfully
+        assert target not in self.test_inst.data
+        return
+
+    @pytest.mark.parametrize(
+        "kw_dict",
+        [{'inclination': 13, 'alt_apoapsis': 850},
+         {'TLE1': '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'}
+         ])
+    def test_sgp4_options_errors(self, kw_dict):
+        """Test optional keyword combos for sgp4 that generate errors."""
+
+        with pytest.raises(KeyError) as kerr:
+            self.test_inst = pysat.Instrument(
+                inst_module=pysatMissions.instruments.missions_sgp4,
+                **kw_dict)
+        assert str(kerr).find('Insufficient kwargs') >= 0
+        return
+
+    @pytest.mark.parametrize(
+        "kw_dict",
+        [{'inclination': 13, 'alt_periapsis': 400, 'alt_apoapsis': 850,
+          'bstar': 0, 'arg_periapsis': 0., 'raan': 0., 'mean_anomaly': 0.,
+          'TLE1': '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
+          'TLE2': '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'}
+         ])
+    def test_sgp4_options_warnings(self, kw_dict):
+        """Test optional keyword combos for sgp4 that generate warnings."""
+
+        with warnings.catch_warnings(record=True) as war:
+            self.test_inst = pysat.Instrument(
+                inst_module=pysatMissions.instruments.missions_sgp4,
+                **kw_dict)
+        assert len(war) >= 1
+        categories = [war[j].category for j in range(0, len(war))]
+        assert UserWarning in categories
         return
