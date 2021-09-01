@@ -50,8 +50,6 @@ class TestBasics(object):
 
         per, apo, = mm_orbits.convert_from_keplerian(self.orbit['eccentricity'],
                                                      self.orbit['mean_motion'],)
-        assert abs(per - self.orbit['perigee']) / per < 1.e-6
-        assert abs(apo - self.orbit['apogee']) / apo < 1.e-6
         self.eval_output(per, 'perigee')
         self.eval_output(apo, 'apogee')
         return
