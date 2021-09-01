@@ -40,29 +40,38 @@ class TestBasics(object):
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
                                          num_samples=9, clean_level='clean')
         self.testInst.custom_attach(add_eci)
+        self.reftime = dt.datetime(2009, 1, 1)
         return
 
     def teardown(self):
         """Clean up test environment after tests."""
 
-        del self
+        del self.testInst, self.reftime
+        return
+
+    def eval_targets(self, targets):
+        """Evaluate addition of new data targets to instrument."""
+
+        for target in targets:
+            assert target in self.testInst.data.keys(), \
+                "{:s} not found in data".format(target)
+            assert not np.isnan(self.testInst[target][1:-1]).any(), \
+                "NaN values found in {:s}".format(target)
+            assert np.isnan(self.testInst[target][0]), \
+                "First value of {:s} should be NaN".format(target)
+            assert np.isnan(self.testInst[target][-1]), \
+                "Last value of {:s} should be NaN".format(target)
+            assert target in self.testInst.meta.data.index, \
+                "{:s} not found in metadata".format(target)
         return
 
     def test_calculate_ecef_velocity(self):
         """Test `calculate_ecef_velocity` helper function."""
 
         self.testInst.custom_attach(mm_sc.calculate_ecef_velocity)
-        self.testInst.load(date=dt.datetime(2009, 1, 1))
+        self.testInst.load(date=self.reftime)
         targets = ['velocity_ecef_x', 'velocity_ecef_y', 'velocity_ecef_z']
-        for target in targets:
-            # Check if data is added
-            assert target in self.testInst.data.keys()
-            assert not np.isnan(self.testInst[target][1:-1]).any()
-            # Endpoints should be NaN
-            assert np.isnan(self.testInst[target][0])
-            assert np.isnan(self.testInst[target][-1])
-            # Check if metadata is added
-            assert target in self.testInst.meta.data.index
+        self.eval_targets(targets)
         return
 
     def test_add_ram_pointing_sc_attitude_vectors(self):
@@ -71,19 +80,11 @@ class TestBasics(object):
         # TODO(#64): check if calculations are correct
         self.testInst.custom_attach(mm_sc.calculate_ecef_velocity)
         self.testInst.custom_attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
-        self.testInst.load(date=dt.datetime(2009, 1, 1))
+        self.testInst.load(date=self.reftime)
         targets = ['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z',
                    'sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z',
                    'sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']
-        for target in targets:
-            # Check if data is added
-            assert target in self.testInst.data.keys()
-            assert not np.isnan(self.testInst[target][1:-1]).any()
-            # Endpoints should be NaN
-            assert np.isnan(self.testInst[target][0])
-            assert np.isnan(self.testInst[target][-1])
-            # Check if metadata is added
-            assert target in self.testInst.meta.data.index
+        self.eval_targets(targets)
         return
 
     def test_project_ecef_vector_onto_sc(self):
@@ -95,15 +96,7 @@ class TestBasics(object):
         self.testInst.custom_attach(add_fake_data)
         self.testInst.custom_attach(mm_sc.project_ecef_vector_onto_sc,
                                     args=['ax', 'ay', 'az', 'bx', 'by', 'bz'])
-        self.testInst.load(date=dt.datetime(2009, 1, 1))
+        self.testInst.load(date=self.reftime)
         targets = ['bx', 'by', 'bz']
-        for target in targets:
-            # Check if data is added
-            assert target in self.testInst.data.keys()
-            assert not np.isnan(self.testInst[target][1:-1]).any()
-            # Endpoints should be NaN
-            assert np.isnan(self.testInst[target][0])
-            assert np.isnan(self.testInst[target][-1])
-            # Check if metadata is added
-            assert target in self.testInst.meta.data.index
+        self.eval_targets(targets)
         return
