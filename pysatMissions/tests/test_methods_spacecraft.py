@@ -55,12 +55,9 @@ class TestBasics(object):
         for target in targets:
             assert target in self.testInst.data.keys(), \
                 "{:s} not found in data".format(target)
+            # By default, endpoints will be NaNs.  Ignore these.
             assert not np.isnan(self.testInst[target][1:-1]).any(), \
                 "NaN values found in {:s}".format(target)
-            assert np.isnan(self.testInst[target][0]), \
-                "First value of {:s} should be NaN".format(target)
-            assert np.isnan(self.testInst[target][-1]), \
-                "Last value of {:s} should be NaN".format(target)
             assert target in self.testInst.meta.data.index, \
                 "{:s} not found in metadata".format(target)
         return
