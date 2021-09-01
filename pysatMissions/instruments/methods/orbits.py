@@ -21,9 +21,10 @@ def _check_orbital_params(kwargs=None):
     tles = ['TLE1', 'TLE2']
     errmsg = 'Insufficient kwargs.  Kwarg group requires {:}'
     for group in [tles, keplerians]:
-        if any(v in elements for v in group):
-            if not all(v in elements for v in group):
-                raise KeyError(errmsg.format(', '.join(group)))
+        bools = [v in elements for v in group]
+        # Check if group is incomplete.
+        if any(bools) and not all(bools):
+            raise KeyError(errmsg.format(', '.join(group)))
     if all(v in elements for v in tles) and all(v in elements for v in keplerians):
         warnings.warn(' '.join(['Cannot use both Keplerians and TLEs.',
                                 'Defaulting to Keplerians.']))
