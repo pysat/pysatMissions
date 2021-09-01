@@ -184,9 +184,10 @@ def load(fnames, tag=None, inst_id=None,
     err_code, position, velocity = satellite.sgp4_array(jd, fr)
 
     # Check all propagated values for errors in propagation
-    for i in range(1, 7):
-        if np.any(err_code == i):
-            raise ValueError(sapi.SGP4_ERRORS[i])
+    errors = np.unique(err_code[err_code > 0])
+    if len(errors) > 0:
+        # Raise highest priority error.
+        raise ValueError(sapi.SGP4_ERRORS[errors[0]])
 
     # Put data into DataFrame
     data = pds.DataFrame({'position_eci_x': position[:, 0],
