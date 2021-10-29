@@ -79,44 +79,15 @@ def add_ram_pointing_sc_attitude_vectors(inst):
                             inst['sc_yhat_ecef_z'])
 
     # Adding metadata
-    inst.meta['sc_xhat_ecef_x'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (x-direction, ram) unit vector,',
-                          'expressed in ECEF basis, x-component'))}
-    inst.meta['sc_xhat_ecef_y'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (x-direction, ram) unit vector,',
-                          'expressed in ECEF basis, y-component'))}
-    inst.meta['sc_xhat_ecef_z'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (x-direction, ram) unit vector,',
-                          'expressed in ECEF basis, z-component'))}
-
-    inst.meta['sc_zhat_ecef_x'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (z-direction, generally nadir) unit',
-                          'vector, expressed in ECEF basis, x-component'))}
-    inst.meta['sc_zhat_ecef_y'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (z-direction, generally nadir) unit',
-                          'vector, expressed in ECEF basis, y-component'))}
-    inst.meta['sc_zhat_ecef_z'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (z-direction, generally nadir) unit',
-                          'vector, expressed in ECEF basis, z-component'))}
-
-    inst.meta['sc_yhat_ecef_x'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (y-direction, generally south) unit',
-                          'vector, expressed in ECEF basis, x-component'))}
-    inst.meta['sc_yhat_ecef_y'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (y-direction, generally south) unit',
-                          'vector, expressed in ECEF basis, y-component'))}
-    inst.meta['sc_yhat_ecef_z'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (y-direction, generally south) unit',
-                          'vector, expressed in ECEF basis, z-component'))}
+    for v in ['x', 'y', 'z']:
+        for u in ['x', 'y', 'z']:
+            inst.meta['sc_{:}hat_ecef_{:}'.format(v, u)] = {
+                inst.meta.labels.units: '',
+                inst.meta.labels.name: 'SC {:}-unit vector, ECEF-{:}'.format(v, u),
+                inst.meta.labels.desc: ' '.join(('S/C attitude ({:}'.format(v),
+                                                 '-direction, ram) unit vector,',
+                                                 'expressed in ECEF basis,',
+                                                 '{:}-component'.format(u)))}
 
     # check what magnitudes we get
     mag = np.sqrt(inst['sc_zhat_ecef_x']**2 + inst['sc_zhat_ecef_y']**2
@@ -164,18 +135,12 @@ def calculate_ecef_velocity(inst):
     inst[1:-1, 'velocity_ecef_y'] = vel_y
     inst[1:-1, 'velocity_ecef_z'] = vel_z
 
-    inst.meta['velocity_ecef_x'] = {'units': 'km/s',
-                                    'desc': ' '.join(('Velocity of satellite',
-                                                      'calculated with respect',
-                                                      'to ECEF frame.'))}
-    inst.meta['velocity_ecef_y'] = {'units': 'km/s',
-                                    'desc': ' '.join(('Velocity of satellite',
-                                                      'calculated with respect',
-                                                      'to ECEF frame.'))}
-    inst.meta['velocity_ecef_z'] = {'units': 'km/s',
-                                    'desc': ' '.join(('Velocity of satellite',
-                                                      'calculated with respect',
-                                                      'to ECEF frame.'))}
+    for v in ['x', 'y', 'z']:
+        inst.meta['velocity_ecef_{:}'.format(v)] = {
+            inst.meta.labels.units: 'km/s',
+            inst.meta.labels.name: 'ECEF {:}-velocity'.format(v),
+            inst.meta.labels.desc: ' '.join(('Velocity of satellite calculated',
+                                             'with respect to ECEF frame.'))}
     return
 
 

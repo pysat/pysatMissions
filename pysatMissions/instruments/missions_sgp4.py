@@ -23,6 +23,9 @@ import pysat
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.instruments.methods import orbits
+
+from geospacepy import terrestrial_ellipsoidal as conv_ell
+from geospacepy import terrestrial_spherical as conv_sph
 from sgp4 import api as sapi
 
 logger = pysat.logger
@@ -65,10 +68,10 @@ def init(self):
 clean = mcore._clean
 
 
-def load(fnames, tag=None, inst_id=None,
-         TLE1=None, TLE2=None, alt_periapsis=None, alt_apoapsis=None,
-         inclination=None, raan=None, arg_periapsis=None, mean_anomaly=None,
-         bstar=None, num_samples=None, cadence='1S'):
+def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
+         alt_periapsis=None, alt_apoapsis=None,
+         inclination=None, raan=0., arg_periapsis=0., mean_anomaly=0.,
+         bstar=0., one_orbit=False, num_samples=None, cadence='1S'):
     """Generate position of satellite in ECI co-ordinates.
 
     Note
@@ -86,39 +89,51 @@ def load(fnames, tag=None, inst_id=None,
         specifies the number of seconds to simulate the satellite)
         (default='')
     TLE1 : string
-        First string for Two Line Element. Must be in TLE format
+        First string for Two Line Element. Must be in TLE format.  TLE1 and TLE2
+        both required if instantiating instrument by TLEs. (defalt=None)
     TLE2 : string
-        Second string for Two Line Element. Must be in TLE format
+        Second string for Two Line Element. Must be in TLE format.  TLE1 and TLE2
+        both required if instantiating instrument by TLEs. (defalt=None)
     alt_periapsis : float
-        The lowest altitude from the mean planet surface along the orbit (km)
+        The lowest altitude from the mean planet surface along the orbit (km).
+        Required along with inclination if instantiating via orbital elements.
+        (defalt=None)
     alt_apoapsis : float or NoneType
         The highest altitude from the mean planet surface along the orbit (km)
-        If None, assumed to be equal to periapsis. (default=None)
+        If None, assumed to be equal to periapsis (ie, circular orbit). Optional
+        when instantiating via orbital elements. (default=None)
     inclination : float
-        Orbital Inclination in degrees (default=None)
+        Orbital Inclination in degrees.  Required along with alt_periapsis if
+        instantiating via orbital elements. (default=None)
     raan : float
         Right Ascension of the Ascending Node (RAAN) in degrees. This defines
         the orientation of the orbital plane to the generalized reference frame.
         The Ascending Node is the point in the orbit where the spacecraft passes
         through the plane of reference moving northward.  For Earth orbits, the
         location of the RAAN is defined as the angle eastward of the First Point
-        of Aries.
-        (default=None)
+        of Aries. Optional when instantiating via orbital elements.
+        (default=0.)
     arg_periapsis : float
         Argument of Periapsis in degrees.  This defines the orientation of the
         ellipse in the orbital plane, as an angle measured from the ascending
-        node to the periapsis  (default=None)
+        node to the periapsis.  Optional when instantiating via orbital elements.
+        (default=0.)
     mean_anomaly : float
         The fraction of an elliptical orbit's period that has elapsed since the
         orbiting body passed periapsis.  Note that this is a "fictitious angle"
         (input in degrees) which defines the location of the spacecraft in the
-        orbital plane based on the orbital period.
-        (default=None)
+        orbital plane based on the orbital period.  Optional when instantiating
+        via orbital elements.
+        (default=0.)
     bstar : float
         Inverse of the ballistic coefficient. Used to model satellite drag.
-        Measured in inverse distance (1 / earth radius). (default=None)
+        Measured in inverse distance (1 / earth radius).  Optional when
+        instantiating via orbital elements. (default=0.)
+    one_orbit : bool
+        Flag to override num_samples and only provide a single orbit.
+        (default=False)
     num_samples : int
-        Number of samples per day
+        Number of samples per day.  (default=None)
     cadence : str
         Uses pandas.frequency string formatting ('1S', etc)
         (default='1S')
@@ -154,8 +169,8 @@ def load(fnames, tag=None, inst_id=None,
     if TLE2 is not None:
         line2 = TLE2
 
-    if num_samples is None:
-        num_samples = 100
+    if (num_samples is None) or one_orbit:
+        num_samples = 86400
 
     # Extract list of times from filenames and inst_id
     times, index, dates = ps_meth.generate_times(fnames, num_samples,
@@ -177,6 +192,12 @@ def load(fnames, tag=None, inst_id=None,
     else:
         # Otherwise, use TLEs
         satellite = sapi.Satrec.twoline2rv(line1, line2, sapi.WGS72)
+        mean_motion = satellite.mm
+
+    if one_orbit:
+        ind = times <= (2 * np.pi / mean_motion * 60)
+        times = times[ind]
+        index = index[ind]
 
     jd = jd * np.ones(len(times))
     fr = times / 86400.
@@ -188,13 +209,36 @@ def load(fnames, tag=None, inst_id=None,
         if np.any(err_code == i):
             raise ValueError(sapi.SGP4_ERRORS[i])
 
+    # Add ECEF values to instrument.
+
+    pos_ecef = conv_sph.eci2ecef(position, (jd + fr))
+    vel_ecef = conv_sph.eci2ecef(velocity, (jd + fr))
+
+    # Convert to geocentric latitude, longitude, altitude.
+    lat, lon, rad = conv_sph.ecef_cart2spherical(pos_ecef)
+    # Convert to geodetic latitude, longitude, altitude.
+    # Ellipsoidal conversions require input in meters.
+    geod_lat, geod_lon, geod_alt = conv_ell.ecef_cart2geodetic(pos_ecef * 1000.)
+
     # Put data into DataFrame
     data = pds.DataFrame({'position_eci_x': position[:, 0],
                           'position_eci_y': position[:, 1],
                           'position_eci_z': position[:, 2],
                           'velocity_eci_x': velocity[:, 0],
                           'velocity_eci_y': velocity[:, 1],
-                          'velocity_eci_z': velocity[:, 2]},
+                          'velocity_eci_z': velocity[:, 2],
+                          'position_ecef_x': pos_ecef[:, 0],
+                          'position_ecef_y': pos_ecef[:, 1],
+                          'position_ecef_z': pos_ecef[:, 2],
+                          'velocity_ecef_x': vel_ecef[:, 0],
+                          'velocity_ecef_y': vel_ecef[:, 1],
+                          'velocity_ecef_z': vel_ecef[:, 2],
+                          'latitude': lat,
+                          'longitude': lon,
+                          'mean_altitude': rad - 6371.2,
+                          'geod_latitude': geod_lat,
+                          'geod_longitude': geod_lon,
+                          'geod_altitude': geod_alt / 1000.},  # Convert to km
                          index=index)
     data.index.name = 'Epoch'
 
@@ -205,32 +249,63 @@ def load(fnames, tag=None, inst_id=None,
         meta.labels.notes: 'UTC time at middle of geophysical measurement.',
         meta.labels.desc: 'UTC seconds',
         meta.labels.name: 'Time index in milliseconds'}
-    meta['position_eci_x'] = {
+    for v in ['x', 'y', 'z']:
+        meta['position_eci_{:}'.format(v)] = {
+            meta.labels.units: 'km',
+            meta.labels.name: 'ECI {:}-position'.format(v),
+            meta.labels.desc: 'Earth Centered Inertial {:}-position'.format(v)}
+        meta['velocity_eci_{:}'.format(v)] = {
+            meta.labels.units: 'km/s',
+            meta.labels.name: 'Satellite velocity ECI-{:}'.format(v),
+            meta.labels.desc: 'Satellite velocity along ECI-{:}'.format(v)}
+        meta['position_ecef_{:}'.format(v)] = {
+            meta.labels.units: 'km',
+            meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
+            meta.labels.name: 'ECEF {:}-position'.format(v),
+            meta.labels.desc: 'Earth Centered Earth Fixed {:}-position'.format(v)}
+        meta['velocity_ecef_{:}'.format(v)] = {
+            meta.labels.units: 'km',
+            meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
+            meta.labels.name: 'ECEF {:}-velocity'.format(v),
+            meta.labels.desc: 'Earth Centered Earth Fixed {:}-velocity'.format(v)}
+    meta['latitude'] = {
+        meta.labels.units: 'degrees',
+        meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
+        meta.labels.name: 'Geocentric Latitude',
+        meta.labels.desc: 'Geocentric Latitude of satellite',
+        meta.labels.min_val: -90.,
+        meta.labels.max_val: 90.}
+    meta['longitude'] = {
+        meta.labels.units: 'degrees',
+        meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
+        meta.labels.name: 'Geocentric Longitude',
+        meta.labels.desc: 'Geocentric Longitude of satellite',
+        meta.labels.min_val: -180.,
+        meta.labels.max_val: 180.}
+    meta['mean_altitude'] = {
         meta.labels.units: 'km',
-        meta.labels.name: 'ECI x-position',
-        meta.labels.desc: 'Earth Centered Inertial x-position of satellite.'}
-    meta['position_eci_y'] = {
+        meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
+        meta.labels.name: 'Altitude',
+        meta.labels.desc: 'Altitude of satellite above an ellipsoidal Earth'}
+    meta['geod_latitude'] = {
+        meta.labels.units: 'degrees',
+        meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
+        meta.labels.name: 'Geodetic Latitude',
+        meta.labels.desc: 'Geodetic Latitude of satellite',
+        meta.labels.min_val: -90.,
+        meta.labels.max_val: 90.}
+    meta['geod_longitude'] = {
+        meta.labels.units: 'degrees',
+        meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
+        meta.labels.name: 'Geodetic Longitude',
+        meta.labels.desc: 'Geodetic Longitude of satellite',
+        meta.labels.min_val: -180.,
+        meta.labels.max_val: 180.}
+    meta['geod_altitude'] = {
         meta.labels.units: 'km',
-        meta.labels.name: 'ECI y-position',
-        meta.labels.desc: 'Earth Centered Inertial y-position of satellite.'}
-    meta['position_eci_z'] = {
-        meta.labels.units: 'km',
-        meta.labels.name: 'ECI z-position',
-        meta.labels.desc: 'Earth Centered Inertial z-position of satellite.'}
-    meta['velocity_eci_x'] = {
-        meta.labels.units: 'km/s',
-        meta.labels.desc: 'Satellite velocity along ECI-x',
-        meta.labels.name: 'Satellite velocity ECI-x'}
-    meta['velocity_eci_y'] = {
-        meta.labels.units: 'km/s',
-        meta.labels.desc: 'Satellite velocity along ECI-y',
-        meta.labels.name: 'Satellite velocity ECI-y'}
-    meta['velocity_eci_z'] = {
-        meta.labels.units: 'km/s',
-        meta.labels.desc: 'Satellite velocity along ECI-z',
-        meta.labels.name: 'Satellite velocity ECI-z'}
-
-    # TODO(#56): add call for GEI/ECEF translation here
+        meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
+        meta.labels.name: 'Altitude',
+        meta.labels.desc: 'Altitude of satellite above an ellipsoidal Earth'}
 
     return data, meta
 

@@ -211,38 +211,38 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                          index=index)
     data.index.name = 'Epoch'
 
-    return data, meta.copy()
+    meta = pysat.Meta()
+    meta['Epoch'] = {
+        meta.labels.units: 'Milliseconds since 1970-1-1',
+        meta.labels.notes: 'UTC time at middle of geophysical measurement.',
+        meta.labels.desc: 'UTC seconds',
+        meta.labels.name: 'Time index in milliseconds'}
+    meta['glong'] = {meta.labels.units: 'degrees',
+                     meta.labels.desc: 'WGS84 geodetic longitude'}
+    meta['glat'] = {meta.labels.units: 'degrees',
+                    meta.labels.desc: 'WGS84 geodetic latitude'}
+    meta['alt'] = {meta.labels.units: 'km',
+                   meta.labels.desc: "WGS84 height above Earth's surface"}
+    for v in ['x', 'y', 'z']:
+        meta['position_ecef_{:}'.format(v)] = {
+            meta.labels.units: 'km',
+            meta.labels.name: 'ECEF {:}-position'.format(v),
+            meta.labels.desc: 'Earth Centered Earth Fixed {:}-position'.format(v)}
+    meta['obs_sat_az_angle'] = {
+        meta.labels.units: 'degrees',
+        meta.labels.name: 'Satellite Azimuth Angle',
+        meta.labels.desc: 'Azimuth of satellite from ground station'}
+    meta['obs_sat_el_angle'] = {
+        meta.labels.units: 'degrees',
+        meta.labels.name: 'Satellite Elevation Angle',
+        meta.labels.desc: 'Elevation of satellite from ground station'}
+    meta['obs_sat_slant_range'] = {
+        meta.labels.units: 'km',
+        meta.labels.name: 'Satellite Slant Distance',
+        meta.labels.desc: 'Distance of satellite from ground station'}
+
+    return data, meta
 
 
 list_files = functools.partial(ps_meth.list_files, test_dates=_test_dates)
 download = functools.partial(ps_meth.download)
-
-# Create metadata corresponding to variables in load routine just above.
-# Defined here here rather than above to avoid regeneration at every load call.
-meta = pysat.Meta()
-meta['Epoch'] = {
-    meta.labels.units: 'Milliseconds since 1970-1-1',
-    meta.labels.notes: 'UTC time at middle of geophysical measurement.',
-    meta.labels.desc: 'UTC seconds',
-    meta.labels.name: 'Time index in milliseconds'}
-meta['glong'] = {meta.labels.units: 'degrees',
-                 meta.labels.desc: 'WGS84 geodetic longitude'}
-meta['glat'] = {meta.labels.units: 'degrees',
-                meta.labels.desc: 'WGS84 geodetic latitude'}
-meta['alt'] = {meta.labels.units: 'km',
-               meta.labels.desc: "WGS84 height above Earth's surface"}
-meta['position_ecef_x'] = {meta.labels.units: 'km',
-                           meta.labels.desc: 'ECEF x co-ordinate of satellite'}
-meta['position_ecef_y'] = {meta.labels.units: 'km',
-                           meta.labels.desc: 'ECEF y co-ordinate of satellite'}
-meta['position_ecef_z'] = {meta.labels.units: 'km',
-                           meta.labels.desc: 'ECEF z co-ordinate of satellite'}
-meta['obs_sat_az_angle'] = {
-    meta.labels.units: 'degrees',
-    meta.labels.desc: 'Azimuth of satellite from ground station'}
-meta['obs_sat_el_angle'] = {
-    meta.labels.units: 'degrees',
-    meta.labels.desc: 'Elevation of satellite from ground station'}
-meta['obs_sat_slant_range'] = {
-    meta.labels.units: 'km',
-    meta.labels.desc: 'Distance of satellite from ground station'}
