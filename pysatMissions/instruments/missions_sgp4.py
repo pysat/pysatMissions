@@ -89,42 +89,51 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
         specifies the number of seconds to simulate the satellite)
         (default='')
     TLE1 : string
-        First string for Two Line Element. Must be in TLE format
+        First string for Two Line Element. Must be in TLE format.  TLE1 and TLE2
+        both required if instantiating instrument by TLEs. (defalt=None)
     TLE2 : string
-        Second string for Two Line Element. Must be in TLE format
+        Second string for Two Line Element. Must be in TLE format.  TLE1 and TLE2
+        both required if instantiating instrument by TLEs. (defalt=None)
     alt_periapsis : float
-        The lowest altitude from the mean planet surface along the orbit (km)
+        The lowest altitude from the mean planet surface along the orbit (km).
+        Required along with inclination if instantiating via orbital elements.
+        (defalt=None)
     alt_apoapsis : float or NoneType
         The highest altitude from the mean planet surface along the orbit (km)
-        If None, assumed to be equal to periapsis. (default=None)
+        If None, assumed to be equal to periapsis (ie, circular orbit). Optional
+        when instantiating via orbital elements. (default=None)
     inclination : float
-        Orbital Inclination in degrees (default=None)
+        Orbital Inclination in degrees.  Required along with alt_periapsis if
+        instantiating via orbital elements. (default=None)
     raan : float
         Right Ascension of the Ascending Node (RAAN) in degrees. This defines
         the orientation of the orbital plane to the generalized reference frame.
         The Ascending Node is the point in the orbit where the spacecraft passes
         through the plane of reference moving northward.  For Earth orbits, the
         location of the RAAN is defined as the angle eastward of the First Point
-        of Aries.
-        (default=None)
+        of Aries. Optional when instantiating via orbital elements.
+        (default=0.)
     arg_periapsis : float
         Argument of Periapsis in degrees.  This defines the orientation of the
         ellipse in the orbital plane, as an angle measured from the ascending
-        node to the periapsis  (default=None)
+        node to the periapsis.  Optional when instantiating via orbital elements.
+        (default=0.)
     mean_anomaly : float
         The fraction of an elliptical orbit's period that has elapsed since the
         orbiting body passed periapsis.  Note that this is a "fictitious angle"
         (input in degrees) which defines the location of the spacecraft in the
-        orbital plane based on the orbital period.
-        (default=None)
+        orbital plane based on the orbital period.  Optional when instantiating
+        via orbital elements.
+        (default=0.)
     bstar : float
         Inverse of the ballistic coefficient. Used to model satellite drag.
-        Measured in inverse distance (1 / earth radius). (default=None)
+        Measured in inverse distance (1 / earth radius).  Optional when
+        instantiating via orbital elements. (default=0.)
     one_orbit : bool
         Flag to override num_samples and only provide a single orbit.
         (default=False)
     num_samples : int
-        Number of samples per day
+        Number of samples per day.  (default=None)
     cadence : str
         Uses pandas.frequency string formatting ('1S', etc)
         (default='1S')
@@ -229,7 +238,7 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
                           'mean_altitude': rad - 6371.2,
                           'geod_latitude': geod_lat,
                           'geod_longitude': geod_lon,
-                          'geod_altitude': geod_alt / 1000.},  # Convert altitude to km
+                          'geod_altitude': geod_alt / 1000.},  # Convert to km
                          index=index)
     data.index.name = 'Epoch'
 
