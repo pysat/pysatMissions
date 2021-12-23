@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   * Improve docstrings throughout
 * Testing
   * Add style check for docstrings
+  * Include support for testing against multiple versions of numpy
 
 ## [0.2.2] - 2021-06-18
 * Migrate pyglow interface to pysatIncubator
