@@ -90,7 +90,12 @@ class TestInstruments(InstTestClass):
 
     # Custom package unit tests can be added here
 
-    @pytest.mark.parametrize("kwargs", [{}, {'epoch': dt.datetime(2019, 1, 1)}])
+    @pytest.mark.parametrize("kwargs",
+                             [{},
+                              {'inclination': 20, 'alt_periapsis': 400},
+                              {'inclination': 80, 'alt_periapsis': 500,
+                               'alt_apoapsis': 600,
+                               'epoch': dt.datetime(2019, 1, 1)}])
     def test_sgp4_data_continuity(self, kwargs):
         """Test that data is continuous for sequential days.
 
@@ -101,8 +106,9 @@ class TestInstruments(InstTestClass):
         """
 
         # Define sat with custom Keplerian inputs
-        sat = pysat.Instrument('missions', 'sgp4', inclination=20,
-                               alt_periapsis=400, **kwargs)
+        sat = pysat.Instrument(
+            inst_module=pysatMissions.instruments.missions_sgp4,
+            **kwargs)
 
         # Get last 10 points of day 1
         sat.load(2018, 1)
