@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 """Produce satellite orbit data.
 
+.. deprecated:: 0.3.0
+    pyephem is no longer updated, and the code maintainers suggest skyfield
+    as a replacement.  The functionality of the instrument will be replaced by
+    the new `missions_sgp4` instrument.  `missions_ephem` will be removed in
+    versions 0.4.0+
+
 Orbit is simulated using Two Line Elements (TLEs) and ephem. Satellite position
 is coupled to several space science models to simulate the atmosphere the
 satellite is in.
@@ -21,6 +27,7 @@ inst_id
 import datetime as dt
 import functools
 import numpy as np
+import warnings
 
 import ephem
 import OMMBV
@@ -61,6 +68,11 @@ def init(self):
         'https://github.com/brandon-rhodes/pyephem'))
     self.references = 'Please contact the pyephem project for references'
     logger.info(self.acknowledgements)
+
+    warnings.warn(' '.join(("`missions_ephem` has been deprecated and will be",
+                            "removed in pysatMissions 0.4.0+.",
+                            "Use `missions_sgp4` instead.")),
+                  DeprecationWarning, stacklevel=2)
 
     return
 
