@@ -123,9 +123,8 @@ class TestInstruments(InstTestClass):
         gradient_between_days = day2.iloc[0] - day1.iloc[-1]
 
         # Check that the jump between days is within 3 sigma of average gradient
-        for key in average_gradient.keys():
-            del_g = np.abs(average_gradient[key] - gradient_between_days[key])
-            assert del_g < 3. * std_gradient[key]
+        del_g = np.abs(average_gradient - gradient_between_days)
+        assert np.all(del_g < (3. * std_gradient))
 
         return
 
