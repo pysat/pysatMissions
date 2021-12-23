@@ -90,6 +90,39 @@ class TestInstruments(InstTestClass):
 
     # Custom package unit tests can be added here
 
+    @pytest.mark.parametrize("kwargs", [{}, {'epoch': dt.datetime(2019, 1, 1)}])
+    def test_sgp4_data_continuity(self, kwargs):
+        """Test that data is continuous for sequential days.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Optional kwargs to pass through.
+        """
+
+        # Define sat with custom Keplerian inputs
+        sat = pysat.Instrument('missions', 'sgp4', inclination=20,
+                               alt_periapsis=400, **kwargs)
+
+        # Get last 10 points of day 1
+        sat.load(2018, 1)
+        day1 = sat.data[-10:]
+
+        # Get first 10 points of day 2
+        sat.load(2018, 2)
+        day2 = sat.data[:10]
+
+        average_gradient = day1.diff().mean()
+        std_gradient = day1.diff().std()
+        gradient_between_days = day2.iloc[0] - day1.iloc[-1]
+
+        # Check that the jump between days is within 3 sigma of average gradient
+        for key in average_gradient.keys():
+            del_g = np.abs(average_gradient[key] - gradient_between_days[key])
+            assert del_g < 3. * std_gradient[key]
+
+        return
+
     @pytest.mark.parametrize("inst_dict", [x for x in instruments['download']])
     @pytest.mark.parametrize("kwarg,output", [(None, 1), ('10s', 10)])
     def test_inst_cadence(self, inst_dict, kwarg, output):
