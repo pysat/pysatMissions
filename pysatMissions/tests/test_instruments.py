@@ -102,7 +102,9 @@ class TestInstruments(InstTestClass):
         Parameters
         ----------
         kwargs : dict
-            Optional kwargs to pass through.
+            Optional kwargs to pass through.  If empty, instrument will be
+            default TLEs.
+
         """
 
         # Define sat with custom Keplerian inputs
@@ -124,7 +126,8 @@ class TestInstruments(InstTestClass):
 
         # Check that the jump between days is within 3 sigma of average gradient
         del_g = np.abs(average_gradient - gradient_between_days)
-        assert np.all(del_g < (3. * std_gradient))
+        assert np.all(del_g < (3. * std_gradient)), \
+            "Gap between days outside of 3 sigma"
 
         return
 
