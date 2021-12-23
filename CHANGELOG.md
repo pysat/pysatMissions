@@ -9,6 +9,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 * Improve metadata generation in missions_sgp4
 * Documentation
   * Improve docstrings throughout
+* Deprecations
+  * Deprecated missions_ephem, as pyephem will no longer be updated
 * Testing
   * Add style check for docstrings
 
