@@ -48,7 +48,7 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     # to the true z (in the orbital plane) that we can use it to get y,
     # and use x and y to get the real z
     inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        OMMBV.vector.normalize_vector(-inst['position_ecef_x'],
+        OMMBV.vector.normalize(-inst['position_ecef_x'],
                                       -inst['position_ecef_y'],
                                       -inst['position_ecef_z'])
 
@@ -63,7 +63,7 @@ def add_ram_pointing_sc_attitude_vectors(inst):
                                    inst['sc_xhat_ecef_z'])
     # Normalize since Xhat and Zhat from above may not be orthogonal
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        OMMBV.vector.normalize_vector(inst['sc_yhat_ecef_x'],
+        OMMBV.vector.normalize(inst['sc_yhat_ecef_x'],
                                       inst['sc_yhat_ecef_y'],
                                       inst['sc_yhat_ecef_z'])
 
