@@ -173,7 +173,7 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
 
     # TODO(#65): add checks for existence of ecef labels in inst
 
-    x, y, z = OMMBV.project_ECEF_vector_onto_basis(
+    x, y, z = OMMBV.vector.project_onto_basis(
         inst[x_label], inst[y_label], inst[z_label],
         inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'],
         inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'],
