@@ -49,8 +49,8 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     # and use x and y to get the real z
     inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
         OMMBV.vector.normalize(-inst['position_ecef_x'],
-                                      -inst['position_ecef_y'],
-                                      -inst['position_ecef_z'])
+                               -inst['position_ecef_y'],
+                               -inst['position_ecef_z'])
 
     # get y vector assuming right hand rule
     # Z x X = Y
@@ -64,8 +64,8 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     # Normalize since Xhat and Zhat from above may not be orthogonal
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
         OMMBV.vector.normalize(inst['sc_yhat_ecef_x'],
-                                      inst['sc_yhat_ecef_y'],
-                                      inst['sc_yhat_ecef_z'])
+                               inst['sc_yhat_ecef_y'],
+                               inst['sc_yhat_ecef_z'])
 
     # Strictly, need to recalculate Zhat so that it is consistent with RHS
     # just created
