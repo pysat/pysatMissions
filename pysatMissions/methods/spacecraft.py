@@ -38,9 +38,9 @@ def add_ram_pointing_sc_attitude_vectors(inst):
 
     # Ram pointing is along velocity vector
     inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'] = \
-        OMMBV.vector.normalize_vector(inst['velocity_ecef_x'],
-                                      inst['velocity_ecef_y'],
-                                      inst['velocity_ecef_z'])
+        OMMBV.vector.normalize(inst['velocity_ecef_x'],
+                               inst['velocity_ecef_y'],
+                               inst['velocity_ecef_z'])
 
     # Begin with z along Nadir (towards Earth)
     # if orbit isn't perfectly circular, then the s/c z vector won't
