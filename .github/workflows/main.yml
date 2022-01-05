@@ -16,7 +16,7 @@ jobs:
         numpy_ver: ["latest"]
         include:
           - python-version: "3.8"
-            numpy_ver: "1.20"
+            numpy_ver: "latest"
             os: ubuntu-latest
 
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }} with numpy ${{ matrix.numpy_ver }}
@@ -41,8 +41,6 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
-        # Manual install of apexpy
-        pip install --no-binary :apexpy: apexpy
 
     - name: Set up pysat
       run: |
