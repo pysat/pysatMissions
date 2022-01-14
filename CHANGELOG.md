@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   * Deprecated missions_ephem, as pyephem will no longer be updated
 * Testing
   * Add style check for docstrings
+  * Added checks for deprecation warnings
 
 ## [0.2.2] - 2021-06-18
 * Migrate pyglow interface to pysatIncubator
