@@ -61,6 +61,9 @@ def init(self):
         'August 21–24.'))
     logger.info(self.acknowledgements)
 
+    if 'epoch' not in self.kwargs['load'].keys():
+        self.kwargs['load']['epoch'] = self.files.files.index[0]
+
     return
 
 
@@ -71,7 +74,7 @@ clean = mcore._clean
 def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
          alt_periapsis=None, alt_apoapsis=None,
          inclination=None, raan=0., arg_periapsis=0., mean_anomaly=0.,
-         bstar=0., one_orbit=False, num_samples=None, cadence='1S'):
+         epoch=None, bstar=0., one_orbit=False, num_samples=None, cadence='1S'):
     """Generate position of satellite in ECI co-ordinates.
 
     Note
@@ -125,6 +128,10 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
         orbital plane based on the orbital period.  Optional when instantiating
         via orbital elements.
         (default=0.)
+    epoch : dt.datetime or NoneType
+        The epoch used for calculating orbital propagation from Keplerians.
+        If None, then use the first date in the file list for consistency across
+        multiple days. Note that this will be set in `init`. (default=None)
     bstar : float
         Inverse of the ballistic coefficient. Used to model satellite drag.
         Measured in inverse distance (1 / earth radius).  Optional when
@@ -176,7 +183,7 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
     times, index, dates = ps_meth.generate_times(fnames, num_samples,
                                                  freq=cadence)
     # Calculate epoch for orbital propagator
-    epoch = (dates[0] - dt.datetime(1949, 12, 31)).days
+    epoch_days = (epoch - dt.datetime(1949, 12, 31)).days
     jd, _ = sapi.jday(dates[0].year, dates[0].month, dates[0].day, 0, 0, 0)
 
     if inclination is not None:
@@ -185,7 +192,7 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
                                                                 alt_apoapsis)
         satellite = sapi.Satrec()
         # according to module webpage, wgs72 is common
-        satellite.sgp4init(sapi.WGS72, 'i', 0, epoch, bstar, 0, 0,
+        satellite.sgp4init(sapi.WGS72, 'i', 0, epoch_days, bstar, 0, 0,
                            eccentricity, np.radians(arg_periapsis),
                            np.radians(inclination), np.radians(mean_anomaly),
                            mean_motion, np.radians(raan))
@@ -205,9 +212,10 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
     err_code, position, velocity = satellite.sgp4_array(jd, fr)
 
     # Check all propagated values for errors in propagation
-    for i in range(1, 7):
-        if np.any(err_code == i):
-            raise ValueError(sapi.SGP4_ERRORS[i])
+    errors = np.unique(err_code[err_code > 0])
+    if len(errors) > 0:
+        # Raise highest priority error.
+        raise ValueError(sapi.SGP4_ERRORS[errors[0]])
 
     # Add ECEF values to instrument.
 
