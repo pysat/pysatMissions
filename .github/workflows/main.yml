@@ -11,10 +11,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: ["3.8", "3.9", "3.10"]
         os: [ubuntu-latest]
+        numpy_ver: ["latest"]
 
-    name: Python ${{ matrix.python-version }} on ${{ matrix.os }}
+    name: Python ${{ matrix.python-version }} on ${{ matrix.os }} with numpy ${{ matrix.numpy_ver }}
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -22,13 +23,15 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
+
+    - name: Install requirements for testing setup
       run: |
         python -m pip install --upgrade pip
         pip install -r test_requirements.txt
+
+    - name: Install dependencies
+      run: |
         pip install -r requirements.txt
-        # Manual install of OMMBV
-        pip install --no-binary :OMMBV: OMMBV
 
     - name: Set up pysat
       run: |
