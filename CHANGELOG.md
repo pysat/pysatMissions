@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   * Improve docstrings throughout
 * Testing
   * Add style check for docstrings
+  * Improve checks in codeclimate
 
 ## [0.2.2] - 2021-06-18
 * Migrate pyglow interface to pysatIncubator
