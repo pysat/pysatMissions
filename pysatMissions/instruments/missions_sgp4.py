@@ -131,7 +131,7 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
     epoch : dt.datetime or NoneType
         The epoch used for calculating orbital propagation from Keplerians.
         If None, then use the first date in the file list for consistency across
-        multiple days. Note that this will be set at init. (default=None)
+        multiple days. Note that this will be set in `init`. (default=None)
     bstar : float
         Inverse of the ballistic coefficient. Used to model satellite drag.
         Measured in inverse distance (1 / earth radius).  Optional when
