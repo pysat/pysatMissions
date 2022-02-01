@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## [0.3.0] - 2021-08-05
+## [0.3.0] - 2022-XX-XX
 * Add Keplerian orbital inputs into missions_sgp4
 * Update sgp4 interface to use new syntax for initialization from TLEs
 * Include conversions to geodetic latitude / longitude / altitude for sgp4
