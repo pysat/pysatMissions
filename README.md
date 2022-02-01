@@ -37,7 +37,7 @@ Python 3.7+.
 | -------------- | ----------------- |
 | numpy          | aacgmv2           |
 | pandas         | apexpy            |
-| pyEphem        | OMMBV             |
+| pyEphem        | OMMBV>=1.0        |
 | sgp4>=2.7      | pysat>=3.0        |
 
 
