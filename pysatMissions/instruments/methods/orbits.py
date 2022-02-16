@@ -32,14 +32,14 @@ def _check_orbital_params(kwargs=None):
     return
 
 
-def _get_constants(planet='Earth'):
+def _get_constants(planet='earth'):
     """Retrieve planetary constants for calculations.
 
     Parameters
     ----------
     planet : str
         The name of the planet of interest.
-        (default='Earth')
+        (default='earth')
 
     Returns
     -------
@@ -61,7 +61,7 @@ def _get_constants(planet='Earth'):
     return radius[planet], mass[planet], gravity
 
 
-def convert_to_keplerian(alt_periapsis, alt_apoapsis=None, planet='Earth'):
+def convert_to_keplerian(alt_periapsis, alt_apoapsis=None, planet='earth'):
     """Calculate orbital eccentricity from periapsis and apoapsis.
 
     Parameters
@@ -73,7 +73,7 @@ def convert_to_keplerian(alt_periapsis, alt_apoapsis=None, planet='Earth'):
         If None, assumed to be equal to periapsis. (default=None)
     planet : str
         The name of the planet of interest.  Used for radial calculations and
-        mass. (default='Earth')
+        mass. (default='earth')
 
     Returns
     -------
@@ -101,7 +101,7 @@ def convert_to_keplerian(alt_periapsis, alt_apoapsis=None, planet='Earth'):
     return eccentricity, mean_motion
 
 
-def convert_from_keplerian(eccentricity, mean_motion, planet='Earth'):
+def convert_from_keplerian(eccentricity, mean_motion, planet='earth'):
     """Calculate orbital eccentricity from periapsis and apoapsis.
 
     Parameters
@@ -112,7 +112,7 @@ def convert_from_keplerian(eccentricity, mean_motion, planet='Earth'):
         The mean angular speed of the orbit (rad/minute)
     planet : string
         The name of the planet of interest.  Used for radial calculations.
-        (default='Earth')
+        (default='earth')
 
     Returns
     -------
