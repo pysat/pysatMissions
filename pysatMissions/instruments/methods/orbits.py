@@ -51,8 +51,8 @@ def _get_constants(planet='Earth'):
         Newton's gravitational constant
     """
 
-    radius = {'Earth': 6371.2}
-    mass = {'Earth': 5.9742e24}
+    radius = {'earth': 6371.2}
+    mass = {'earth': 5.9742e24}
     gravity = 6.6743e-11
 
     if planet not in radius.keys():
@@ -73,8 +73,7 @@ def convert_to_keplerian(alt_periapsis, alt_apoapsis=None, planet='Earth'):
         If None, assumed to be equal to periapsis. (default=None)
     planet : str
         The name of the planet of interest.  Used for radial calculations and
-        mass.
-        (default='Earth')
+        mass. (default='Earth')
 
     Returns
     -------
