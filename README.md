@@ -16,7 +16,6 @@ pysatMissions allows users to run build simulated satellites for Two-Line Elemen
 Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
-- Import ionosphere and thermosphere model values through pyglow
 - Import magnetic coordinates through apexpy and aacgmv2
 - Import geomagnetic basis vectors through OMMBV
 

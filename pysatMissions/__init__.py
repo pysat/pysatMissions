@@ -7,7 +7,6 @@ Elements (TLE) and add empirical data.  It includes the `missions_ephem` and
 Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
-- Import ionosphere and thermosphere model values through pyglow
 - Import magnetic coordinates through apexpy and aacgmv2
 - Import geomagnetic basis vectors through OMMBV
 
