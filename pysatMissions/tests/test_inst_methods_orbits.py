@@ -32,7 +32,8 @@ class TestBasics(object):
 
         with pytest.raises(KeyError) as kerr:
             mm_orbits.convert_to_keplerian(self.orbit['perigee'],
-                                           self.orbit['apogee'], 'Hwae')
+                                           self.orbit['apogee'],
+                                           'Sanctuary Moon')
         assert str(kerr).find("is not yet a supported planet!") >= 0
         return
 
