@@ -52,7 +52,7 @@ def _get_constants(planet='earth'):
     """
 
     radius = {'earth': 6371.2}
-    mass = {'earth': 5.9742e24}
+    mass = {'earth': 5.9722e24}
     gravity = 6.6743e-11
 
     if planet not in radius.keys():
