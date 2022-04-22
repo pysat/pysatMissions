@@ -152,6 +152,12 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
     meta : pysat.Meta
         Object containing metadata such as column names and units
 
+    Note
+    ----
+    Altitude accuracy expected to be on the order of 10 km in Low Earth Orbit.
+    Efforts to improve accuracy documented under issue #79.
+
+
     Example
     -------
     ::

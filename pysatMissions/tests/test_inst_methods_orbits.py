@@ -12,7 +12,7 @@ class TestBasics(object):
 
         self.orbit = {'inclination': 13, 'apogee': 850, 'perigee': 400,
                       'eccentricity': 0.032160315599897085,
-                      'mean_motion': 0.06474416985702029}
+                      'mean_motion': 0.0647333316545142}
         return
 
     def teardown(self):
