@@ -26,7 +26,7 @@ project = 'pysatMissions'
 title = '{:s} Documentation'.format(project)
 zenodo = json.loads(open('../.zenodo.json').read())
 author = ', '.join([x['name'] for x in zenodo['creators']])
-copyright = ', '.join(['2021', author])
+copyright = ', '.join(['2022', author])
 description = 'Tools for generating simulated instruments in pysat.'
 
 # The short X.Y version
@@ -61,7 +61,8 @@ extensions = ['sphinx.ext.autodoc',
               'IPython.sphinxext.ipython_console_highlighting',
               'm2r2']
 
-numpydoc_show_class_members = False
+autosectionlabel_prefix_document = True
+autosectionlabel_maxdepth = 3
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
