@@ -55,6 +55,8 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.imgmath',
               'sphinx.ext.autosummary',
               'sphinx.ext.napoleon',
+              'sphinx.ext.githubpages',
+              'sphinx.ext.autosectionlabel',
               'numpydoc',
               'IPython.sphinxext.ipython_console_highlighting',
               'm2r2']
