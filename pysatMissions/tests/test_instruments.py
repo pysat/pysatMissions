@@ -163,6 +163,7 @@ class TestInstruments(InstTestClass):
             **kw_dict)
         self.test_inst.data = [target]
         self.test_inst.load(date=self.stime)
+
         # If target is cleared, load has run successfully
         assert target not in self.test_inst.data
         return

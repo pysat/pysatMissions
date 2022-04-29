@@ -91,21 +91,21 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
         Instrument satellite ID (accepts '' or a number (i.e., '10'), which
         specifies the number of seconds to simulate the satellite)
         (default='')
-    TLE1 : string
+    TLE1 : str or NoneType
         First string for Two Line Element. Must be in TLE format.  TLE1 and TLE2
         both required if instantiating instrument by TLEs. (defalt=None)
-    TLE2 : string
+    TLE2 : str or NoneType
         Second string for Two Line Element. Must be in TLE format.  TLE1 and TLE2
-        both required if instantiating instrument by TLEs. (defalt=None)
-    alt_periapsis : float
+        both required if instantiating instrument by TLEs. (default=None)
+    alt_periapsis : float or NoneType
         The lowest altitude from the mean planet surface along the orbit (km).
         Required along with inclination if instantiating via orbital elements.
-        (defalt=None)
+        (default=None)
     alt_apoapsis : float or NoneType
         The highest altitude from the mean planet surface along the orbit (km)
         If None, assumed to be equal to periapsis (ie, circular orbit). Optional
         when instantiating via orbital elements. (default=None)
-    inclination : float
+    inclination : float or NoneType
         Orbital Inclination in degrees.  Required along with alt_periapsis if
         instantiating via orbital elements. (default=None)
     raan : float
@@ -197,7 +197,7 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
         eccentricity, mean_motion = orbits.convert_to_keplerian(alt_periapsis,
                                                                 alt_apoapsis)
         satellite = sapi.Satrec()
-        # according to module webpage, wgs72 is common
+        # According to module webpage, wgs72 is common
         satellite.sgp4init(sapi.WGS72, 'i', 0, epoch_days, bstar, 0, 0,
                            eccentricity, np.radians(arg_periapsis),
                            np.radians(inclination), np.radians(mean_anomaly),
@@ -230,6 +230,7 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
 
     # Convert to geocentric latitude, longitude, altitude.
     lat, lon, rad = conv_sph.ecef_cart2spherical(pos_ecef)
+
     # Convert to geodetic latitude, longitude, altitude.
     # Ellipsoidal conversions require input in meters.
     geod_lat, geod_lon, geod_alt = conv_ell.ecef_cart2geodetic(pos_ecef * 1000.)

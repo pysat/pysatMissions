@@ -1,4 +1,4 @@
-"""Unit tests for deprecated methods an objects in pysatMissions."""
+"""Unit tests for deprecated methods and objects in pysatMissions."""
 
 import numpy as np
 import warnings

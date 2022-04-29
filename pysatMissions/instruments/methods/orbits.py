@@ -9,9 +9,9 @@ def _check_orbital_params(kwargs=None):
 
     Parameters
     ----------
-    kwargs : dict
+    kwargs : dict or NoneType
         Dictionary of optional kwargs passed through upon initialization
-        of pysat instrument.
+        of pysat instrument. (default=None)
 
     """
 
@@ -22,6 +22,7 @@ def _check_orbital_params(kwargs=None):
     errmsg = 'Insufficient kwargs.  Kwarg group requires {:}'
     for group in [tles, keplerians]:
         bools = [v in elements for v in group]
+
         # Check if group is incomplete.
         if any(bools) and not all(bools):
             raise KeyError(errmsg.format(', '.join(group)))
@@ -95,7 +96,7 @@ def convert_to_keplerian(alt_periapsis, alt_apoapsis=None, planet='earth'):
     eccentricity = ((rad_apoapsis - rad_periapsis)
                     / (rad_apoapsis + rad_periapsis))
 
-    # convert axis to m, mean_motion to rad / minute
+    # Convert axis to m, mean_motion to rad / minute
     mean_motion = np.sqrt(gravity * mass / (1000 * semimajor)**3) * 60
 
     return eccentricity, mean_motion
@@ -110,7 +111,7 @@ def convert_from_keplerian(eccentricity, mean_motion, planet='earth'):
         The eccentricty of the orbit (unitless)
     mean_motion : float
         The mean angular speed of the orbit (rad/minute)
-    planet : string
+    planet : str
         The name of the planet of interest.  Used for radial calculations.
         (default='earth')
 
@@ -124,8 +125,10 @@ def convert_from_keplerian(eccentricity, mean_motion, planet='earth'):
     """
 
     radius, mass, gravity = _get_constants(planet)
+
     # Convert mean_motion to rad / second before computing
     semimajor = (gravity * mass / (mean_motion / 60)**2)
+
     # Convert distance to km
     semimajor = semimajor**(1 / 3) / 1000
 
