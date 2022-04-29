@@ -43,6 +43,7 @@ To set up `pysatMissions` for local development:
 3. Clone your fork locally:
    ```
    git clone git@github.com:your_name_here/pysatMissions.git
+   ```
 
 3. Create a branch for local development:
    ```
