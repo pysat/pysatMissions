@@ -151,8 +151,8 @@ class TestInstruments(InstTestClass):
         [{'one_orbit': True},
          {'inclination': 13, 'alt_periapsis': 400, 'alt_apoapsis': 850,
           'bstar': 0, 'arg_periapsis': 0., 'raan': 0., 'mean_anomaly': 0.},
-         {'TLE1': '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
-          'TLE2': '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'}
+         {'tle1': '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
+          'tle2': '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'}
          ])
     def test_sgp4_options(self, kw_dict):
         """Test optional keywords for sgp4."""
@@ -171,7 +171,7 @@ class TestInstruments(InstTestClass):
     @pytest.mark.parametrize(
         "kw_dict",
         [{'inclination': 13, 'alt_apoapsis': 850},
-         {'TLE1': '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'}
+         {'tle1': '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'}
          ])
     def test_sgp4_options_errors(self, kw_dict):
         """Test optional keyword combos for sgp4 that generate errors."""
@@ -187,8 +187,8 @@ class TestInstruments(InstTestClass):
         "kw_dict",
         [{'inclination': 13, 'alt_periapsis': 400, 'alt_apoapsis': 850,
           'bstar': 0, 'arg_periapsis': 0., 'raan': 0., 'mean_anomaly': 0.,
-          'TLE1': '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
-          'TLE2': '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'}
+          'tle1': '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998',
+          'tle2': '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'}
          ])
     def test_sgp4_options_warnings(self, kw_dict):
         """Test optional keyword combos for sgp4 that generate warnings."""
