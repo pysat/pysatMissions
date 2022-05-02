@@ -25,7 +25,7 @@ sys.path.insert(0, os.path.abspath('..'))
 project = 'pysatMissions'
 title = '{:s} Documentation'.format(project)
 zenodo = json.loads(open('../.zenodo.json').read())
-author = ', '.join([x['name'] for x in zenodo['creators']])
+author = ', '.join([creator['name'] for creator in zenodo['creators']])
 copyright = ', '.join(['2022', author])
 description = 'Tools for generating simulated instruments in pysat.'
 

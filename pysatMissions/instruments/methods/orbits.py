@@ -50,6 +50,7 @@ def _get_constants(planet='earth'):
         The average mass of the planet.
     gravity : float (m**3 kg / s**2)
         Newton's gravitational constant
+       
     """
 
     radius = {'earth': 6371.2}
