@@ -230,28 +230,49 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         meta.labels.desc: 'UTC seconds',
         meta.labels.name: 'Time index in milliseconds'}
     meta['glong'] = {meta.labels.units: 'degrees',
-                     meta.labels.desc: 'WGS84 geodetic longitude'}
+                     meta.labels.desc: 'WGS84 geodetic longitude',
+                     meta.labels.min_val: -180.0,
+                     meta.labels.max_val: 180.0,
+                     meta.labels.fill_val: np.nan}
     meta['glat'] = {meta.labels.units: 'degrees',
-                    meta.labels.desc: 'WGS84 geodetic latitude'}
+                    meta.labels.desc: 'WGS84 geodetic latitude',
+                    meta.labels.min_val: -90.0,
+                    meta.labels.max_val: 90.0,
+                    meta.labels.fill_val: np.nan}
     meta['alt'] = {meta.labels.units: 'km',
-                   meta.labels.desc: "WGS84 height above Earth's surface"}
+                   meta.labels.desc: "WGS84 height above Earth's surface",
+                   meta.labels.min_val: 0.0,
+                   meta.labels.max_val: np.inf,
+                   meta.labels.fill_val: np.nan}
     for v in ['x', 'y', 'z']:
         meta['position_ecef_{:}'.format(v)] = {
             meta.labels.units: 'km',
             meta.labels.name: 'ECEF {:}-position'.format(v),
-            meta.labels.desc: 'Earth Centered Earth Fixed {:}-position'.format(v)}
+            meta.labels.desc: 'Earth Centered Earth Fixed {:}-position'.format(v),
+            meta.labels.min_val: -np.inf,
+            meta.labels.max_val: np.inf,
+            meta.labels.fill_val: np.nan}
     meta['obs_sat_az_angle'] = {
         meta.labels.units: 'degrees',
         meta.labels.name: 'Satellite Azimuth Angle',
-        meta.labels.desc: 'Azimuth of satellite from ground station'}
+        meta.labels.desc: 'Azimuth of satellite from ground station',
+        meta.labels.min_val: -np.inf,
+        meta.labels.max_val: np.inf,
+        meta.labels.fill_val: np.nan}
     meta['obs_sat_el_angle'] = {
         meta.labels.units: 'degrees',
         meta.labels.name: 'Satellite Elevation Angle',
-        meta.labels.desc: 'Elevation of satellite from ground station'}
+        meta.labels.desc: 'Elevation of satellite from ground station',
+        meta.labels.min_val: -np.inf,
+        meta.labels.max_val: np.inf,
+        meta.labels.fill_val: np.nan}
     meta['obs_sat_slant_range'] = {
         meta.labels.units: 'km',
         meta.labels.name: 'Satellite Slant Distance',
-        meta.labels.desc: 'Distance of satellite from ground station'}
+        meta.labels.desc: 'Distance of satellite from ground station',
+        meta.labels.min_val: -np.inf,
+        meta.labels.max_val: np.inf,
+        meta.labels.fill_val: np.nan}
 
     return data, meta
 

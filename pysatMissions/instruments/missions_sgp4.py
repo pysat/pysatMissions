@@ -268,59 +268,81 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
         meta['position_eci_{:}'.format(v)] = {
             meta.labels.units: 'km',
             meta.labels.name: 'ECI {:}-position'.format(v),
-            meta.labels.desc: 'Earth Centered Inertial {:}-position'.format(v)}
+            meta.labels.desc: 'Earth Centered Inertial {:}-position'.format(v),
+            meta.labels.min_val: -np.inf,
+            meta.labels.max_val: np.inf,
+            meta.labels.fill_val: np.nan}
         meta['velocity_eci_{:}'.format(v)] = {
             meta.labels.units: 'km/s',
             meta.labels.name: 'Satellite velocity ECI-{:}'.format(v),
-            meta.labels.desc: 'Satellite velocity along ECI-{:}'.format(v)}
+            meta.labels.desc: 'Satellite velocity along ECI-{:}'.format(v),
+            meta.labels.min_val: -np.inf,
+            meta.labels.max_val: np.inf,
+            meta.labels.fill_val: np.nan}
         meta['position_ecef_{:}'.format(v)] = {
             meta.labels.units: 'km',
             meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
             meta.labels.name: 'ECEF {:}-position'.format(v),
-            meta.labels.desc: 'Earth Centered Earth Fixed {:}-position'.format(v)}
+            meta.labels.desc: 'Earth Centered Earth Fixed {:}-position'.format(v),
+            meta.labels.min_val: -np.inf,
+            meta.labels.max_val: np.inf,
+            meta.labels.fill_val: np.nan}
         meta['velocity_ecef_{:}'.format(v)] = {
             meta.labels.units: 'km',
             meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
             meta.labels.name: 'ECEF {:}-velocity'.format(v),
-            meta.labels.desc: 'Earth Centered Earth Fixed {:}-velocity'.format(v)}
+            meta.labels.desc: 'Earth Centered Earth Fixed {:}-velocity'.format(v),
+            meta.labels.min_val: -np.inf,
+            meta.labels.max_val: np.inf,
+            meta.labels.fill_val: np.nan}
     meta['latitude'] = {
         meta.labels.units: 'degrees',
         meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
         meta.labels.name: 'Geocentric Latitude',
         meta.labels.desc: 'Geocentric Latitude of satellite',
         meta.labels.min_val: -90.,
-        meta.labels.max_val: 90.}
+        meta.labels.max_val: 90.,
+        meta.labels.fill_val: np.nan}
     meta['longitude'] = {
         meta.labels.units: 'degrees',
         meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
         meta.labels.name: 'Geocentric Longitude',
         meta.labels.desc: 'Geocentric Longitude of satellite',
         meta.labels.min_val: -180.,
-        meta.labels.max_val: 180.}
+        meta.labels.max_val: 180.,
+        meta.labels.fill_val: np.nan}
     meta['mean_altitude'] = {
         meta.labels.units: 'km',
         meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
         meta.labels.name: 'Altitude',
-        meta.labels.desc: 'Altitude of satellite above an ellipsoidal Earth'}
+        meta.labels.desc: 'Altitude of satellite above an ellipsoidal Earth',
+        meta.labels.min_val: 0,
+        meta.labels.max_val: np.inf,
+        meta.labels.fill_val: np.nan}
     meta['geod_latitude'] = {
         meta.labels.units: 'degrees',
         meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
         meta.labels.name: 'Geodetic Latitude',
         meta.labels.desc: 'Geodetic Latitude of satellite',
         meta.labels.min_val: -90.,
-        meta.labels.max_val: 90.}
+        meta.labels.max_val: 90.,
+        meta.labels.fill_val: np.nan}
     meta['geod_longitude'] = {
         meta.labels.units: 'degrees',
         meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
         meta.labels.name: 'Geodetic Longitude',
         meta.labels.desc: 'Geodetic Longitude of satellite',
         meta.labels.min_val: -180.,
-        meta.labels.max_val: 180.}
+        meta.labels.max_val: 180.,
+        meta.labels.fill_val: np.nan}
     meta['geod_altitude'] = {
         meta.labels.units: 'km',
         meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
         meta.labels.name: 'Altitude',
-        meta.labels.desc: 'Altitude of satellite above an ellipsoidal Earth'}
+        meta.labels.desc: 'Altitude of satellite above an ellipsoidal Earth',
+        meta.labels.min_val: -np.inf,
+        meta.labels.max_val: np.inf,
+        meta.labels.fill_val: np.nan}
 
     return data, meta
 
