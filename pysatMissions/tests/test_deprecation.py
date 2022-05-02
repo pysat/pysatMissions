@@ -34,6 +34,9 @@ class TestDeprecation(object):
 
         """
 
+        # TODO(#82): Remove when pysat 3.0.2 is released.  Replace with
+        # pysat.utils.testing.eval_warnings
+
         # Ensure the minimum number of warnings were raised
         assert len(warns) >= len(check_msgs)
 
@@ -59,6 +62,9 @@ class TestDeprecation(object):
             pysat.Instrument(inst_module=missions_ephem)
 
         warn_msgs = ["`missions_ephem` has been deprecated"]
+
+        # TODO(#82): Replace with pysat.utils.testing.eval_warnings when pysat
+        # 3.0.2 is released.
 
         self.eval_deprecation(war, warn_msgs)
         return

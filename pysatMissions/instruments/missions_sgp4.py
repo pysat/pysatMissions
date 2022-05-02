@@ -71,15 +71,11 @@ def init(self):
 clean = mcore._clean
 
 
-def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
+def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
          alt_periapsis=None, alt_apoapsis=None,
          inclination=None, raan=0., arg_periapsis=0., mean_anomaly=0.,
          epoch=None, bstar=0., one_orbit=False, num_samples=None, cadence='1S'):
     """Generate position of satellite in ECI co-ordinates.
-
-    Note
-    ----
-    Routine is directly called by pysat and not the user.
 
     Parameters
     ----------
@@ -91,11 +87,11 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
         Instrument satellite ID (accepts '' or a number (i.e., '10'), which
         specifies the number of seconds to simulate the satellite)
         (default='')
-    TLE1 : str or NoneType
-        First string for Two Line Element. Must be in TLE format.  TLE1 and TLE2
+    tle1 : str or NoneType
+        First string for Two Line Element. Must be in TLE format.  tle1 and tle2
         both required if instantiating instrument by TLEs. (defalt=None)
-    TLE2 : str or NoneType
-        Second string for Two Line Element. Must be in TLE format.  TLE1 and TLE2
+    tle2 : str or NoneType
+        Second string for Two Line Element. Must be in TLE format.  tle1 and tle2
         both required if instantiating instrument by TLEs. (default=None)
     alt_periapsis : float or NoneType
         The lowest altitude from the mean planet surface along the orbit (km).
@@ -154,17 +150,18 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
 
     Note
     ----
-    Altitude accuracy expected to be on the order of 10 km in Low Earth Orbit.
-    Efforts to improve accuracy documented under issue #79.
+    * Routine is directly called by pysat and not the user.
+    * Altitude accuracy expected to be on the order of 10 km in Low Earth Orbit.
+      Efforts to improve accuracy documented under issue #79.
 
 
     Example
     -------
     ::
 
-          TLE1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'
-          TLE2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'
-          inst = pysat.Instrument('pysat', 'sgp4', TLE1=TLE1, TLE2=TLE2)
+          tle1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'
+          tle2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'
+          inst = pysat.Instrument('pysat', 'sgp4', tle1=tle1, tle2=tle2)
           inst.load(2018, 1)
 
     """
@@ -177,10 +174,10 @@ def load(fnames, tag=None, inst_id=None, TLE1=None, TLE2=None,
     line2 = '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'
 
     # If provided, use user-specified TLEs.  Otherwise use ISS defaults above.
-    if TLE1 is not None:
-        line1 = TLE1
-    if TLE2 is not None:
-        line2 = TLE2
+    if tle1 is not None:
+        line1 = tle1
+    if tle2 is not None:
+        line2 = tle2
 
     if (num_samples is None) or one_orbit:
         num_samples = 86400

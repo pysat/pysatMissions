@@ -97,7 +97,7 @@ clean = mcore._clean
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
-         TLE1=None, TLE2=None, num_samples=None, cadence='1S'):
+         tle1=None, tle2=None, num_samples=None, cadence='1S'):
     """Generate position of satellite in both geographic and ECEF co-ordinates.
 
     Note
@@ -123,9 +123,9 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     obs_alt: float
         Altitude of the observer on the Earth's surface
         (default=0.)
-    TLE1 : string or NoneType
+    tle1 : string or NoneType
         First string for Two Line Element. Must be in TLE format (default=None)
-    TLE2 : string or NoneType
+    tle2 : string or NoneType
         Second string for Two Line Element. Must be in TLE format (default=None)
     num_samples : int or NoneType
         Number of samples per day (default=None)
@@ -144,9 +144,9 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     -------
     ::
 
-          TLE1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'
-          TLE2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'
-          inst = pysat.Instrument('pysat', 'ephem', TLE1=TLE1, TLE2=TLE2)
+          tle1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'
+          tle2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'
+          inst = pysat.Instrument('pysat', 'ephem', tle1=tle1, tle2=tle2)
           inst.load(2018, 1)
 
     """
@@ -161,10 +161,10 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                      '15.54059185113452'))
 
     # Use ISS defaults if not provided by user
-    if TLE1 is not None:
-        line1 = TLE1
-    if TLE2 is not None:
-        line2 = TLE2
+    if tle1 is not None:
+        line1 = tle1
+    if tle2 is not None:
+        line2 = tle2
 
     if num_samples is None:
         num_samples = 100

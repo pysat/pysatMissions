@@ -1,6 +1,7 @@
 """Unit tests for `pysatMissions.instruments.methods.orbits`."""
 
 import pysatMissions.instruments.methods.orbits as mm_orbits
+
 import pytest
 
 

@@ -4,29 +4,30 @@ import numpy as np
 import warnings
 
 
-def _check_orbital_params(kwargs=None):
+def _check_orbital_params(kwargs):
     """Check that a complete set of unconflicted orbital parameters exist.
 
     Parameters
     ----------
     kwargs : dict or NoneType
         Dictionary of optional kwargs passed through upon initialization
-        of pysat instrument. (default=None)
+        of pysat instrument.
 
     """
 
-    elements = list(kwargs['load'].keys())
+    req_elements = list(kwargs['load'].keys())
 
     keplerians = ['alt_periapsis', 'inclination']
     tles = ['TLE1', 'TLE2']
     errmsg = 'Insufficient kwargs.  Kwarg group requires {:}'
     for group in [tles, keplerians]:
-        bools = [v in elements for v in group]
+        bools = [item in req_elements for item in group]
 
         # Check if group is incomplete.
         if any(bools) and not all(bools):
             raise KeyError(errmsg.format(', '.join(group)))
-    if all(v in elements for v in tles) and all(v in elements for v in keplerians):
+    if (all(item in req_elements for item in tles)
+            and all(item in req_elements for item in keplerians)):
         warnings.warn(' '.join(['Cannot use both Keplerians and TLEs.',
                                 'Defaulting to Keplerians.']))
 
@@ -50,7 +51,7 @@ def _get_constants(planet='earth'):
         The average mass of the planet.
     gravity : float (m**3 kg / s**2)
         Newton's gravitational constant
-       
+
     """
 
     radius = {'earth': 6371.2}
