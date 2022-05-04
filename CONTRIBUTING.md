@@ -4,6 +4,11 @@ Contributing
 Bug reports, feature suggestions and other contributions are greatly
 appreciated!  pysatMissions is a community-driven project and welcomes both feedback and contributions.
 
+Come join us on Slack! An invitation to the pysat workspace is available
+in the 'About' section of the
+[pysat GitHub Repository.](https://github.com/pysat/pysat) Development meetings
+are generally held fortnightly.
+
 Short version
 -------------
 
@@ -65,7 +70,9 @@ To set up `pysatMissions` for local development:
 
 5. Update/add documentation (in ``docs``), if relevant
 
-6. Commit your changes:
+6. Add your name to the .zenodo.json file as an author
+
+7. Commit your changes:
    ```
    git add .
    git commit -m "AAA: Brief description of your changes"
@@ -74,13 +81,13 @@ To set up `pysatMissions` for local development:
    `pysat` follows the [numpy development workflow](https://numpy.org/doc/stable/dev/development_workflow.html),
    see the discussion there for a full list of this shorthand notation.  
 
-7. Once you are happy with the local changes, push to Github:
+8. Once you are happy with the local changes, push to Github:
    ```
    git push origin name-of-your-bugfix-or-feature
    ```
    Note that each push will trigger the Continuous Integration workflow.
 
-8. Submit a pull request through the GitHub website. Pull requests should be
+9. Submit a pull request through the GitHub website. Pull requests should be
    made to the ``develop`` branch.
 
 Pull Request Guidelines
