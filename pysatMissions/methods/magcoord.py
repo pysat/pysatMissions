@@ -6,12 +6,13 @@ import pysat
 
 try:
     # Warn user if apexpy is not configured.  Bypass needed to function on
-    # readthedocs.
+    # readthedocs.  Use of apexpy functions elsewhere in code will produce
+    # errors.
     import apexpy
 except ImportError as ierr:
-    pysat.logger.warning("".join(["apexpy module could not be imported. ",
-                                  "apexpy interface won't work.",
-                                  "Failed with error: ", str(ierr)]))
+    pysat.logger.warning(" ".join(["apexpy module could not be imported.",
+                                   "apexpy interface won't work.",
+                                   "Failed with error:", str(ierr)]))
 
 
 def add_aacgm_coordinates(inst, glat_label='glat', glong_label='glong',
