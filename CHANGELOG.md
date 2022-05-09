@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 * Update syntax to be compliant with OMMBV 1.0
 * Documentation
   * Improve docstrings throughout
+  * Added bypass for apexpy for readthedocs build
 * Deprecations
   * Deprecated missions_ephem, as pyephem will no longer be updated
 * Testing
