@@ -62,20 +62,21 @@ Empirical Models
 A number of methods are included to invoke several python wrappers for empirical
 models.  This includes the aacgmv2, apexpy, and OMMBV models.  These
 methods can be added to any pysat instrument using the `custom` functions in
-pysat.  The example below adds the aacgmv2 coordinates to one of the test
-instruments in the core pysat package.
+pysat.  The example below adds the aacgmv2 coordinates to sgp4 instrument.
 
 .. code:: python
 
   import pysat
   from pysatMissions.methods import magcoord
 
-  inst = pysat.Instrument(platform='pysat', name='testing')
-  inst.custom_attach(magcoord.add_aacgm_coordinates,
-                     kwargs={'glat_label': 'latitude',
-                             'glong_label': 'longitude',
-                             'alt_label': 'altitude'})
+  sgp4 = pysat.Instrument(inst_module=missions_sgp4, num_samples=3600)
+  sgp4.custom_attach(magcoord.add_aacgm_coordinates,
+                     kwargs={'glat_label': 'geod_latitude',
+                             'glong_label': 'geod_longitude',
+                             'alt_label': 'geod_altitude'})
+  sgp4.load(2019, 1)
 
 Note that the latitude, longitude, and altitude variable names of the
 instrument should be specified since the dataset may use different variable
-names from those in the custom function.
+names from those in the custom function.  The method to add these empirical
+functions to a pysat instrument is identical across the pysat ecosystem.

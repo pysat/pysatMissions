@@ -1,3 +1,12 @@
 ipython
 m2r2
 numpydoc
+aacgmv2
+apexpy
+geospacepy
+numpy
+OMMBV>=1.0
+pandas
+pysat>=3.0
+pyEphem
+sgp4>=2.7

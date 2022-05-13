@@ -1,15 +1,11 @@
-"""Provides default routines for projecting values onto vectors
-for pysat instruments.
-
-"""
+"""Default routines for projecting values onto vectors for pysat instruments."""
 
 import numpy as np
 import OMMBV
 
 
 def add_ram_pointing_sc_attitude_vectors(inst):
-    """
-    Add attitude vectors for spacecraft assuming ram pointing.
+    """Add attitude vectors for spacecraft assuming ram pointing.
 
     Presumes spacecraft is pointed along the velocity vector (x), z is
     generally nadir pointing (positive towards Earth), and y completes the
@@ -42,7 +38,7 @@ def add_ram_pointing_sc_attitude_vectors(inst):
 
     # Ram pointing is along velocity vector
     inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'] = \
-        OMMBV.normalize_vector(inst['velocity_ecef_x'],
+        OMMBV.vector.normalize(inst['velocity_ecef_x'],
                                inst['velocity_ecef_y'],
                                inst['velocity_ecef_z'])
 
@@ -52,22 +48,22 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     # to the true z (in the orbital plane) that we can use it to get y,
     # and use x and y to get the real z
     inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        OMMBV.normalize_vector(-inst['position_ecef_x'],
+        OMMBV.vector.normalize(-inst['position_ecef_x'],
                                -inst['position_ecef_y'],
                                -inst['position_ecef_z'])
 
     # get y vector assuming right hand rule
     # Z x X = Y
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        OMMBV.cross_product(inst['sc_zhat_ecef_x'],
-                            inst['sc_zhat_ecef_y'],
-                            inst['sc_zhat_ecef_z'],
-                            inst['sc_xhat_ecef_x'],
-                            inst['sc_xhat_ecef_y'],
-                            inst['sc_xhat_ecef_z'])
+        OMMBV.vector.cross_product(inst['sc_zhat_ecef_x'],
+                                   inst['sc_zhat_ecef_y'],
+                                   inst['sc_zhat_ecef_z'],
+                                   inst['sc_xhat_ecef_x'],
+                                   inst['sc_xhat_ecef_y'],
+                                   inst['sc_xhat_ecef_z'])
     # Normalize since Xhat and Zhat from above may not be orthogonal
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        OMMBV.normalize_vector(inst['sc_yhat_ecef_x'],
+        OMMBV.vector.normalize(inst['sc_yhat_ecef_x'],
                                inst['sc_yhat_ecef_y'],
                                inst['sc_yhat_ecef_z'])
 
@@ -75,52 +71,23 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     # just created
     # Z = X x Y
     inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        OMMBV.cross_product(inst['sc_xhat_ecef_x'],
-                            inst['sc_xhat_ecef_y'],
-                            inst['sc_xhat_ecef_z'],
-                            inst['sc_yhat_ecef_x'],
-                            inst['sc_yhat_ecef_y'],
-                            inst['sc_yhat_ecef_z'])
+        OMMBV.vector.cross_product(inst['sc_xhat_ecef_x'],
+                                   inst['sc_xhat_ecef_y'],
+                                   inst['sc_xhat_ecef_z'],
+                                   inst['sc_yhat_ecef_x'],
+                                   inst['sc_yhat_ecef_y'],
+                                   inst['sc_yhat_ecef_z'])
 
     # Adding metadata
-    inst.meta['sc_xhat_ecef_x'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (x-direction, ram) unit vector,',
-                          'expressed in ECEF basis, x-component'))}
-    inst.meta['sc_xhat_ecef_y'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (x-direction, ram) unit vector,',
-                          'expressed in ECEF basis, y-component'))}
-    inst.meta['sc_xhat_ecef_z'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (x-direction, ram) unit vector,',
-                          'expressed in ECEF basis, z-component'))}
-
-    inst.meta['sc_zhat_ecef_x'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (z-direction, generally nadir) unit',
-                          'vector, expressed in ECEF basis, x-component'))}
-    inst.meta['sc_zhat_ecef_y'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (z-direction, generally nadir) unit',
-                          'vector, expressed in ECEF basis, y-component'))}
-    inst.meta['sc_zhat_ecef_z'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (z-direction, generally nadir) unit',
-                          'vector, expressed in ECEF basis, z-component'))}
-
-    inst.meta['sc_yhat_ecef_x'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (y-direction, generally south) unit',
-                          'vector, expressed in ECEF basis, x-component'))}
-    inst.meta['sc_yhat_ecef_y'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (y-direction, generally south) unit',
-                          'vector, expressed in ECEF basis, y-component'))}
-    inst.meta['sc_yhat_ecef_z'] = {
-        'units': '',
-        'desc': ' '.join(('S/C attitude (y-direction, generally south) unit',
-                          'vector, expressed in ECEF basis, z-component'))}
+    for v in ['x', 'y', 'z']:
+        for u in ['x', 'y', 'z']:
+            inst.meta['sc_{:}hat_ecef_{:}'.format(v, u)] = {
+                inst.meta.labels.units: '',
+                inst.meta.labels.name: 'SC {:}-unit vector, ECEF-{:}'.format(v, u),
+                inst.meta.labels.desc: ' '.join(('S/C attitude ({:}'.format(v),
+                                                 '-direction, ram) unit vector,',
+                                                 'expressed in ECEF basis,',
+                                                 '{:}-component'.format(u)))}
 
     # check what magnitudes we get
     mag = np.sqrt(inst['sc_zhat_ecef_x']**2 + inst['sc_zhat_ecef_y']**2
@@ -135,8 +102,7 @@ def add_ram_pointing_sc_attitude_vectors(inst):
 
 
 def calculate_ecef_velocity(inst):
-    """
-    Calculates spacecraft velocity in ECEF frame.
+    """Calculate spacecraft velocity in ECEF frame.
 
     Presumes that the spacecraft velocity in ECEF is in
     the input instrument object as position_ecef_*. Uses a symmetric
@@ -169,25 +135,19 @@ def calculate_ecef_velocity(inst):
     inst[1:-1, 'velocity_ecef_y'] = vel_y
     inst[1:-1, 'velocity_ecef_z'] = vel_z
 
-    inst.meta['velocity_ecef_x'] = {'units': 'km/s',
-                                    'desc': ' '.join(('Velocity of satellite',
-                                                      'calculated with respect',
-                                                      'to ECEF frame.'))}
-    inst.meta['velocity_ecef_y'] = {'units': 'km/s',
-                                    'desc': ' '.join(('Velocity of satellite',
-                                                      'calculated with respect',
-                                                      'to ECEF frame.'))}
-    inst.meta['velocity_ecef_z'] = {'units': 'km/s',
-                                    'desc': ' '.join(('Velocity of satellite',
-                                                      'calculated with respect',
-                                                      'to ECEF frame.'))}
+    for v in ['x', 'y', 'z']:
+        inst.meta['velocity_ecef_{:}'.format(v)] = {
+            inst.meta.labels.units: 'km/s',
+            inst.meta.labels.name: 'ECEF {:}-velocity'.format(v),
+            inst.meta.labels.desc: ' '.join(('Velocity of satellite calculated',
+                                             'with respect to ECEF frame.'))}
     return
 
 
 def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
                                 new_x_label, new_y_label, new_z_label,
                                 meta=None):
-    """Express input vector using s/c attitude directions
+    """Express input vector using s/c attitude directions.
 
     x - ram pointing
     y - generally southward
@@ -211,9 +171,9 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
         Dicts contain metadata to be assigned.
     """
 
-    # TODO: add checks for existence of ecef labels in inst
+    # TODO(#65): add checks for existence of ecef labels in inst
 
-    x, y, z = OMMBV.project_ecef_vector_onto_basis(
+    x, y, z = OMMBV.vector.project_onto_basis(
         inst[x_label], inst[y_label], inst[z_label],
         inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'],
         inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'],

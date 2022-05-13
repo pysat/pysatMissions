@@ -2,8 +2,6 @@
 plugins:
   radon:
     enabled: true
-  pep8:
-    enabled: true
   sonar-python:
     enabled: true
 ratings:
@@ -11,7 +9,6 @@ ratings:
   - "**.py"
 exclude_paths:
   - ".github/**/*"
-  - "pysatMissions/tests/**/*"
   - "docs/**/*"
   - "setup.py"
   - ".*"

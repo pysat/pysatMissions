@@ -1,16 +1,23 @@
-"""Provides default routines for projecting aacgmv2 and apexpy model values onto
-locations from pysat instruments.
-
+"""Routines for projecting aacgmv2 and apexpy model values onto pysat instruments.
 """
 
 import aacgmv2
-import apexpy
+import pysat
+
+try:
+    # Warn user if apexpy is not configured.  Bypass needed to function on
+    # readthedocs.  Use of apexpy functions elsewhere in code will produce
+    # errors.
+    import apexpy
+except ImportError as ierr:
+    pysat.logger.warning(" ".join(["apexpy module could not be imported.",
+                                   "apexpy interface won't work.",
+                                   "Failed with error:", str(ierr)]))
 
 
 def add_aacgm_coordinates(inst, glat_label='glat', glong_label='glong',
                           alt_label='alt'):
-    """
-    Uses AACGMV2 package to add AACGM coordinates to instrument object.
+    """Add AACGM coordinates to instrument object using AACGMV2 package.
 
     The Altitude Adjusted Corrected Geomagnetic Coordinates library is used
     to calculate the latitude, longitude, and local time
@@ -70,8 +77,7 @@ def add_aacgm_coordinates(inst, glat_label='glat', glong_label='glong',
 
 def add_quasi_dipole_coordinates(inst, glat_label='glat', glong_label='glong',
                                  alt_label='alt'):
-    """
-    Uses Apexpy package to add quasi-dipole coordinates to instrument object.
+    """Add quasi-dipole coordinates to instrument object using Apexpy package.
 
     The Quasi-Dipole coordinate system includes both the tilt and offset of the
     geomagnetic field to calculate the latitude, longitude, and local time

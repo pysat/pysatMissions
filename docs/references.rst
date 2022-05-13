@@ -38,5 +38,8 @@ calculating magnetic apex coordinates.
 OMMBV
 ------------
 
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1299374.svg
+   :target: https://doi.org/10.5281/zenodo.1299374
+
 `OMMBV <https://github.com/rstoneback/OMMBV>`_ calculates
 Orthogonal Multipole Magnetic Basis Vectors for the earth's magnetic field.

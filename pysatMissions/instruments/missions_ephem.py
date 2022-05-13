@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
-"""
-Produces satellite orbit data. Orbit is simulated using
-Two Line Elements (TLEs) and ephem. Satellite position is coupled
-to several space science models to simulate the atmosphere the
+"""Produce satellite orbit data.
+
+.. deprecated:: 0.3.0
+    pyephem is no longer updated, and the code maintainers suggest skyfield
+    as a replacement.  The functionality of the instrument will be replaced by
+    the new `missions_sgp4` instrument.  `missions_ephem` will be removed in
+    versions 0.4.0+
+
+Orbit is simulated using Two Line Elements (TLEs) and ephem. Satellite position
+is coupled to several space science models to simulate the atmosphere the
 satellite is in.
 
 Properties
@@ -21,6 +27,7 @@ inst_id
 import datetime as dt
 import functools
 import numpy as np
+import warnings
 
 import ephem
 import OMMBV
@@ -47,10 +54,9 @@ _test_dates = {'': {'': dt.datetime(2018, 1, 1)}}
 
 
 def init(self):
-    """
-    Adds custom calculations to orbit simulation.
-    This routine is run once, and only once, upon instantiation.
+    """Add custom calculations to orbit simulation.
 
+    This routine is run once, and only once, upon instantiation.
     Adds custom routines for quasi-dipole coordinates, velocity calculation in
     ECEF coords, and attitude vectors of spacecraft (assuming x is ram pointing
     and z is generally nadir).
@@ -63,12 +69,16 @@ def init(self):
     self.references = 'Please contact the pyephem project for references'
     logger.info(self.acknowledgements)
 
+    warnings.warn(' '.join(("`missions_ephem` has been deprecated and will be",
+                            "removed in pysatMissions 0.4.0+.",
+                            "Use `missions_sgp4` instead.")),
+                  DeprecationWarning, stacklevel=2)
+
     return
 
 
 def preprocess(self):
-    """
-    Add modeled magnetic field values and attitude vectors to spacecraft
+    """Add modeled magnetic field values and attitude vectors to spacecraft.
 
     Runs after load is invoked.
 
@@ -87,11 +97,11 @@ clean = mcore._clean
 
 
 def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
-         TLE1=None, TLE2=None, num_samples=None, cadence='1S'):
-    """
-    Returns data and metadata in the format required by pysat. Generates
-    position of satellite in both geographic and ECEF co-ordinates.
+         tle1=None, tle2=None, num_samples=None, cadence='1S'):
+    """Generate position of satellite in both geographic and ECEF co-ordinates.
 
+    Note
+    ----
     Routine is directly called by pysat and not the user.
 
     Parameters
@@ -113,9 +123,9 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     obs_alt: float
         Altitude of the observer on the Earth's surface
         (default=0.)
-    TLE1 : string or NoneType
+    tle1 : string or NoneType
         First string for Two Line Element. Must be in TLE format (default=None)
-    TLE2 : string or NoneType
+    tle2 : string or NoneType
         Second string for Two Line Element. Must be in TLE format (default=None)
     num_samples : int or NoneType
         Number of samples per day (default=None)
@@ -134,9 +144,9 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
     -------
     ::
 
-          TLE1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'
-          TLE2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'
-          inst = pysat.Instrument('pysat', 'ephem', TLE1=TLE1, TLE2=TLE2)
+          tle1='1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'
+          tle2='2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'
+          inst = pysat.Instrument('pysat', 'ephem', tle1=tle1, tle2=tle2)
           inst.load(2018, 1)
 
     """
@@ -151,10 +161,10 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                      '15.54059185113452'))
 
     # Use ISS defaults if not provided by user
-    if TLE1 is not None:
-        line1 = TLE1
-    if TLE2 is not None:
-        line2 = TLE2
+    if tle1 is not None:
+        line1 = tle1
+    if tle2 is not None:
+        line2 = tle2
 
     if num_samples is None:
         num_samples = 100
@@ -192,9 +202,9 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         lp['alt'] = sat.elevation / 1000.0
 
         # Get ECEF position of satellite
-        lp['x'], lp['y'], lp['z'] = OMMBV.geodetic_to_ecef(lp['glat'],
-                                                           lp['glong'],
-                                                           lp['alt'])
+        lp['x'], lp['y'], lp['z'] = OMMBV.trans.geodetic_to_ecef(lp['glat'],
+                                                                 lp['glong'],
+                                                                 lp['alt'])
         output_params.append(lp)
 
     output = pds.DataFrame(output_params, index=index)
@@ -213,38 +223,59 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                          index=index)
     data.index.name = 'Epoch'
 
-    return data, meta.copy()
+    meta = pysat.Meta()
+    meta['Epoch'] = {
+        meta.labels.units: 'Milliseconds since 1970-1-1',
+        meta.labels.notes: 'UTC time at middle of geophysical measurement.',
+        meta.labels.desc: 'UTC seconds',
+        meta.labels.name: 'Time index in milliseconds'}
+    meta['glong'] = {meta.labels.units: 'degrees',
+                     meta.labels.desc: 'WGS84 geodetic longitude',
+                     meta.labels.min_val: -180.0,
+                     meta.labels.max_val: 180.0,
+                     meta.labels.fill_val: np.nan}
+    meta['glat'] = {meta.labels.units: 'degrees',
+                    meta.labels.desc: 'WGS84 geodetic latitude',
+                    meta.labels.min_val: -90.0,
+                    meta.labels.max_val: 90.0,
+                    meta.labels.fill_val: np.nan}
+    meta['alt'] = {meta.labels.units: 'km',
+                   meta.labels.desc: "WGS84 height above Earth's surface",
+                   meta.labels.min_val: 0.0,
+                   meta.labels.max_val: np.inf,
+                   meta.labels.fill_val: np.nan}
+    for v in ['x', 'y', 'z']:
+        meta['position_ecef_{:}'.format(v)] = {
+            meta.labels.units: 'km',
+            meta.labels.name: 'ECEF {:}-position'.format(v),
+            meta.labels.desc: 'Earth Centered Earth Fixed {:}-position'.format(v),
+            meta.labels.min_val: -np.inf,
+            meta.labels.max_val: np.inf,
+            meta.labels.fill_val: np.nan}
+    meta['obs_sat_az_angle'] = {
+        meta.labels.units: 'degrees',
+        meta.labels.name: 'Satellite Azimuth Angle',
+        meta.labels.desc: 'Azimuth of satellite from ground station',
+        meta.labels.min_val: -np.inf,
+        meta.labels.max_val: np.inf,
+        meta.labels.fill_val: np.nan}
+    meta['obs_sat_el_angle'] = {
+        meta.labels.units: 'degrees',
+        meta.labels.name: 'Satellite Elevation Angle',
+        meta.labels.desc: 'Elevation of satellite from ground station',
+        meta.labels.min_val: -np.inf,
+        meta.labels.max_val: np.inf,
+        meta.labels.fill_val: np.nan}
+    meta['obs_sat_slant_range'] = {
+        meta.labels.units: 'km',
+        meta.labels.name: 'Satellite Slant Distance',
+        meta.labels.desc: 'Distance of satellite from ground station',
+        meta.labels.min_val: -np.inf,
+        meta.labels.max_val: np.inf,
+        meta.labels.fill_val: np.nan}
+
+    return data, meta
 
 
 list_files = functools.partial(ps_meth.list_files, test_dates=_test_dates)
 download = functools.partial(ps_meth.download)
-
-# Create metadata corresponding to variables in load routine just above.
-# Defined here here rather than above to avoid regeneration at every load call.
-meta = pysat.Meta()
-meta['Epoch'] = {
-    meta.labels.units: 'Milliseconds since 1970-1-1',
-    meta.labels.notes: 'UTC time at middle of geophysical measurement.',
-    meta.labels.desc: 'UTC seconds',
-    meta.labels.name: 'Time index in milliseconds'}
-meta['glong'] = {meta.labels.units: 'degrees',
-                 meta.labels.desc: 'WGS84 geodetic longitude'}
-meta['glat'] = {meta.labels.units: 'degrees',
-                meta.labels.desc: 'WGS84 geodetic latitude'}
-meta['alt'] = {meta.labels.units: 'km',
-               meta.labels.desc: "WGS84 height above Earth's surface"}
-meta['position_ecef_x'] = {meta.labels.units: 'km',
-                           meta.labels.desc: 'ECEF x co-ordinate of satellite'}
-meta['position_ecef_y'] = {meta.labels.units: 'km',
-                           meta.labels.desc: 'ECEF y co-ordinate of satellite'}
-meta['position_ecef_z'] = {meta.labels.units: 'km',
-                           meta.labels.desc: 'ECEF z co-ordinate of satellite'}
-meta['obs_sat_az_angle'] = {
-    meta.labels.units: 'degrees',
-    meta.labels.desc: 'Azimuth of satellite from ground station'}
-meta['obs_sat_el_angle'] = {
-    meta.labels.units: 'degrees',
-    meta.labels.desc: 'Elevation of satellite from ground station'}
-meta['obs_sat_slant_range'] = {
-    meta.labels.units: 'km',
-    meta.labels.desc: 'Distance of satellite from ground station'}

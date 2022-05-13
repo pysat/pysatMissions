@@ -1,9 +1,10 @@
 coveralls
+flake8-docstrings
+hacking>=1.0
 ipython
 m2r2
 numpydoc
 pytest-cov
-pytest-flake8
 pytest-ordering
 sphinx
 sphinx_rtd_theme

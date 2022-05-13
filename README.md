@@ -16,7 +16,6 @@ pysatMissions allows users to run build simulated satellites for Two-Line Elemen
 Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
-- Import ionosphere and thermosphere model values through pyglow
 - Import magnetic coordinates through apexpy and aacgmv2
 - Import geomagnetic basis vectors through OMMBV
 
@@ -31,14 +30,14 @@ Documentation
 
 pysatMissions uses common Python modules, as well as modules developed by
 and for the Space Physics community.  This module officially supports
-Python 3.7+.  
+Python 3.8+.  
 
 | Common modules | Community modules |
 | -------------- | ----------------- |
 | numpy          | aacgmv2           |
 | pandas         | apexpy            |
-| pyEphem        | OMMBV             |
-| sgp4           | pysat>=3.0        |
+| pyEphem        | OMMBV>=1.0        |
+| sgp4>=2.7      | pysat>=3.0        |
 
 
 One way to install is through pip.  Just type
