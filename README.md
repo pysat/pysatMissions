@@ -30,7 +30,7 @@ Documentation
 
 pysatMissions uses common Python modules, as well as modules developed by
 and for the Space Physics community.  This module officially supports
-Python 3.7+.  
+Python 3.8+.  
 
 | Common modules | Community modules |
 | -------------- | ----------------- |
