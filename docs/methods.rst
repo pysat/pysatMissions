@@ -1,7 +1,7 @@
 .. _methods:
 
-Utilities
-=========
+Methods
+=======
 
 
 .. _methods-magcoord:
