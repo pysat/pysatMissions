@@ -14,6 +14,7 @@ as well as apply geomagnetic field models to existing pysat instruments.
    installation.rst
    citing.rst
    supported_instruments.rst
+   methods.rst
    tutorial.rst
    references.rst
    develop_guide.rst
