@@ -1,6 +1,6 @@
 <div align="left">
         <img height="0" width="0px">
-        <img width="20%" src="https://raw.githubusercontent.com/pysat/pysatMissions/docs/figures/missions-draft-logo.jpeg" alt="pysat Missions logo - the python snakes dreaming of a spaceship" title="pysatMissions"</img>
+        <img width="20%" src="https://raw.githubusercontent.com/pysat/pysatMissions/main/docs/figures/missions-draft-logo.jpeg" alt="pysat Missions logo - the python snakes dreaming of a spaceship" title="pysatMissions"</img>
 </div>
 
 # pysatMissions
