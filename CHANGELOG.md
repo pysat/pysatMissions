@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [0.3.2] - 2022-08-01
 * Make OMMBV an optional install
+* Access logger directly from pysat
 
 ## [0.3.1] - 2022-05-18
 * Include license in package manifest
