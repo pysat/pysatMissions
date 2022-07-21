@@ -92,8 +92,9 @@ def preprocess(self):
 
     mm_magcoord.add_quasi_dipole_coordinates(self)
     mm_magcoord.add_aacgm_coordinates(self)
-    mm_sc.calculate_ecef_velocity(self)
-    mm_sc.add_ram_pointing_sc_attitude_vectors(self)
+    if "OMMBV" in dir():
+        mm_sc.calculate_ecef_velocity(self)
+        mm_sc.add_ram_pointing_sc_attitude_vectors(self)
 
     return
 
