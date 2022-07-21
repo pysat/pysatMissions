@@ -3,8 +3,16 @@
 
 import datetime as dt
 import numpy as np
+
+import pytest
+
 import pysat
 from pysatMissions.methods import spacecraft as mm_sc
+
+try:
+    import OMMBV
+except ImportError:
+    pass
 
 
 def add_eci(inst):
@@ -71,6 +79,7 @@ class TestBasics(object):
         self.eval_targets(targets)
         return
 
+    @pytest.mark.skipif((not OMMBV), reason="OMMBV is not installed")
     def test_add_ram_pointing_sc_attitude_vectors(self):
         """Test `add_ram_pointing_sc_attitude_vectors` helper function."""
 
@@ -84,6 +93,7 @@ class TestBasics(object):
         self.eval_targets(targets)
         return
 
+    @pytest.mark.skipif((not OMMBV), reason="OMMBV is not installed")
     def test_project_ecef_vector_onto_sc(self):
         """Test `project_ecef_vector_onto_sc` helper function."""
 
