@@ -17,7 +17,7 @@ Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
 - Import magnetic coordinates through apexpy and aacgmv2
-- Import geomagnetic basis vectors through OMMBV
+- Import geomagnetic basis vectors through OMMBV (optional)
 
 Documentation
 ---------------------
@@ -36,8 +36,8 @@ Python 3.8+.
 | -------------- | ----------------- |
 | numpy          | aacgmv2           |
 | pandas         | apexpy            |
-| pyEphem        | OMMBV>=1.0        |
-| sgp4>=2.7      | pysat>=3.0        |
+| pyEphem        | pysat>=3.0        |
+| sgp4>=2.7      |                   |
 
 
 One way to install is through pip.  Just type
@@ -84,3 +84,7 @@ import pysatMissions
 pysat.utils.registry.register_by_module(pysatMissions.instruments)
 simInst = pysat.Instrument('missions', 'ephem')
 ```
+
+Note that some of the spacecraft vector calculations used require OMMBV, which
+needs to be installed separately.  This is an optional install as not all systems
+support installation of OMMBV through pip.
