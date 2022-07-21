@@ -2,7 +2,7 @@ aacgmv2
 apexpy
 geospacepy
 numpy
-OMMBV>=1.0
+OMMBV>=1.0 --no-binary=OMMBV
 pandas
 pysat>=3.0
 pyEphem
