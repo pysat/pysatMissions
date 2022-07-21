@@ -10,7 +10,7 @@ import pysat
 from pysatMissions.methods import spacecraft as mm_sc
 
 try:
-    import OMMBV
+    import OMMBV  # noqa: F401
 except ImportError:
     pass
 
