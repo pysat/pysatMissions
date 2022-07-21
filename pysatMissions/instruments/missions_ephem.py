@@ -30,9 +30,15 @@ import numpy as np
 import warnings
 
 import ephem
-import OMMBV
 import pandas as pds
 import pysat
+
+try:
+    import OMMBV
+except ImportError:
+    # Warnings thrown elsewhere if users call relevant functions without
+    # OMMBV installed
+    pass
 
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
@@ -202,9 +208,17 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         lp['alt'] = sat.elevation / 1000.0
 
         # Get ECEF position of satellite
-        lp['x'], lp['y'], lp['z'] = OMMBV.trans.geodetic_to_ecef(lp['glat'],
-                                                                 lp['glong'],
-                                                                 lp['alt'])
+        try:
+            lp['x'], lp['y'], lp['z'] = OMMBV.trans.geodetic_to_ecef(lp['glat'],
+                                                                     lp['glong'],
+                                                                     lp['alt'])
+        except NameError:
+            # Triggered if pyglow not installed
+            warnings.warn("OMMBV not installed. ECEF coords not generated.",
+                          stacklevel=2)
+            lp['x'] = np.ones(np.size(lp['alt'])) * np.nan
+            lp['y'] = np.ones(np.size(lp['alt'])) * np.nan
+            lp['z'] = np.ones(np.size(lp['alt'])) * np.nan
         output_params.append(lp)
 
     output = pds.DataFrame(output_params, index=index)

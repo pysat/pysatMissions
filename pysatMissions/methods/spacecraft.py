@@ -1,9 +1,40 @@
 """Default routines for projecting values onto vectors for pysat instruments."""
 
 import numpy as np
-import OMMBV
+import warnings
+
+try:
+    import OMMBV
+except ImportError:
+    # Warnings thrown elsewhere if users call relevant functions without
+    # ommbv installed
+    pass
 
 
+def ommbv_check(func):
+    """Throw a warning if OMMBV is not installed.
+
+    Some systems are having issues installing OMMBV.  This allows OMMBV to be
+    optionally installed.
+
+    """
+
+    def wrapper():
+        """Wrap functions that use the decorator function."""
+
+        ommbv_warning = ' '.join(['OMMBV must be installed to use this',
+                                  'function.  See instructions at',
+                                  'https://github.com/pysat/pysatMissions'])
+        try:
+            func()
+        except NameError:
+            # Triggered if OMMBV is not installed
+            warnings.warn(ommbv_warning, stacklevel=2)
+
+        return wrapper
+
+
+@ommbv_check
 def add_ram_pointing_sc_attitude_vectors(inst):
     """Add attitude vectors for spacecraft assuming ram pointing.
 
@@ -144,6 +175,7 @@ def calculate_ecef_velocity(inst):
     return
 
 
+@ommbv_check
 def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
                                 new_x_label, new_y_label, new_z_label,
                                 meta=None):
