@@ -45,8 +45,6 @@ from pysatMissions.instruments import _core as mcore
 from pysatMissions.methods import magcoord as mm_magcoord
 from pysatMissions.methods import spacecraft as mm_sc
 
-logger = pysat.logger
-
 # -------------------------------
 # Required Instrument attributes
 platform = 'missions'
@@ -73,7 +71,7 @@ def init(self):
         'The project uses the pyephem library available at',
         'https://github.com/brandon-rhodes/pyephem'))
     self.references = 'Please contact the pyephem project for references'
-    logger.info(self.acknowledgements)
+    pysat.logger.info(self.acknowledgements)
 
     warnings.warn(' '.join(("`missions_ephem` has been deprecated and will be",
                             "removed in pysatMissions 0.4.0+.",

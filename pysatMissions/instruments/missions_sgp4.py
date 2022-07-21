@@ -28,8 +28,6 @@ from geospacepy import terrestrial_ellipsoidal as conv_ell
 from geospacepy import terrestrial_spherical as conv_sph
 from sgp4 import api as sapi
 
-logger = pysat.logger
-
 # -------------------------------
 # Required Instrument attributes
 platform = 'missions'
@@ -59,7 +57,7 @@ def init(self):
         '"Revisiting Spacetrack Report #3," presented at the AIAA/AAS',
         'Astrodynamics Specialist Conference, Keystone, CO, 2006',
         'August 21–24.'))
-    logger.info(self.acknowledgements)
+    pysat.logger.info(self.acknowledgements)
 
     if 'epoch' not in self.kwargs['load'].keys():
         self.kwargs['load']['epoch'] = self.files.files.index[0]
