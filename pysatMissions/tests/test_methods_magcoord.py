@@ -18,7 +18,7 @@ class TestBasics(object):
 
         self.test_inst = pysat.Instrument(platform='pysat', name='testing',
                                           num_samples=100, clean_level='clean',
-                                          meta_header=True)
+                                          use_header=True)
         self.kwargs = {'glat_label': 'latitude',
                        'glong_label': 'longitude',
                        'alt_label': 'altitude'}
