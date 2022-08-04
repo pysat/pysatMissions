@@ -27,8 +27,8 @@ from pysat.tests.classes import cls_instrument_library as clslib
 instruments = clslib.InstLibTests.initialize_test_package(
     clslib.InstLibTests, inst_loc=pysatMissions.instruments)
 
-# Build a custom list of sgp4 instruments.  These require custom binning tests
-# that are not used for the in situ instruments.
+# Build a custom list of sgp4 instruments.  This can be reverted to the standard
+# when the deprected instruments are removed.
 instruments['sgp4'] = []
 for inst in instruments['download']:
     if 'sgp4' in inst['inst_module'].name:
