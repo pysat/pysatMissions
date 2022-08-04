@@ -16,8 +16,9 @@ class TestBasics(object):
     def setup(self):
         """Create a clean testing setup before each method."""
 
-        self.testInst = pysat.Instrument(platform='pysat', name='testing',
-                                         num_samples=100, clean_level='clean')
+        self.test_inst = pysat.Instrument(platform='pysat', name='testing',
+                                          num_samples=100, clean_level='clean',
+                                          meta_header=True)
         self.kwargs = {'glat_label': 'latitude',
                        'glong_label': 'longitude',
                        'alt_label': 'altitude'}
@@ -27,18 +28,18 @@ class TestBasics(object):
     def teardown(self):
         """Clean up test environment after each method."""
 
-        del self.testInst, self.kwargs, self.reftime
+        del self.test_inst, self.kwargs, self.reftime
         return
 
     def eval_targets(self, targets):
         """Evaluate addition of new data targets to instrument."""
 
         for target in targets:
-            assert target in self.testInst.data.keys(), \
+            assert target in self.test_inst.data.keys(), \
                 "{:s} not found in data".format(target)
-            assert not np.isnan(self.testInst[target]).any(), \
+            assert not np.isnan(self.test_inst[target]).any(), \
                 "NaN values found in {:s}".format(target)
-            assert target in self.testInst.meta.data.index, \
+            assert target in self.test_inst.meta.data.index, \
                 "{:s} not found in metadata".format(target)
         return
 
@@ -50,8 +51,8 @@ class TestBasics(object):
     def test_add_coordinates(self, func, targets):
         """Test adding thermal plasma data to test inst."""
 
-        self.testInst.custom_attach(getattr(mm_magcoord, func),
-                                    kwargs=self.kwargs)
-        self.testInst.load(date=self.reftime)
+        self.test_inst.custom_attach(getattr(mm_magcoord, func),
+                                     kwargs=self.kwargs)
+        self.test_inst.load(date=self.reftime)
         self.eval_targets(targets)
         return
