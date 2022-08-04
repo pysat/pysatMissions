@@ -8,7 +8,6 @@ Imports test methods from pysat.tests.instrument_test_class
 
 import datetime as dt
 import numpy as np
-import tempfile
 import warnings
 
 import pytest
@@ -19,40 +18,18 @@ import pysat
 import pysatMissions
 
 # Import the test classes from pysat
-from pysat.tests.instrument_test_class import InstTestClass
-from pysat.utils import generate_instrument_list
+from pysat.tests.classes import cls_instrument_library as clslib
 
 
 # Developers for instrument libraries should update the following line to
 # point to their own subpackage location
 # e.g.,
 # instruments = generate_instrument_list(inst_loc=mypackage.inst)
-instruments = generate_instrument_list(inst_loc=pysatMissions.instruments)
-
-# The following lines apply the custom instrument lists to each type of test
-method_list = [func for func in dir(InstTestClass)
-               if callable(getattr(InstTestClass, func))]
-# Search tests for iteration via pytestmark, update instrument list
-for method in method_list:
-    if hasattr(getattr(InstTestClass, method), 'pytestmark'):
-        # Get list of names of pytestmarks
-        n_args = len(getattr(InstTestClass, method).pytestmark)
-        names = [getattr(InstTestClass, method).pytestmark[j].name
-                 for j in range(0, n_args)]
-        # Add instruments from your library
-        if 'all_inst' in names:
-            mark = pytest.mark.parametrize("inst_name", instruments['names'])
-            getattr(InstTestClass, method).pytestmark.append(mark)
-        elif 'download' in names:
-            mark = pytest.mark.parametrize("inst_dict", instruments['download'])
-            getattr(InstTestClass, method).pytestmark.append(mark)
-        elif 'no_download' in names:
-            mark = pytest.mark.parametrize("inst_dict",
-                                           instruments['no_download'])
-            getattr(InstTestClass, method).pytestmark.append(mark)
+instruments = clslib.InstLibTests.initialize_test_package(
+    clslib.InstLibTests, inst_loc=pysatMissions.instruments)
 
 
-class TestInstruments(InstTestClass):
+class TestInstruments(clslib.InstLibTests):
     """Main class for instrument tests.
 
     Note
@@ -62,31 +39,6 @@ class TestInstruments(InstTestClass):
     as the load tests need to be the same as the download tests.
 
     """
-
-    def setup_class(self):
-        """Initialize the testing setup once before all tests are run."""
-
-        # Make sure to use a temporary directory so that the user's setup is not
-        # altered
-        self.tempdir = tempfile.TemporaryDirectory()
-        self.saved_path = pysat.params['data_dirs']
-        pysat.params.data['data_dirs'] = [self.tempdir.name]
-        # Developers for instrument libraries should update the following line
-        # to point to their own subpackage location, e.g.,
-        # self.inst_loc = mypackage.instruments
-        self.inst_loc = pysatMissions.instruments
-        self.stime = pysatMissions.instruments.missions_sgp4._test_dates['']['']
-        return
-
-    def teardown_class(self):
-        """Clean up downloaded files and parameters from tests."""
-
-        pysat.params.data['data_dirs'] = self.saved_path
-        self.tempdir.cleanup()
-        del self.inst_loc, self.saved_path, self.tempdir, self.stime
-        return
-
-    # Custom package unit tests can be added here
 
     @pytest.mark.parametrize("kwargs",
                              [{},
@@ -130,20 +82,36 @@ class TestInstruments(InstTestClass):
         return
 
     @pytest.mark.parametrize("inst_dict", [x for x in instruments['download']])
-    @pytest.mark.parametrize("kwarg,output", [(None, 1), ('10s', 10)])
-    def test_inst_cadence(self, inst_dict, kwarg, output):
-        """Test operation of cadence keyword, including default behavior."""
+    @pytest.mark.parametrize("in_cad,out_cad,num_samples",
+                             [(None, 1, 86400), ('10s', 10, 8640)])
+    def test_inst_cadence(self, inst_dict, in_cad, out_cad, num_samples):
+        """Test operation of cadence keyword, including default behavior.
 
-        if kwarg:
+        Parameters
+        ----------
+        in_cad : pds.freq or NoneType
+            Input cadence as a frequency string
+        out_cad : int
+            Expected output cadence in seconds
+        num_samples : int
+            Expected output num_samples.  Only valid for sgp4 instrument.
+
+        """
+
+        if in_cad:
             self.test_inst = pysat.Instrument(
-                inst_module=inst_dict['inst_module'], cadence=kwarg)
+                inst_module=inst_dict['inst_module'], cadence=in_cad)
         else:
             self.test_inst = pysat.Instrument(
                 inst_module=inst_dict['inst_module'])
 
         self.test_inst.load(date=self.stime)
         cadence = np.diff(self.test_inst.data.index.to_pydatetime())
-        assert np.all(cadence == dt.timedelta(seconds=output))
+        assert np.all(cadence == dt.timedelta(seconds=out_cad))
+
+        if self.test_inst.name == 'sgp4':
+            assert len(self.test_inst.data) == num_samples
+
         return
 
     @pytest.mark.parametrize(
@@ -155,7 +123,14 @@ class TestInstruments(InstTestClass):
           'tle2': '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'}
          ])
     def test_sgp4_options(self, kw_dict):
-        """Test optional keywords for sgp4."""
+        """Test optional keywords for sgp4.
+
+        Parameters
+        ----------
+        kw_dict : dict
+            Dictionary of kwargs to pass through to the sgp4 instrument.
+
+        """
 
         target = 'Fake Data to be cleared'
         self.test_inst = pysat.Instrument(
@@ -174,7 +149,14 @@ class TestInstruments(InstTestClass):
          {'tle1': '1 25544U 98067A   18135.61844383  .00002728  00000-0  48567-4 0  9998'}
          ])
     def test_sgp4_options_errors(self, kw_dict):
-        """Test optional keyword combos for sgp4 that generate errors."""
+        """Test optional keyword combos for sgp4 that generate errors.
+
+        Parameters
+        ----------
+        kw_dict : dict
+            Dictionary of kwargs to pass through to the sgp4 instrument.
+
+        """
 
         with pytest.raises(KeyError) as kerr:
             self.test_inst = pysat.Instrument(
@@ -191,7 +173,14 @@ class TestInstruments(InstTestClass):
           'tle2': '2 25544  51.6402 181.0633 0004018  88.8954  22.2246 15.54059185113452'}
          ])
     def test_sgp4_options_warnings(self, kw_dict):
-        """Test optional keyword combos for sgp4 that generate warnings."""
+        """Test optional keyword combos for sgp4 that generate warnings.
+
+        Parameters
+        ----------
+        kw_dict : dict
+            Dictionary of kwargs to pass through to the sgp4 instrument.
+
+        """
 
         with warnings.catch_warnings(record=True) as war:
             self.test_inst = pysat.Instrument(
