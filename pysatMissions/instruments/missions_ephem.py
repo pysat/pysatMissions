@@ -207,9 +207,9 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
             # Triggered if OMMBV not installed
             warnings.warn("OMMBV not installed. ECEF coords not generated.",
                           stacklevel=2)
-            lp['x'] = np.ones(np.size(lp['alt'])) * np.nan
-            lp['y'] = np.ones(np.size(lp['alt'])) * np.nan
-            lp['z'] = np.ones(np.size(lp['alt'])) * np.nan
+            lp['x'] = np.nan
+            lp['y'] = np.nan
+            lp['z'] = np.nan
         output_params.append(lp)
 
     output = pds.DataFrame(output_params, index=index)
