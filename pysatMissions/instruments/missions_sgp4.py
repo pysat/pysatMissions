@@ -178,7 +178,9 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
         line2 = tle2
 
     if (num_samples is None) or one_orbit:
-        num_samples = 86400
+        # Calculate one day of samples for default
+        num_samples = len(pds.date_range('2018/1/1', '2018/1/2',
+                                         freq=cadence)) - 1
 
     # Extract list of times from filenames and inst_id
     times, index, dates = ps_meth.generate_times(fnames, num_samples,
