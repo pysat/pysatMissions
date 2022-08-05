@@ -1,11 +1,10 @@
 """Utilities for pysatMissions."""
 
-from importlib import import_module
 import warnings
 
 
 def package_check(package_name):
-    """Throw a warning if package is not installed.
+    """Throw a warning if optional package is not installed.
 
     Some systems are having issues installing OMMBV and apexpy.
     This allows these packages to be optionally installed.
@@ -23,10 +22,14 @@ def package_check(package_name):
                                      'See instructions at',
                                      'https://github.com/pysat/pysatMissions'])
             try:
-                import_module(package_name)
-            except ModuleNotFoundError:
-                # Triggered if package is not installed
-                warnings.warn(message_warn, stacklevel=2)
+                func(*args, **kwargs)
+            except NameError as nerr:
+                # Triggered if call is made to package that is not installed
+                if package_name in str(nerr):
+                    warnings.warn(message_warn, stacklevel=2)
+                else:
+                    # Error is unrelated to optional package, raise original.
+                    raise nerr
 
         return wrapper
 
