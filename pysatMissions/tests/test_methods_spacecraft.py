@@ -79,7 +79,6 @@ class TestBasics(object):
         self.eval_targets(targets)
         return
 
-    @pytest.mark.skipif(("OMMBV" not in dir()), reason="OMMBV is not installed")
     def test_add_ram_pointing_sc_attitude_vectors(self):
         """Test `add_ram_pointing_sc_attitude_vectors` helper function."""
 
