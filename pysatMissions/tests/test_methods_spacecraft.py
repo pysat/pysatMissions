@@ -4,15 +4,8 @@
 import datetime as dt
 import numpy as np
 
-import pytest
-
 import pysat
 from pysatMissions.methods import spacecraft as mm_sc
-
-try:
-    import OMMBV  # noqa: F401
-except ImportError:
-    pass
 
 
 def add_eci(inst):
@@ -93,7 +86,6 @@ class TestBasics(object):
         self.eval_targets(targets)
         return
 
-    @pytest.mark.skipif(("OMMBV" not in dir()), reason="OMMBV is not installed")
     def test_project_ecef_vector_onto_sc(self):
         """Test `project_ecef_vector_onto_sc` helper function."""
 
