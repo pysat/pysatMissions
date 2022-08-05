@@ -16,7 +16,6 @@ except ImportError as ierr:
     pass
 
 
-@package_check('OMMBV')
 def add_ram_pointing_sc_attitude_vectors(inst):
     """Add attitude vectors for spacecraft assuming ram pointing.
 
@@ -66,12 +65,9 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     # get y vector assuming right hand rule
     # Z x X = Y
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        OMMBV.vector.cross_product(inst['sc_zhat_ecef_x'],
-                                   inst['sc_zhat_ecef_y'],
-                                   inst['sc_zhat_ecef_z'],
-                                   inst['sc_xhat_ecef_x'],
-                                   inst['sc_xhat_ecef_y'],
-                                   inst['sc_xhat_ecef_z'])
+        cross_product(inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'],
+                      inst['sc_zhat_ecef_z'], inst['sc_xhat_ecef_x'],
+                      inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'])
     # Normalize since Xhat and Zhat from above may not be orthogonal
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
         normalize(inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'],
@@ -81,12 +77,9 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     # just created
     # Z = X x Y
     inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        OMMBV.vector.cross_product(inst['sc_xhat_ecef_x'],
-                                   inst['sc_xhat_ecef_y'],
-                                   inst['sc_xhat_ecef_z'],
-                                   inst['sc_yhat_ecef_x'],
-                                   inst['sc_yhat_ecef_y'],
-                                   inst['sc_yhat_ecef_z'])
+        cross_product(inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'],
+                      inst['sc_xhat_ecef_z'], inst['sc_yhat_ecef_x'],
+                      inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'])
 
     # Adding metadata
     for v in ['x', 'y', 'z']:
@@ -233,3 +226,34 @@ def normalize(x, y, z):
     xhat, yhat, zhat = vector / np.linalg.norm(vector, axis=0)
 
     return xhat, yhat, zhat
+
+
+def cross_product(x1, y1, z1, x2, y2, z2):
+    """Cross product of two vectors, v1 x v2.
+
+    Parameters
+    ----------
+    x1 : float or array-like
+        X component of vector 1
+    y1 : float or array-like
+        Y component of vector 1
+    z1 : float or array-like
+        Z component of vector 1
+    x2 : float or array-like
+        X component of vector 2
+    y2 : float or array-like
+        Y component of vector 2
+    z2 : float or array-like
+        Z component of vector 2
+
+    Returns
+    -------
+    x, y, z
+        Unit vector x,y,z components
+
+    """
+    x = y1 * z2 - y2 * z1
+    y = z1 * x2 - x1 * z2
+    z = x1 * y2 - y1 * x2
+
+    return x, y, z
