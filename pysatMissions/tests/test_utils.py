@@ -1,5 +1,6 @@
 """Unit tests for pysatMissions utilitis."""
 
+from importlib import import_module
 import warnings
 
 import pytest
@@ -24,7 +25,7 @@ class TestBasics(object):
     @pytest.mark.parametrize("package_name, num_warns",
                              [('os', 0),
                               ('nonsense', 1)])
-    def test_package_check(self, package_name, num_warns):
+    def test_package_check_warns(self, package_name, num_warns):
         """Test that package_check warns users if packages are not installed.
 
         Parameters
@@ -37,8 +38,12 @@ class TestBasics(object):
 
         @package_check(package_name)
         def dummy_func():
-            """Pass through so that wrapper can be checked."""
-            pass
+            """Try importing a package, simulate a NameError if not found."""
+            try:
+                import_module(package_name)
+            except ModuleNotFoundError:
+                raise NameError('{:} not found'.format(package_name))
+            return
 
         with warnings.catch_warnings(record=True) as war:
             dummy_func()
@@ -46,5 +51,21 @@ class TestBasics(object):
         assert len(war) == num_warns
         if len(war) > 0:
             assert package_name in str(war[0])
+
+        return
+
+    def test_package_check_error(self):
+        """Test that package_check raises error for unrelated errors."""
+
+        @package_check('nonsense')
+        def dummy_func():
+            """Simulate an unrelated NameError."""
+            raise NameError('A sensible error has occurred')
+            return
+
+        with pytest.raises(NameError) as nerr:
+            dummy_func()
+
+        assert 'sensible' in str(nerr)
 
         return
