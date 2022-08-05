@@ -36,7 +36,7 @@ Python 3.8+.
 | -------------- | ----------------- |
 | numpy          | aacgmv2           |
 | pandas         | apexpy            |
-| pyEphem        | pysat>=3.0        |
+| pyEphem        | pysat>=3.0.2      |
 | sgp4>=2.7      |                   |
 
 
@@ -63,7 +63,7 @@ python setup.py install
 
 Note: pre-1.0.0 version
 -----------------------
-pysatMissions is currently in an initial development phase and requires pysat 3.0.0.  
+pysatMissions is currently in an initial development phase and requires pysat 3.0.2.  
 
 # Using with pysat
 
