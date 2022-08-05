@@ -9,6 +9,12 @@ def package_check(package_name):
     Some systems are having issues installing OMMBV and apexpy.
     This allows these packages to be optionally installed.
 
+    Parameters
+    ----------
+    package_name : str
+        Name of the package to check in a given function.  If not present, a
+        warning is raised and the original function is skipped.
+
     """
 
     def decorator(func):
