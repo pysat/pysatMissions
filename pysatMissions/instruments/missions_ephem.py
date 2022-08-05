@@ -33,13 +33,6 @@ import ephem
 import pandas as pds
 import pysat
 
-try:
-    import OMMBV
-except ImportError:
-    # Warnings thrown elsewhere if users call relevant functions without
-    # OMMBV installed
-    pass
-
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.methods import magcoord as mm_magcoord
@@ -88,11 +81,10 @@ def preprocess(self):
 
     """
 
-    mm_magcoord.add_quasi_dipole_coordinates(self)
     mm_magcoord.add_aacgm_coordinates(self)
-    if "OMMBV" in dir():
-        mm_sc.calculate_ecef_velocity(self)
-        mm_sc.add_ram_pointing_sc_attitude_vectors(self)
+    mm_magcoord.add_quasi_dipole_coordinates(self)
+    mm_sc.calculate_ecef_velocity(self)
+    mm_sc.add_ram_pointing_sc_attitude_vectors(self)
 
     return
 
