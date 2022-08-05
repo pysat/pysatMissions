@@ -14,6 +14,8 @@ except ImportError as ierr:
     pysat.logger.warning(" ".join(["apexpy module could not be imported.",
                                    "apexpy interface won't work.",
                                    "Failed with error:", str(ierr)]))
+    # Warnings thrown elsewhere if users call relevant functions without
+    # apexpy installed
 
 
 def add_aacgm_coordinates(inst, glat_label='glat', glong_label='glong',
