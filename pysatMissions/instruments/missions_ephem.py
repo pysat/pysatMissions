@@ -198,21 +198,23 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         # Elevation of satellite in m, converted to km
         lp['alt'] = sat.elevation / 1000.0
 
-        # Get ECEF position of satellite
-        try:
-            lp['x'], lp['y'], lp['z'] = OMMBV.trans.geodetic_to_ecef(lp['glat'],
-                                                                     lp['glong'],
-                                                                     lp['alt'])
-        except NameError:
-            # Triggered if OMMBV not installed
-            warnings.warn("OMMBV not installed. ECEF coords not generated.",
-                          stacklevel=2)
-            lp['x'] = np.nan
-            lp['y'] = np.nan
-            lp['z'] = np.nan
         output_params.append(lp)
 
     output = pds.DataFrame(output_params, index=index)
+
+    # Get ECEF position of satellite
+    try:
+        output['x'], output['y'], output['z'] = \
+            OMMBV.trans.geodetic_to_ecef(output['glat'], output['glong'],
+                                         output['alt'])
+    except NameError:
+        # Triggered if OMMBV not installed
+        warnings.warn("OMMBV not installed. ECEF coords not generated.",
+                      stacklevel=2)
+        output['x'] = output['glat'] * np.nan
+        output['y'] = output['glat'] * np.nan
+        output['z'] = output['glat'] * np.nan
+
     # Modify input object to include calculated parameters
     # Put data into DataFrame
     data = pds.DataFrame({'glong': output['glong'],
