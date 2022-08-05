@@ -229,7 +229,7 @@ def normalize(x, y, z):
 
     """
 
-    vector = np.hstack([x, y, z])
+    vector = np.vstack([x, y, z])
     xhat, yhat, zhat = vector / np.linalg.norm(vector, axis=0)
 
     return xhat, yhat, zhat
