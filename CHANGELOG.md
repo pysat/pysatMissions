@@ -2,14 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## [0.3.2] - 2022-08-01
+## [0.3.2] - 2022-XX-XX
 * Make OMMBV an optional install
 * Access logger directly from pysat
 * Use pysat deprecation tests
+* Incorporate Windows tests into Github Actions
 * Bug Fix
   * Ensure default num_samples consistent for one day regardless of cadence
 * Maintenance
   * Update instrument test standards
+  * Added `utils.package_check`, a standard decorator to bypass functions using
+    packages that are optional installs if the package is not installed
+  * Use local vector functions rather than import from OMMBV
 
 ## [0.3.1] - 2022-05-18
 * Include license in package manifest
