@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ## [0.3.2] - 2022-08-01
 * Make OMMBV an optional install
 * Access logger directly from pysat
+* Use pysat deprecation tests
 * Bug Fix
   * Ensure default num_samples consistent for one day regardless of cadence
 * Maintenance
