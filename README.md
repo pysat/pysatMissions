@@ -16,7 +16,7 @@ pysatMissions allows users to run build simulated satellites for Two-Line Elemen
 Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
-- Import magnetic coordinates through apexpy and aacgmv2
+- Import magnetic coordinates through apexpy (optional) and aacgmv2
 - Import geomagnetic basis vectors through OMMBV (optional)
 
 Documentation
@@ -32,12 +32,12 @@ pysatMissions uses common Python modules, as well as modules developed by
 and for the Space Physics community.  This module officially supports
 Python 3.8+.  
 
-| Common modules | Community modules |
-| -------------- | ----------------- |
-| numpy          | aacgmv2           |
-| pandas         | apexpy            |
-| pyEphem        | pysat>=3.0.2      |
-| sgp4>=2.7      |                   |
+| Common modules | Community modules | Optional modules |
+| -------------- | ----------------- | ---------------- |
+| numpy          | aacgmv2           | apexpy           |
+| pandas         | pysat>=3.0.2      | OMMBV            |
+| pyEphem        |                   |                  |
+| sgp4>=2.7      |                   |                  |
 
 
 One way to install is through pip.  Just type
@@ -85,6 +85,10 @@ pysat.utils.registry.register_by_module(pysatMissions.instruments)
 simInst = pysat.Instrument('missions', 'ephem')
 ```
 
-Note that some of the spacecraft vector calculations used require OMMBV, which
-needs to be installed separately.  This is an optional install as not all systems
-support installation of OMMBV through pip.
+# Optional modules
+
+Some of the spacecraft vector calculations used require OMMBV, which needs to be
+installed separately.  This is an optional install as not all systems support
+installation of OMMBV through pip.
+
+Magnetic vector coordinates through apexpy as also set up as an optional install.
