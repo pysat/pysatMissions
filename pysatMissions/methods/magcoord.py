@@ -3,6 +3,7 @@
 
 import aacgmv2
 import pysat
+from pysatMissions.utils import package_check
 
 try:
     # Warn user if apexpy is not configured.  Bypass needed to function on
@@ -75,6 +76,7 @@ def add_aacgm_coordinates(inst, glat_label='glat', glong_label='glong',
     return
 
 
+@package_check('apexpy')
 def add_quasi_dipole_coordinates(inst, glat_label='glat', glong_label='glong',
                                  alt_label='alt'):
     """Add quasi-dipole coordinates to instrument object using Apexpy package.
