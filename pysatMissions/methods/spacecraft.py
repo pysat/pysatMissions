@@ -2,19 +2,6 @@
 
 import numpy as np
 
-import pysat
-from pysatMissions.utils import package_check
-
-try:
-    import OMMBV
-except ImportError as ierr:
-    pysat.logger.warning(" ".join(["OMMBV module could not be imported.",
-                                   "OMMBV interface won't work.",
-                                   "Failed with error:", str(ierr)]))
-    # Warnings thrown elsewhere if users call relevant functions without
-    # ommbv installed
-    pass
-
 
 def add_ram_pointing_sc_attitude_vectors(inst):
     """Add attitude vectors for spacecraft assuming ram pointing.
@@ -147,7 +134,6 @@ def calculate_ecef_velocity(inst):
     return
 
 
-@package_check('OMMBV')
 def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
                                 new_x_label, new_y_label, new_z_label,
                                 meta=None):
@@ -177,19 +163,21 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
 
     # TODO(#65): add checks for existence of ecef labels in inst
 
-    x, y, z = OMMBV.vector.project_onto_basis(
-        inst[x_label], inst[y_label], inst[z_label],
-        inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'],
-        inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'],
-        inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'])
+    xx = inst['sc_xhat_ecef_x']
+    xy = inst['sc_xhat_ecef_y']
+    xz = inst['sc_xhat_ecef_z']
 
-    # out_x = x * xx + y * xy + z * xz
-    # out_y = x * yx + y * yy + z * yz
-    # out_z = x * zx + y * zy + z * zz
+    yx = inst['sc_yhat_ecef_x']
+    yy = inst['sc_yhat_ecef_y']
+    yz = inst['sc_yhat_ecef_z']
 
-    inst[new_x_label] = x
-    inst[new_y_label] = y
-    inst[new_z_label] = z
+    zx = inst['sc_zhat_ecef_x']
+    zy = inst['sc_zhat_ecef_y']
+    zz = inst['sc_zhat_ecef_z']
+
+    inst[new_x_label] = inst[x_label] * xx + inst[y_label] * xy + inst[z_label] * xz
+    inst[new_y_label] = inst[x_label] * yx + inst[y_label] * yy + inst[z_label] * yz
+    inst[new_z_label] = inst[x_label] * zx + inst[y_label] * zy + inst[z_label] * zz
 
     if meta is not None:
         inst.meta[new_x_label] = meta[0]
