@@ -46,7 +46,8 @@ class TestBasics(object):
         """Create a clean testing setup before each method."""
 
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
-                                         num_samples=9, clean_level='clean')
+                                         num_samples=9, clean_level='clean',
+                                         use_header=True)
         self.testInst.custom_attach(add_eci)
         self.reftime = dt.datetime(2009, 1, 1)
         return
