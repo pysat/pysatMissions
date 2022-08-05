@@ -69,9 +69,8 @@ def add_ram_pointing_sc_attitude_vectors(inst):
 
     # Ram pointing is along velocity vector
     inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'] = \
-        OMMBV.vector.normalize(inst['velocity_ecef_x'],
-                               inst['velocity_ecef_y'],
-                               inst['velocity_ecef_z'])
+        normalize(inst['velocity_ecef_x'], inst['velocity_ecef_y'],
+                  inst['velocity_ecef_z'])
 
     # Begin with z along Nadir (towards Earth)
     # if orbit isn't perfectly circular, then the s/c z vector won't
@@ -79,9 +78,8 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     # to the true z (in the orbital plane) that we can use it to get y,
     # and use x and y to get the real z
     inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        OMMBV.vector.normalize(-inst['position_ecef_x'],
-                               -inst['position_ecef_y'],
-                               -inst['position_ecef_z'])
+        normalize(-inst['position_ecef_x'], -inst['position_ecef_y'],
+                  -inst['position_ecef_z'])
 
     # get y vector assuming right hand rule
     # Z x X = Y
@@ -94,9 +92,8 @@ def add_ram_pointing_sc_attitude_vectors(inst):
                                    inst['sc_xhat_ecef_z'])
     # Normalize since Xhat and Zhat from above may not be orthogonal
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        OMMBV.vector.normalize(inst['sc_yhat_ecef_x'],
-                               inst['sc_yhat_ecef_y'],
-                               inst['sc_yhat_ecef_z'])
+        normalize(inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'],
+                  inst['sc_yhat_ecef_z'])
 
     # Strictly, need to recalculate Zhat so that it is consistent with RHS
     # just created
@@ -210,6 +207,11 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
         inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'],
         inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'],
         inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'])
+
+    # out_x = x * xx + y * xy + z * xz
+    # out_y = x * yx + y * yy + z * yz
+    # out_z = x * zx + y * zy + z * zz
+
     inst[new_x_label] = x
     inst[new_y_label] = y
     inst[new_z_label] = z
@@ -220,3 +222,32 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
         inst.meta[new_z_label] = meta[2]
 
     return
+
+
+def normalize(x, y, z):
+    """Normalize a time-series of vectors.
+
+    Parameters
+    ----------
+    x : pds.Series
+        The x-component
+    y : pds.Series
+        The y-component
+    z : pds.Series
+        The z-component
+
+    Returns
+    -------
+    xhat : pds.Series
+        The normalized x-component
+    yhat : pds.Series
+        The normalized y-component
+    zhat : pds.Series
+        The normalized z-component
+
+    """
+
+    vector = np.hstack([x, y, z])
+    xhat, yhat, zhat = vector / np.linalg.norm(vector, axis=0)
+
+    return xhat, yhat, zhat
