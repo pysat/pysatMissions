@@ -204,7 +204,7 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
                                                                      lp['glong'],
                                                                      lp['alt'])
         except NameError:
-            # Triggered if pyglow not installed
+            # Triggered if OMMBV not installed
             warnings.warn("OMMBV not installed. ECEF coords not generated.",
                           stacklevel=2)
             lp['x'] = np.ones(np.size(lp['alt'])) * np.nan
