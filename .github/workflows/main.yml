@@ -33,6 +33,7 @@ jobs:
       run: |
         pip install -r requirements.txt
         pip install OMMBV --no-binary==OMMBV
+        pip install apexpy --no-binary==apexpy
 
     - name: Set up pysat
       run: |

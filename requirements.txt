@@ -1,5 +1,4 @@
 aacgmv2
-apexpy
 geospacepy
 numpy
 pandas
