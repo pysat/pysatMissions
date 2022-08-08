@@ -90,7 +90,8 @@ sim_inst = pysat.Instrument('missions', 'sgp4')
 
 Magnetic vector coordinates through apexpy and aacgmv2 are set up as optional
 installs. Both packages require fortran to install properly, and may require
-additional configuration.
+additional configuration.  Both can be installed from pip, but may require the
+`--no-binary` option depending on your system.
 
 The instrument `missions_ephem` has been deprecated since pyEphem is no longer
 maintained. This will be removed in v0.4.0.  Note that OMMBV is required for
