@@ -1,4 +1,3 @@
-aacgmv2
 geospacepy
 numpy
 pandas

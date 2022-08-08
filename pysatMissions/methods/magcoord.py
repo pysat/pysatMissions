@@ -1,10 +1,20 @@
 """Routines for projecting aacgmv2 and apexpy model values onto pysat instruments.
 """
 
-import aacgmv2
 import pysat
 from pysatMissions.utils import package_check
 
+try:
+    # Warn user if apexpy is not configured.  Bypass needed to function on
+    # readthedocs.  Use of apexpy functions elsewhere in code will produce
+    # errors.
+    import aacgmv2
+except ImportError as ierr:
+    pysat.logger.warning(" ".join(["aacgmv2 module could not be imported.",
+                                   "aacgmv2 interface won't work.",
+                                   "Failed with error:", str(ierr)]))
+    # Warnings thrown elsewhere if users call relevant functions without
+    # apexpy installed
 try:
     # Warn user if apexpy is not configured.  Bypass needed to function on
     # readthedocs.  Use of apexpy functions elsewhere in code will produce
@@ -18,6 +28,7 @@ except ImportError as ierr:
     # apexpy installed
 
 
+@package_check('aacgmv2')
 def add_aacgm_coordinates(inst, glat_label='glat', glong_label='glong',
                           alt_label='alt'):
     """Add AACGM coordinates to instrument object using AACGMV2 package.
