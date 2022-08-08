@@ -8,7 +8,6 @@ Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
 - Import magnetic coordinates through apexpy and aacgmv2
-- Import geomagnetic basis vectors through OMMBV
 
 """
 

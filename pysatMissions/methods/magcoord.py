@@ -4,28 +4,23 @@
 import pysat
 from pysatMissions.utils import package_check
 
+# Warn user if aacgmv2 is not configured.  Use of aacgmv2 functions elsewhere in
+# code will produce additional warnings errors.
 try:
-    # Warn user if apexpy is not configured.  Bypass needed to function on
-    # readthedocs.  Use of apexpy functions elsewhere in code will produce
-    # errors.
     import aacgmv2
 except ImportError as ierr:
     pysat.logger.warning(" ".join(["aacgmv2 module could not be imported.",
                                    "aacgmv2 interface won't work.",
                                    "Failed with error:", str(ierr)]))
-    # Warnings thrown elsewhere if users call relevant functions without
-    # apexpy installed
+
+# Warn user if apexpy is not configured.  Use of apexpy functions elsewhere in
+# code will produce additional warnings errors.
 try:
-    # Warn user if apexpy is not configured.  Bypass needed to function on
-    # readthedocs.  Use of apexpy functions elsewhere in code will produce
-    # errors.
     import apexpy
 except ImportError as ierr:
     pysat.logger.warning(" ".join(["apexpy module could not be imported.",
                                    "apexpy interface won't work.",
                                    "Failed with error:", str(ierr)]))
-    # Warnings thrown elsewhere if users call relevant functions without
-    # apexpy installed
 
 
 @package_check('aacgmv2')
