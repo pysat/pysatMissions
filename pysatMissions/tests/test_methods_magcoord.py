@@ -60,7 +60,9 @@ class TestBasics(object):
         # Convert all warnings into one large string
         messages = str([str(ww) for ww in war])
 
-        if 'apexpy' in messages:
+        if 'aacgmv2' in messages:
+            pytest.skip("aacgmv2 not installed")
+        elif 'apexpy' in messages:
             pytest.skip("Apexpy not installed")
         else:
             self.eval_targets(targets)
