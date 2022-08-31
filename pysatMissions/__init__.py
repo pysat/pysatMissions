@@ -8,7 +8,6 @@ Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
 - Import magnetic coordinates through apexpy and aacgmv2
-- Import geomagnetic basis vectors through OMMBV
 
 """
 
@@ -18,10 +17,11 @@ import os
 try:
     from pysatMissions import instruments
     from pysatMissions import methods
+    from pysatMissions import utils
 except ImportError as errstr:
     logging.exception('problem importing pysatMissions: ' + str(errstr))
 
-__all__ = ['instruments', 'methods']
+__all__ = ['instruments', 'methods', 'utils']
 
 # set version
 here = os.path.abspath(os.path.dirname(__file__))

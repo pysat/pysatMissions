@@ -3,6 +3,7 @@
 
 import datetime as dt
 import numpy as np
+import warnings
 
 import pytest
 
@@ -49,10 +50,21 @@ class TestBasics(object):
                               ('add_quasi_dipole_coordinates',
                                ['qd_lat', 'qd_long', 'mlt'])])
     def test_add_coordinates(self, func, targets):
-        """Test adding thermal plasma data to test inst."""
+        """Test adding coordinates to test inst."""
 
         self.test_inst.custom_attach(getattr(mm_magcoord, func),
                                      kwargs=self.kwargs)
-        self.test_inst.load(date=self.reftime)
-        self.eval_targets(targets)
+        with warnings.catch_warnings(record=True) as war:
+            self.test_inst.load(date=self.reftime)
+
+        # Convert all warnings into one large string
+        messages = str([str(ww) for ww in war])
+
+        if 'aacgmv2' in messages:
+            pytest.skip("aacgmv2 not installed")
+        elif 'apexpy' in messages:
+            pytest.skip("Apexpy not installed")
+        else:
+            self.eval_targets(targets)
+
         return

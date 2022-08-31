@@ -33,13 +33,6 @@ import ephem
 import pandas as pds
 import pysat
 
-try:
-    import OMMBV
-except ImportError:
-    # Warnings thrown elsewhere if users call relevant functions without
-    # OMMBV installed
-    pass
-
 from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.methods import magcoord as mm_magcoord
@@ -88,11 +81,10 @@ def preprocess(self):
 
     """
 
-    mm_magcoord.add_quasi_dipole_coordinates(self)
     mm_magcoord.add_aacgm_coordinates(self)
-    if "OMMBV" in dir():
-        mm_sc.calculate_ecef_velocity(self)
-        mm_sc.add_ram_pointing_sc_attitude_vectors(self)
+    mm_magcoord.add_quasi_dipole_coordinates(self)
+    mm_sc.calculate_ecef_velocity(self)
+    mm_sc.add_ram_pointing_sc_attitude_vectors(self)
 
     return
 
@@ -206,21 +198,23 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         # Elevation of satellite in m, converted to km
         lp['alt'] = sat.elevation / 1000.0
 
-        # Get ECEF position of satellite
-        try:
-            lp['x'], lp['y'], lp['z'] = OMMBV.trans.geodetic_to_ecef(lp['glat'],
-                                                                     lp['glong'],
-                                                                     lp['alt'])
-        except NameError:
-            # Triggered if pyglow not installed
-            warnings.warn("OMMBV not installed. ECEF coords not generated.",
-                          stacklevel=2)
-            lp['x'] = np.ones(np.size(lp['alt'])) * np.nan
-            lp['y'] = np.ones(np.size(lp['alt'])) * np.nan
-            lp['z'] = np.ones(np.size(lp['alt'])) * np.nan
         output_params.append(lp)
 
     output = pds.DataFrame(output_params, index=index)
+
+    # Get ECEF position of satellite
+    try:
+        output['x'], output['y'], output['z'] = \
+            OMMBV.trans.geodetic_to_ecef(output['glat'], output['glong'],
+                                         output['alt'])
+    except NameError:
+        # Triggered if OMMBV not installed
+        warnings.warn("OMMBV not installed. ECEF coords not generated.",
+                      stacklevel=2)
+        output['x'] = output['glat'] * np.nan
+        output['y'] = output['glat'] * np.nan
+        output['z'] = output['glat'] * np.nan
+
     # Modify input object to include calculated parameters
     # Put data into DataFrame
     data = pds.DataFrame({'glong': output['glong'],

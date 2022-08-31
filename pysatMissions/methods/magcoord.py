@@ -1,13 +1,21 @@
 """Routines for projecting aacgmv2 and apexpy model values onto pysat instruments.
 """
 
-import aacgmv2
 import pysat
+from pysatMissions.utils import package_check
 
+# Warn user if aacgmv2 is not configured.  Use of aacgmv2 functions elsewhere in
+# code will produce additional warnings errors.
 try:
-    # Warn user if apexpy is not configured.  Bypass needed to function on
-    # readthedocs.  Use of apexpy functions elsewhere in code will produce
-    # errors.
+    import aacgmv2
+except ImportError as ierr:
+    pysat.logger.warning(" ".join(["aacgmv2 module could not be imported.",
+                                   "aacgmv2 interface won't work.",
+                                   "Failed with error:", str(ierr)]))
+
+# Warn user if apexpy is not configured.  Use of apexpy functions elsewhere in
+# code will produce additional warnings errors.
+try:
     import apexpy
 except ImportError as ierr:
     pysat.logger.warning(" ".join(["apexpy module could not be imported.",
@@ -15,6 +23,7 @@ except ImportError as ierr:
                                    "Failed with error:", str(ierr)]))
 
 
+@package_check('aacgmv2')
 def add_aacgm_coordinates(inst, glat_label='glat', glong_label='glong',
                           alt_label='alt'):
     """Add AACGM coordinates to instrument object using AACGMV2 package.
@@ -75,6 +84,7 @@ def add_aacgm_coordinates(inst, glat_label='glat', glong_label='glong',
     return
 
 
+@package_check('apexpy')
 def add_quasi_dipole_coordinates(inst, glat_label='glat', glong_label='glong',
                                  alt_label='alt'):
     """Add quasi-dipole coordinates to instrument object using Apexpy package.
