@@ -240,8 +240,8 @@ def cross_product(x1, y1, z1, x2, y2, z2):
         Unit vector x,y,z components
 
     """
-    x = y1 * z2 - y2 * z1
-    y = z1 * x2 - x1 * z2
-    z = x1 * y2 - y1 * x2
+    vec1 = np.vstack([x1, y1, z1])
+    vec2 = np.vstack([x2, y2, z2])
+    x, y, z = np.cross(vec1, vec2, axis=0)
 
     return x, y, z
