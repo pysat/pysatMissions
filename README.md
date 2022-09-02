@@ -63,7 +63,7 @@ python setup.py install
 Note: pre-1.0.0 version
 -----------------------
 pysatMissions is currently in an initial development phase and requires pysat
-3.0.2.  
+3.0.4.  
 
 # Using with pysat
 

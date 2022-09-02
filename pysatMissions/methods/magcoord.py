@@ -5,7 +5,7 @@ import pysat
 from pysatMissions.utils import package_check
 
 # Warn user if aacgmv2 is not configured.  Use of aacgmv2 functions elsewhere in
-# code will produce additional warnings errors.
+# code will produce additional warnings.
 try:
     import aacgmv2
 except ImportError as ierr:
@@ -14,7 +14,7 @@ except ImportError as ierr:
                                    "Failed with error:", str(ierr)]))
 
 # Warn user if apexpy is not configured.  Use of apexpy functions elsewhere in
-# code will produce additional warnings errors.
+# code will produce additional warnings.
 try:
     import apexpy
 except ImportError as ierr:
