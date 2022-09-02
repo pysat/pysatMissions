@@ -1,5 +1,6 @@
 """Utilities for pysatMissions."""
 
+from functools import wraps
 import warnings
 
 
@@ -20,6 +21,7 @@ def package_check(package_name):
     def decorator(func):
         """Pass the function through to the wrapper."""
 
+        @wraps(func)
         def wrapper(*args, **kwargs):
             """Wrap functions that use the decorator function."""
 
