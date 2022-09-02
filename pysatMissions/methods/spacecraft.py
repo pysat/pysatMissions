@@ -51,10 +51,10 @@ def add_ram_pointing_sc_attitude_vectors(inst):
 
     # get y vector assuming right hand rule
     # Z x X = Y
-    inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        cross_product(inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'],
-                      inst['sc_zhat_ecef_z'], inst['sc_xhat_ecef_x'],
-                      inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'])
+    inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']] = \
+        np.cross(inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']],
+                 inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']],
+                 axis=1)
     # Normalize since Xhat and Zhat from above may not be orthogonal
     inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
         normalize(inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'],
@@ -63,10 +63,10 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     # Strictly, need to recalculate Zhat so that it is consistent with RHS
     # just created
     # Z = X x Y
-    inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        cross_product(inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'],
-                      inst['sc_xhat_ecef_z'], inst['sc_yhat_ecef_x'],
-                      inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'])
+    inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']] = \
+        np.cross(inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']],
+                 inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']],
+                 axis=1)
 
     # Adding metadata
     for v in ['x', 'y', 'z']:
@@ -79,10 +79,11 @@ def add_ram_pointing_sc_attitude_vectors(inst):
                                                  'expressed in ECEF basis,',
                                                  '{:}-component'.format(u)))}
 
-    # check what magnitudes we get
-    mag = np.sqrt(inst['sc_zhat_ecef_x']**2 + inst['sc_zhat_ecef_y']**2
-                  + inst['sc_zhat_ecef_z']**2)
-    idx, = np.where((mag < .999999999) | (mag > 1.000000001))
+    # Check what magnitudes we get
+    mag = np.linalg.norm(
+        inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']],
+        axis=1)
+    idx, = np.where(np.abs(mag - 1) > 1e-9)
     if len(idx) > 0:
         print(mag[idx])
         raise RuntimeError(' '.join(('Unit vector generation failure. Not',
@@ -214,34 +215,3 @@ def normalize(x, y, z):
     xhat, yhat, zhat = vector / np.linalg.norm(vector, axis=0)
 
     return xhat, yhat, zhat
-
-
-def cross_product(x1, y1, z1, x2, y2, z2):
-    """Cross product of two vectors, v1 x v2.
-
-    Parameters
-    ----------
-    x1 : float or array-like
-        X component of vector 1
-    y1 : float or array-like
-        Y component of vector 1
-    z1 : float or array-like
-        Z component of vector 1
-    x2 : float or array-like
-        X component of vector 2
-    y2 : float or array-like
-        Y component of vector 2
-    z2 : float or array-like
-        Z component of vector 2
-
-    Returns
-    -------
-    x, y, z
-        Unit vector x,y,z components
-
-    """
-    x = y1 * z2 - y2 * z1
-    y = z1 * x2 - x1 * z2
-    z = x1 * y2 - y1 * x2
-
-    return x, y, z
