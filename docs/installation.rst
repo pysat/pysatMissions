@@ -21,9 +21,8 @@ Python 3.8+ and pysat 3.0.4+.
  Common  modules   Community modules   Optional Modules
  ================ =================== ==================
   numpy            pysat>=3.0.4        aacgmv2
-  pandas                               apexpy
-  pyEphem                              OMMBV>=1.0
-  sgp4>=2.7
+  pandas           pyEphem             apexpy
+                   sgp4>=2.7           OMMBV>=1.0
  ================ =================== ==================
 
 

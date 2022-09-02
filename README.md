@@ -34,9 +34,8 @@ Python 3.8+.
 | Common modules | Community modules | Optional modules |
 | -------------- | ----------------- | ---------------- |
 | numpy          | pysat>=3.0.4      | aacgmv2          |
-| pandas         |                   | apexpy           |
-| pyEphem        |                   | OMMBV            |
-| sgp4>=2.7      |                   |                  |
+| pandas         | pyEphem           | apexpy           |
+|                | sgp4>=2.7         | OMMBV            |
 
 
 One way to install is through pip.  Just type
