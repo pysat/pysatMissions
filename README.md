@@ -33,7 +33,7 @@ Python 3.8+.
 
 | Common modules | Community modules | Optional modules |
 | -------------- | ----------------- | ---------------- |
-| numpy          | pysat>=3.0.2      | aacgmv2          |
+| numpy          | pysat>=3.0.4      | aacgmv2          |
 | pandas         |                   | apexpy           |
 | pyEphem        |                   | OMMBV            |
 | sgp4>=2.7      |                   |                  |
