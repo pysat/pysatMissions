@@ -34,6 +34,7 @@ class TestBasics(object):
             Name of package to check for.
         num_warns : int
             Expected number of warnings to be generated.
+
         """
 
         @package_check(package_name)
