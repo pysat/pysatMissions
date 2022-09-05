@@ -36,18 +36,16 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     """
 
     # Ram pointing is along velocity vector
-    inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'] = \
-        normalize(inst['velocity_ecef_x'], inst['velocity_ecef_y'],
-                  inst['velocity_ecef_z'])
+    inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']] = \
+        normalize(inst[['velocity_ecef_x', 'velocity_ecef_y', 'velocity_ecef_z']])
 
     # Begin with z along Nadir (towards Earth)
     # if orbit isn't perfectly circular, then the s/c z vector won't
     # point exactly along nadir. However, nadir pointing is close enough
     # to the true z (in the orbital plane) that we can use it to get y,
     # and use x and y to get the real z
-    inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        normalize(-inst['position_ecef_x'], -inst['position_ecef_y'],
-                  -inst['position_ecef_z'])
+    inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']] = \
+        normalize(-inst[['position_ecef_x', 'position_ecef_y', 'position_ecef_z']])
 
     # get y vector assuming right hand rule
     # Z x X = Y
@@ -56,9 +54,8 @@ def add_ram_pointing_sc_attitude_vectors(inst):
                  inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']],
                  axis=1)
     # Normalize since Xhat and Zhat from above may not be orthogonal
-    inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        normalize(inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'],
-                  inst['sc_yhat_ecef_z'])
+    inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']] = \
+        normalize(inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']])
 
     # Strictly, need to recalculate Zhat so that it is consistent with RHS
     # just created
@@ -188,30 +185,21 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
     return
 
 
-def normalize(x, y, z):
+def normalize(vector):
     """Normalize a time-series of vectors.
 
     Parameters
     ----------
-    x : pds.Series
-        The x-component
-    y : pds.Series
-        The y-component
-    z : pds.Series
-        The z-component
+    vector : pds.DataFrame
+        A time-series consisting of vector components at each time step.
 
     Returns
     -------
-    xhat : pds.Series
-        The normalized x-component
-    yhat : pds.Series
-        The normalized y-component
-    zhat : pds.Series
-        The normalized z-component
+    norm_vector : pds.DataFrame
+        The normalized version of vector
 
     """
 
-    vector = np.vstack([x, y, z])
-    xhat, yhat, zhat = vector / np.linalg.norm(vector, axis=0)
+    norm_vector = vector.div(np.linalg.norm(vector, axis=1), axis=0)
 
-    return xhat, yhat, zhat
+    return norm_vector
