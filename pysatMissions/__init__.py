@@ -11,15 +11,11 @@ Main Features
 
 """
 
-import logging
 import os
 
-try:
-    from pysatMissions import instruments
-    from pysatMissions import methods
-    from pysatMissions import utils
-except ImportError as errstr:
-    logging.exception('problem importing pysatMissions: ' + str(errstr))
+from pysatMissions import instruments
+from pysatMissions import methods
+from pysatMissions import utils
 
 __all__ = ['instruments', 'methods', 'utils']
 
