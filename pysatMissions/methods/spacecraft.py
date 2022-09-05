@@ -82,8 +82,8 @@ def add_ram_pointing_sc_attitude_vectors(inst):
         axis=1)
     idx, = np.where(np.abs(mag - 1) > 1e-9)
     if len(idx) > 0:
-        print(mag[idx])
-        raise RuntimeError(' '.join(('Unit vector generation failure. Not',
+        raise RuntimeError(' '.join(('Unit vector generation failure for ,'
+                                     '{:} points. Not'.format(len(idx)),
                                      'sufficently orthogonal.')))
 
     return
