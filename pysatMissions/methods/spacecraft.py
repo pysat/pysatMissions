@@ -159,7 +159,7 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
         Dicts contain metadata to be assigned.
     """
 
-    # TODO(#65): add checks for existence of ecef labels in inst
+    # TODO(#65): add checks for existence of ECEF variables in the Instrument
 
     xx = inst['sc_xhat_ecef_x']
     xy = inst['sc_xhat_ecef_y']
