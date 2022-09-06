@@ -36,34 +36,34 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     """
 
     # Ram pointing is along velocity vector
-    inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']] = \
-        normalize(inst[['velocity_ecef_x', 'velocity_ecef_y', 'velocity_ecef_z']])
+    inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']] = normalize(
+        inst[['velocity_ecef_x', 'velocity_ecef_y', 'velocity_ecef_z']])
 
     # Begin with z along Nadir (towards Earth)
     # if orbit isn't perfectly circular, then the s/c z vector won't
     # point exactly along nadir. However, nadir pointing is close enough
     # to the true z (in the orbital plane) that we can use it to get y,
     # and use x and y to get the real z
-    inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']] = \
-        normalize(-inst[['position_ecef_x', 'position_ecef_y', 'position_ecef_z']])
+    inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']] = normalize(
+        -inst[['position_ecef_x', 'position_ecef_y', 'position_ecef_z']])
 
     # get y vector assuming right hand rule
     # Z x X = Y
-    inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']] = \
-        np.cross(inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']],
-                 inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']],
-                 axis=1)
+    inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']] = np.cross(
+        inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']],
+        inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']],
+        axis=1)
     # Normalize since Xhat and Zhat from above may not be orthogonal
-    inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']] = \
-        normalize(inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']])
+    inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']] = normalize(
+        inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']])
 
     # Strictly, need to recalculate Zhat so that it is consistent with RHS
     # just created
     # Z = X x Y
-    inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']] = \
-        np.cross(inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']],
-                 inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']],
-                 axis=1)
+    inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']] = np.cross(
+        inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']],
+        inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']],
+        axis=1)
 
     # Adding metadata
     for v in ['x', 'y', 'z']:
