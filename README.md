@@ -16,8 +16,7 @@ pysatMissions allows users to run build simulated satellites for Two-Line Elemen
 Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
-- Import magnetic coordinates through apexpy and aacgmv2
-- Import geomagnetic basis vectors through OMMBV
+- Import magnetic coordinates through apexpy and aacgmv2 (optional install)
 
 Documentation
 ---------------------
@@ -32,12 +31,11 @@ pysatMissions uses common Python modules, as well as modules developed by
 and for the Space Physics community.  This module officially supports
 Python 3.8+.  
 
-| Common modules | Community modules |
-| -------------- | ----------------- |
-| numpy          | aacgmv2           |
-| pandas         | apexpy            |
-| pyEphem        | OMMBV>=1.0        |
-| sgp4>=2.7      | pysat>=3.0        |
+| Common modules | Community modules | Optional modules |
+| -------------- | ----------------- | ---------------- |
+| numpy          | pysat>=3.0.4      | aacgmv2          |
+| pandas         | pyEphem           | apexpy           |
+|                | sgp4>=2.7         | OMMBV            |
 
 
 One way to install is through pip.  Just type
@@ -63,17 +61,19 @@ python setup.py install
 
 Note: pre-1.0.0 version
 -----------------------
-pysatMissions is currently in an initial development phase and requires pysat 3.0.0.  
+pysatMissions is currently in an initial development phase and requires pysat
+3.0.4.  
 
 # Using with pysat
 
-The instrument modules are portable and designed to be run like any pysat instrument.
+The instrument modules are portable and designed to be run like any pysat
+instrument.
 
 ```
 import pysat
-from pysatMissions.instruments import missions_ephem
+from pysatMissions.instruments import missions_sgp4
 
-simInst = pysat.Instrument(inst_module=missions_ephem)
+sim_inst = pysat.Instrument(inst_module=missions_sgp4)
 ```
 Another way to use the instruments in an external repository is to register the instruments.  This only needs to be done the first time you load an instrument.  Afterward, pysat will identify them using the `platform` and `name` keywords.
 
@@ -82,5 +82,20 @@ import pysat
 import pysatMissions
 
 pysat.utils.registry.register_by_module(pysatMissions.instruments)
-simInst = pysat.Instrument('missions', 'ephem')
+sim_inst = pysat.Instrument('missions', 'sgp4')
 ```
+
+# Optional modules
+
+Magnetic vector coordinates through apexpy and aacgmv2 are set up as optional
+installs. Both packages require fortran to install properly, and may require
+additional configuration.  Both can be installed from pip, but may require the
+`--no-binary` option depending on your system.
+
+The instrument `missions_ephem` has been deprecated since pyEphem is no longer
+maintained. This will be removed in v0.4.0.  Note that OMMBV is required for
+this instrument to function correctly, but is not required for the core
+pysatMissions package.  This has also been made optional to improve installation.  
+Please use the `missions_sgp4` instrument for future needs.
+
+The orbital trajectories can be calculated without any of the optional modules.

@@ -3,6 +3,7 @@
 
 import datetime as dt
 import numpy as np
+import warnings
 
 import pytest
 
@@ -16,8 +17,9 @@ class TestBasics(object):
     def setup(self):
         """Create a clean testing setup before each method."""
 
-        self.testInst = pysat.Instrument(platform='pysat', name='testing',
-                                         num_samples=100, clean_level='clean')
+        self.test_inst = pysat.Instrument(platform='pysat', name='testing',
+                                          num_samples=100, clean_level='clean',
+                                          use_header=True)
         self.kwargs = {'glat_label': 'latitude',
                        'glong_label': 'longitude',
                        'alt_label': 'altitude'}
@@ -27,18 +29,18 @@ class TestBasics(object):
     def teardown(self):
         """Clean up test environment after each method."""
 
-        del self.testInst, self.kwargs, self.reftime
+        del self.test_inst, self.kwargs, self.reftime
         return
 
     def eval_targets(self, targets):
         """Evaluate addition of new data targets to instrument."""
 
         for target in targets:
-            assert target in self.testInst.data.keys(), \
+            assert target in self.test_inst.data.keys(), \
                 "{:s} not found in data".format(target)
-            assert not np.isnan(self.testInst[target]).any(), \
+            assert not np.isnan(self.test_inst[target]).any(), \
                 "NaN values found in {:s}".format(target)
-            assert target in self.testInst.meta.data.index, \
+            assert target in self.test_inst.meta.data.index, \
                 "{:s} not found in metadata".format(target)
         return
 
@@ -48,10 +50,21 @@ class TestBasics(object):
                               ('add_quasi_dipole_coordinates',
                                ['qd_lat', 'qd_long', 'mlt'])])
     def test_add_coordinates(self, func, targets):
-        """Test adding thermal plasma data to test inst."""
+        """Test adding coordinates to test inst."""
 
-        self.testInst.custom_attach(getattr(mm_magcoord, func),
-                                    kwargs=self.kwargs)
-        self.testInst.load(date=self.reftime)
-        self.eval_targets(targets)
+        self.test_inst.custom_attach(getattr(mm_magcoord, func),
+                                     kwargs=self.kwargs)
+        with warnings.catch_warnings(record=True) as war:
+            self.test_inst.load(date=self.reftime)
+
+        # Convert all warnings into one large string
+        messages = str([str(ww) for ww in war])
+
+        if 'aacgmv2' in messages:
+            pytest.skip("aacgmv2 not installed")
+        elif 'apexpy' in messages:
+            pytest.skip("Apexpy not installed")
+        else:
+            self.eval_targets(targets)
+
         return

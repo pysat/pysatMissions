@@ -30,7 +30,6 @@ import numpy as np
 import warnings
 
 import ephem
-import OMMBV
 import pandas as pds
 import pysat
 
@@ -38,8 +37,6 @@ from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.methods import magcoord as mm_magcoord
 from pysatMissions.methods import spacecraft as mm_sc
-
-logger = pysat.logger
 
 # -------------------------------
 # Required Instrument attributes
@@ -67,7 +64,7 @@ def init(self):
         'The project uses the pyephem library available at',
         'https://github.com/brandon-rhodes/pyephem'))
     self.references = 'Please contact the pyephem project for references'
-    logger.info(self.acknowledgements)
+    pysat.logger.info(self.acknowledgements)
 
     warnings.warn(' '.join(("`missions_ephem` has been deprecated and will be",
                             "removed in pysatMissions 0.4.0+.",
@@ -84,8 +81,8 @@ def preprocess(self):
 
     """
 
-    mm_magcoord.add_quasi_dipole_coordinates(self)
     mm_magcoord.add_aacgm_coordinates(self)
+    mm_magcoord.add_quasi_dipole_coordinates(self)
     mm_sc.calculate_ecef_velocity(self)
     mm_sc.add_ram_pointing_sc_attitude_vectors(self)
 
@@ -201,13 +198,23 @@ def load(fnames, tag=None, inst_id=None, obs_long=0., obs_lat=0., obs_alt=0.,
         # Elevation of satellite in m, converted to km
         lp['alt'] = sat.elevation / 1000.0
 
-        # Get ECEF position of satellite
-        lp['x'], lp['y'], lp['z'] = OMMBV.trans.geodetic_to_ecef(lp['glat'],
-                                                                 lp['glong'],
-                                                                 lp['alt'])
         output_params.append(lp)
 
     output = pds.DataFrame(output_params, index=index)
+
+    # Get ECEF position of satellite
+    try:
+        output['x'], output['y'], output['z'] = \
+            OMMBV.trans.geodetic_to_ecef(output['glat'], output['glong'],
+                                         output['alt'])
+    except NameError:
+        # Triggered if OMMBV not installed
+        warnings.warn("OMMBV not installed. ECEF coords not generated.",
+                      stacklevel=2)
+        output['x'] = output['glat'] * np.nan
+        output['y'] = output['glat'] * np.nan
+        output['z'] = output['glat'] * np.nan
+
     # Modify input object to include calculated parameters
     # Put data into DataFrame
     data = pds.DataFrame({'glong': output['glong'],

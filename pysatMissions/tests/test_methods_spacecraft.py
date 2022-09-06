@@ -3,12 +3,13 @@
 
 import datetime as dt
 import numpy as np
+
 import pysat
 from pysatMissions.methods import spacecraft as mm_sc
 
 
-def add_eci(inst):
-    """Add ECI position to pysat_testing instrument."""
+def add_ecef(inst):
+    """Add ECEF position to pysat_testing instrument."""
 
     inst['position_ecef_x'] = [-6197.135721, -6197.066687, -6196.990263,
                                -6196.906991, -6196.816336, -6196.718347,
@@ -38,8 +39,9 @@ class TestBasics(object):
         """Create a clean testing setup before each method."""
 
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
-                                         num_samples=9, clean_level='clean')
-        self.testInst.custom_attach(add_eci)
+                                         num_samples=9, clean_level='clean',
+                                         use_header=True)
+        self.testInst.custom_attach(add_ecef)
         self.reftime = dt.datetime(2009, 1, 1)
         return
 

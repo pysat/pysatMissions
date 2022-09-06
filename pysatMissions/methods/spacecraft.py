@@ -1,7 +1,6 @@
 """Default routines for projecting values onto vectors for pysat instruments."""
 
 import numpy as np
-import OMMBV
 
 
 def add_ram_pointing_sc_attitude_vectors(inst):
@@ -37,46 +36,34 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     """
 
     # Ram pointing is along velocity vector
-    inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'] = \
-        OMMBV.vector.normalize(inst['velocity_ecef_x'],
-                               inst['velocity_ecef_y'],
-                               inst['velocity_ecef_z'])
+    inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']] = normalize(
+        inst[['velocity_ecef_x', 'velocity_ecef_y', 'velocity_ecef_z']])
 
     # Begin with z along Nadir (towards Earth)
     # if orbit isn't perfectly circular, then the s/c z vector won't
     # point exactly along nadir. However, nadir pointing is close enough
     # to the true z (in the orbital plane) that we can use it to get y,
     # and use x and y to get the real z
-    inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        OMMBV.vector.normalize(-inst['position_ecef_x'],
-                               -inst['position_ecef_y'],
-                               -inst['position_ecef_z'])
+    inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']] = normalize(
+        -inst[['position_ecef_x', 'position_ecef_y', 'position_ecef_z']])
 
     # get y vector assuming right hand rule
     # Z x X = Y
-    inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        OMMBV.vector.cross_product(inst['sc_zhat_ecef_x'],
-                                   inst['sc_zhat_ecef_y'],
-                                   inst['sc_zhat_ecef_z'],
-                                   inst['sc_xhat_ecef_x'],
-                                   inst['sc_xhat_ecef_y'],
-                                   inst['sc_xhat_ecef_z'])
+    inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']] = np.cross(
+        inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']],
+        inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']],
+        axis=1)
     # Normalize since Xhat and Zhat from above may not be orthogonal
-    inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'] = \
-        OMMBV.vector.normalize(inst['sc_yhat_ecef_x'],
-                               inst['sc_yhat_ecef_y'],
-                               inst['sc_yhat_ecef_z'])
+    inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']] = normalize(
+        inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']])
 
     # Strictly, need to recalculate Zhat so that it is consistent with RHS
     # just created
     # Z = X x Y
-    inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'] = \
-        OMMBV.vector.cross_product(inst['sc_xhat_ecef_x'],
-                                   inst['sc_xhat_ecef_y'],
-                                   inst['sc_xhat_ecef_z'],
-                                   inst['sc_yhat_ecef_x'],
-                                   inst['sc_yhat_ecef_y'],
-                                   inst['sc_yhat_ecef_z'])
+    inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']] = np.cross(
+        inst[['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z']],
+        inst[['sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z']],
+        axis=1)
 
     # Adding metadata
     for v in ['x', 'y', 'z']:
@@ -89,13 +76,14 @@ def add_ram_pointing_sc_attitude_vectors(inst):
                                                  'expressed in ECEF basis,',
                                                  '{:}-component'.format(u)))}
 
-    # check what magnitudes we get
-    mag = np.sqrt(inst['sc_zhat_ecef_x']**2 + inst['sc_zhat_ecef_y']**2
-                  + inst['sc_zhat_ecef_z']**2)
-    idx, = np.where((mag < .999999999) | (mag > 1.000000001))
+    # Check what magnitudes we get
+    mag = np.linalg.norm(
+        inst[['sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']],
+        axis=1)
+    idx, = np.where(np.abs(mag - 1) > 1e-9)
     if len(idx) > 0:
-        print(mag[idx])
-        raise RuntimeError(' '.join(('Unit vector generation failure. Not',
+        raise RuntimeError(' '.join(('Unit vector generation failure for ,'
+                                     '{:} points. Not'.format(len(idx)),
                                      'sufficently orthogonal.')))
 
     return
@@ -171,16 +159,23 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
         Dicts contain metadata to be assigned.
     """
 
-    # TODO(#65): add checks for existence of ecef labels in inst
+    # TODO(#65): add checks for existence of ECEF variables in the Instrument
 
-    x, y, z = OMMBV.vector.project_onto_basis(
-        inst[x_label], inst[y_label], inst[z_label],
-        inst['sc_xhat_ecef_x'], inst['sc_xhat_ecef_y'], inst['sc_xhat_ecef_z'],
-        inst['sc_yhat_ecef_x'], inst['sc_yhat_ecef_y'], inst['sc_yhat_ecef_z'],
-        inst['sc_zhat_ecef_x'], inst['sc_zhat_ecef_y'], inst['sc_zhat_ecef_z'])
-    inst[new_x_label] = x
-    inst[new_y_label] = y
-    inst[new_z_label] = z
+    xx = inst['sc_xhat_ecef_x']
+    xy = inst['sc_xhat_ecef_y']
+    xz = inst['sc_xhat_ecef_z']
+
+    yx = inst['sc_yhat_ecef_x']
+    yy = inst['sc_yhat_ecef_y']
+    yz = inst['sc_yhat_ecef_z']
+
+    zx = inst['sc_zhat_ecef_x']
+    zy = inst['sc_zhat_ecef_y']
+    zz = inst['sc_zhat_ecef_z']
+
+    inst[new_x_label] = inst[x_label] * xx + inst[y_label] * xy + inst[z_label] * xz
+    inst[new_y_label] = inst[x_label] * yx + inst[y_label] * yy + inst[z_label] * yz
+    inst[new_z_label] = inst[x_label] * zx + inst[y_label] * zy + inst[z_label] * zz
 
     if meta is not None:
         inst.meta[new_x_label] = meta[0]
@@ -188,3 +183,23 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
         inst.meta[new_z_label] = meta[2]
 
     return
+
+
+def normalize(vector):
+    """Normalize a time-series of vectors.
+
+    Parameters
+    ----------
+    vector : pds.DataFrame
+        A time-series consisting of vector components at each time step.
+
+    Returns
+    -------
+    norm_vector : pds.DataFrame
+        The normalized version of vector
+
+    """
+
+    norm_vector = vector.div(np.linalg.norm(vector, axis=1), axis=0)
+
+    return norm_vector
