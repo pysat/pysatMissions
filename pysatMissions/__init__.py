@@ -11,7 +11,7 @@ Main Features
 
 """
 
-import os
+import pkg_resources
 
 from pysatMissions import instruments
 from pysatMissions import methods
@@ -20,6 +20,4 @@ from pysatMissions import utils
 __all__ = ['instruments', 'methods', 'utils']
 
 # set version
-here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, 'version.txt')) as version_file:
-    __version__ = version_file.read().strip()
+__version__ = pkg_resources.get_distribution('pysatMissions').version
