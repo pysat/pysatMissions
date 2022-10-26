@@ -27,11 +27,20 @@ jobs:
     - name: Install with dependencies
       run: pip install .[test]
 
-    - name: Install optional dependencies
-      run: |
-        pip install aacgmv2 --no-binary==aacgmv2
-        pip install apexpy --no-binary==apexpy
-        pip install OMMBV --no-binary==OMMBV
+    - name: Install aacgmv2
+      # Optional package, continue with tests if install fails
+      continue-on-error: true
+      run: pip install aacgmv2 --no-binary==aacgmv2
+
+    - name: Install apexpy
+      # Optional package, continue with tests if install fails
+      continue-on-error: true
+      run: pip install apexpy --no-binary==apexpy
+
+    - name: Install OMMBV
+      # Optional package, continue with tests if install fails
+      continue-on-error: true
+      run: pip install OMMBV --no-binary==OMMBV
 
     - name: Set up pysat
       run: |
@@ -50,4 +59,4 @@ jobs:
     - name: Publish results to coveralls
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: coveralls --rcfile=setup.cfg --service=github
+      run: coveralls --rcfile=pyproject.toml --service=github
