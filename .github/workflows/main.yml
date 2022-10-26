@@ -11,9 +11,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9", "3.10"]
         os: ["ubuntu-latest", "macos-latest", "windows-latest"]
         numpy_ver: ["latest"]
+        include:
+          - python-version: "3.8"
+            numpy_ver: "1.20"
+            os: "ubuntu-latest"
 
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }} with numpy ${{ matrix.numpy_ver }}
     runs-on: ${{ matrix.os }}
@@ -24,7 +28,15 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install with dependencies
+    - name: Install with NEP29 dependencies
+      if: ${{ matrix.numpy_ver != 'latest'}}
+      run: |
+        pip install --no-binary :numpy: numpy==${{ matrix.numpy_ver }}
+        # Force install version compatible with NEP29
+        pip install "pandas<1.5"
+        pip install --upgrade-strategy only-if-needed .[test]
+
+    - name: Install with standard dependencies
       run: pip install .[test]
 
     - name: Install aacgmv2
