@@ -1,6 +1,0 @@
-geospacepy
-numpy
-pandas
-pysat>=3.0.4
-pyEphem
-sgp4>=2.7
