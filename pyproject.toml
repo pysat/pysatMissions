@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {file = "LICENSE"}
 authors = [
-    {name = "Jeff Klenzing, et al", email = "pysat.developers@gmail.com"},
+    {name = "Jeff Klenzing", email = "pysat.developers@gmail.com"}
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -64,6 +64,7 @@ doc = [
   "ipython",
   "m2r2",
   "numpydoc",
+  "pyproject_parser",
   "sphinx",
   "sphinx_rtd_theme"
 ]

@@ -17,21 +17,23 @@ https://www.sphinx-doc.org/en/master/config
 #
 import json
 import os
-import pkg_resources
+from pyproject_parser import PyProject
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
+
+info = PyProject.load("../pyproject.toml")
 
 project = 'pysatMissions'
 title = '{:s} Documentation'.format(project)
 zenodo = json.loads(open('../.zenodo.json').read())
 author = ', '.join([creator['name'] for creator in zenodo['creators']])
 copyright = ', '.join(['2022', author])
-description = 'Tools for generating simulated instruments in pysat.'
+description = info.project['description']
 
 # The short X.Y version
-version = pkg_resources.get_distribution('pysatMissions').version
+version = info.project['version'].base_version
 
 # The full version, including alpha/beta/rc tags.
 release = '{:s}-alpha'.format(version)
