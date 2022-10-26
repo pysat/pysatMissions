@@ -26,8 +26,8 @@ Python 3.8+ and pysat 3.0.4+.
  ================ =================== ==================
 
 
- Installation Options
- --------------------
+Installation Options
+--------------------
 
  1. Clone the git repository
  ::
