@@ -7,6 +7,7 @@ geospacepy
 numpy
 OMMBV>=1.0
 pandas
+pyproject_parser
 pysat>=3.0
 pyEphem
 sgp4>=2.7
