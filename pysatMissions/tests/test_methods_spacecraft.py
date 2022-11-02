@@ -35,7 +35,7 @@ def add_fake_data(inst):
 class TestBasics(object):
     """Unit tests for aacgmv2 methods."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
@@ -45,7 +45,7 @@ class TestBasics(object):
         self.reftime = dt.datetime(2009, 1, 1)
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up test environment after tests."""
 
         del self.testInst, self.reftime

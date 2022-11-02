@@ -9,13 +9,13 @@ from pysatMissions.instruments import missions_ephem
 class TestDeprecation(object):
     """Unit tests for deprecations."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         warnings.simplefilter("always", DeprecationWarning)
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up test environment after each method."""
         return
 
