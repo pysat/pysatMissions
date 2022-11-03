@@ -8,7 +8,7 @@ import pytest
 class TestBasics(object):
     """Unit tests for conversion to/from Keplerian elements."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.orbit = {'inclination': 13, 'apogee': 850, 'perigee': 400,
@@ -16,7 +16,7 @@ class TestBasics(object):
                       'mean_motion': 0.0647333316545142}
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up test environment after each method."""
 
         del self.orbit

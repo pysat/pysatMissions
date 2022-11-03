@@ -11,13 +11,13 @@ from pysatMissions.utils import package_check
 class TestBasics(object):
     """Basic test for package utilities."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         warnings.simplefilter("always")
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up test environment after tests."""
 
         return
