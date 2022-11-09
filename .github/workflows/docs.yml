@@ -23,8 +23,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install with dependencies
-      run: |
-        pip install .[doc]
+      run: pip install .[doc]
 
     - name: Check documentation build
       run: sphinx-build -E -b html docs dist/docs
