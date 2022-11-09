@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pysatMissions"
-version = "0.3.4.0"
+version = "0.3.4"
 description = "Mission Planning toolkit for pysat"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -72,8 +72,6 @@ doc = [
 [project.urls]
 Documentation = "https://pysatmissions.readthedocs.io/en/latest/"
 Source = "https://github.com/pysat/pysatMissions"
-
-[tool.coverage.report]
 
 [tool.pytest.ini_options]
 addopts = "--cov=pysatMissions"
