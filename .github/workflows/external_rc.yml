@@ -3,7 +3,7 @@
 
 name: Test with latest optional package RC
 
-on: [push]
+on: [workflow_dispatch]
 
 jobs:
   build:
