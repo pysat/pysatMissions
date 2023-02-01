@@ -31,7 +31,8 @@ jobs:
     - name: Install NEP29 dependencies
       if: ${{ matrix.numpy_ver != 'latest'}}
       run: |
-        pip install --no-binary :numpy: numpy==${{ matrix.numpy_ver }}
+        pip install numpy==${{ matrix.numpy_ver }} --no-binary==numpy
+        echo $PATH
 
     - name: Install requirements for testing setup
       run: |
@@ -44,6 +45,7 @@ jobs:
         pip install aacgmv2 --no-binary==aacgmv2
         pip install apexpy --no-binary==apexpy
         pip install OMMBV --no-binary==OMMBV
+        echo $PATH
 
     - name: Set up pysat
       run: |
@@ -57,7 +59,9 @@ jobs:
       run: flake8 . --count --exit-zero --max-complexity=10 --statistics
 
     - name: Test with pytest
-      run: pytest --cov=pysatMissions/
+      run: |
+        echo $PATH
+        pytest --cov=pysatMissions/
 
     - name: Publish results to coveralls
       env:
