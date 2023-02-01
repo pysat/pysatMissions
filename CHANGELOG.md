@@ -5,7 +5,10 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ## [0.X.X] - 2022-XX-XX
 * Maintenance
   * Update pytest syntax
+  * Update Github Actions versions
   * Add manual GitHub Actions tests for pysat RC
+  * Add manual GitHub Actions tests for optional dependencies
+  * Remove optional dependencies in readthedocs requirements
 
 ## [0.3.3] - 2022-09-06
 * Documentation Updates
