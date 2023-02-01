@@ -14,6 +14,10 @@ jobs:
         python-version: ["3.8", "3.9", "3.10"]
         os: ["ubuntu-latest", "windows-latest"]
         numpy_ver: ["latest"]
+        include:
+          - python-version: "3.8"
+            numpy_ver: "1.21"
+            os: ubuntu-latest
 
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }} with numpy ${{ matrix.numpy_ver }}
     runs-on: ${{ matrix.os }}
@@ -23,6 +27,10 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
+
+    - name: Install NEP29 dependencies
+      if: ${{ matrix.numpy_ver != 'latest'}}
+      run: pip install --no-binary :numpy: numpy==${{ matrix.numpy_ver }}
 
     - name: Install requirements for testing setup
       run: |
