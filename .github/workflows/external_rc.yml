@@ -24,7 +24,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install RC dependency
-      run: pip install --no-deps -i https://test.pypi.org/simple/ ${{ matrix.rc-package }} --no-binary==${{ matrix.rc-package }}
+      run: pip install -i https://test.pypi.org/simple/ ${{ matrix.rc-package }}
 
     - name: Install standard dependencies
       run: |
