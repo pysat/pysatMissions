@@ -29,7 +29,9 @@ jobs:
         pip install -r test_requirements.txt
 
     - name: Install RC dependency
-      run: pip install --no-deps -i https://test.pypi.org/simple/ ${{ matrix.rc-package }} --no-binary==${{ matrix.rc-package }}
+      run: |
+        pip install setuptools
+        pip install --no-deps -i https://test.pypi.org/simple/ ${{ matrix.rc-package }} --no-binary==${{ matrix.rc-package }}
 
     - name: Set up pysat
       run: |
