@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 * Maintenance
   * Update pytest syntax
   * Add manual GitHub Actions tests for pysat RC
+  * Add manual GitHub Actions tests for optional dependencies
 
 ## [0.3.3] - 2022-09-06
 * Documentation Updates
