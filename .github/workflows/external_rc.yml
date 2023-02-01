@@ -32,7 +32,7 @@ jobs:
       run: |
         pip install setuptools
         pip install wheel
-        pip install --no-deps -i https://test.pypi.org/simple/ ${{ matrix.rc-package }} --no-binary==${{ matrix.rc-package }}
+        pip install --no-deps -i https://test.pypi.org/simple/ ${{ matrix.rc-package }}
 
     - name: Set up pysat
       run: |
