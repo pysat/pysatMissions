@@ -28,24 +28,26 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install NEP29 dependencies
-      if: ${{ matrix.numpy_ver != 'latest'}}
-      run: |
-        pip install numpy==${{ matrix.numpy_ver }} --no-binary==numpy
-        echo $PATH
-
     - name: Install requirements for testing setup
       run: |
         python -m pip install --upgrade pip
         pip install -r test_requirements.txt
 
-    - name: Install dependencies
+    - name: Install NEP29 dependencies
+      if: ${{ matrix.numpy_ver != 'latest'}}
+      run: |
+        PIP_CONSTRAINT=nep29_constraints.txt pip install -r requirements.txt
+        PIP_CONSTRAINT=nep29_constraints.txt pip install aacgmv2 --no-binary==aacgmv2
+        PIP_CONSTRAINT=nep29_constraints.txt pip install apexpy --no-binary==apexpy
+        PIP_CONSTRAINT=nep29_constraints.txt pip install OMMBV --no-binary==OMMBV
+
+    - name: Install dependencies with latest numpy
+      if: ${{ matrix.numpy_ver == 'latest'}}
       run: |
         pip install -r requirements.txt
         pip install aacgmv2 --no-binary==aacgmv2
         pip install apexpy --no-binary==apexpy
         pip install OMMBV --no-binary==OMMBV
-        echo $PATH
 
     - name: Set up pysat
       run: |
