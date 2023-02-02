@@ -36,10 +36,10 @@ jobs:
     - name: Install NEP29 dependencies
       if: ${{ matrix.numpy_ver != 'latest'}}
       run: |
-        PIP_CONSTRAINT=nep29_constraints.txt pip install -r requirements.txt
-        PIP_CONSTRAINT=nep29_constraints.txt pip install aacgmv2 --no-binary==aacgmv2
-        PIP_CONSTRAINT=nep29_constraints.txt pip install apexpy --no-binary==apexpy
-        PIP_CONSTRAINT=nep29_constraints.txt pip install OMMBV --no-binary==OMMBV
+        pip install -r requirements.txt -c nep29_constraints.txt
+        pip install aacgmv2 -c nep29_constraints.txt
+        pip install apexpy -c nep29_constraints.txt
+        pip install OMMBV -c nep_constraints.txt
 
     - name: Install dependencies with latest numpy
       if: ${{ matrix.numpy_ver == 'latest'}}
