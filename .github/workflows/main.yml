@@ -39,7 +39,7 @@ jobs:
         pip install -r requirements.txt -c nep29_constraints.txt
         pip install aacgmv2 -c nep29_constraints.txt
         pip install apexpy -c nep29_constraints.txt
-        pip install OMMBV -c nep_constraints.txt
+        pip install OMMBV -c nep29_constraints.txt
 
     - name: Install dependencies with latest numpy
       if: ${{ matrix.numpy_ver == 'latest'}}
