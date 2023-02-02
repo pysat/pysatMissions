@@ -61,9 +61,7 @@ jobs:
       run: flake8 . --count --exit-zero --max-complexity=10 --statistics
 
     - name: Test with pytest
-      run: |
-        echo $PATH
-        pytest --cov=pysatMissions/
+      run: pytest --cov=pysatMissions/
 
     - name: Publish results to coveralls
       env:
