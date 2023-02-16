@@ -195,13 +195,13 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
                                                                 alt_apoapsis)
         satellite = sapi.Satrec()
         # According to module webpage, wgs72 is common
-        satellite.sgp4init(sapi.WGS72, 'i', 0, epoch_days, bstar, 0, 0,
+        satellite.sgp4init(sapi.WGS84, 'i', 0, epoch_days, bstar, 0, 0,
                            eccentricity, np.radians(arg_periapsis),
                            np.radians(inclination), np.radians(mean_anomaly),
                            mean_motion, np.radians(raan))
     else:
         # Otherwise, use TLEs
-        satellite = sapi.Satrec.twoline2rv(line1, line2, sapi.WGS72)
+        satellite = sapi.Satrec.twoline2rv(line1, line2, sapi.WGS84)
         mean_motion = satellite.mm
 
     if one_orbit:
