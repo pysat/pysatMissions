@@ -28,13 +28,14 @@ from pysatMissions.instruments.methods import orbits
 # from geospacepy import terrestrial_spherical as conv_sph
 from sgp4 import api as sapi
 from skyfield import api as skyapi
+from skyfield import framelib
 
 # import EarthSatellite
 # from skyfield.api import load, wgs84
 # -------------------------------
 # Required Instrument attributes
 platform = 'missions'
-name = 'sgp4'
+name = 'skyfield'
 tags = {'': 'Satellite simulation data set'}
 inst_ids = {'': ['']}
 
@@ -215,9 +216,11 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
     skytimes = skyapi.load.timescale().from_datetimes(index.tz_localize('UTC'))
 
     esat = skyapi.EarthSatellite.from_satrec(satrec, skyapi.load.timescale())
+    # Generate object with info for all times
+    sat_obj = esat.at(skytimes)
 
-    position = esat.at(skytimes).position.km
-    velocity = esat.at(skytimes).velocity.km_per_s
+    position = sat_obj.position.km
+    velocity = sat_obj.velocity.km_per_s
 
     # # Check all propagated values for errors in propagation
     # errors = np.unique(err_code[err_code > 0])
@@ -226,14 +229,12 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
     #     raise ValueError(sapi.SGP4_ERRORS[errors[0]])
 
     # Add ECEF values to instrument.
-
-    # pos_ecef = conv_sph.eci2ecef(position, (jd + fr))
-    # vel_ecef = conv_sph.eci2ecef(velocity, (jd + fr))
+    ecef = sat_obj.frame_xyz_and_velocity(framelib.itrs)
 
     # Convert to geocentric latitude, longitude, altitude.
     # lat, lon, rad = conv_sph.ecef_cart2spherical(pos_ecef)
-    lat, lon = skyapi.wgs84.latlon_of(esat.at(skytimes))
-    alt = skyapi.wgs84.height_of(esat.at(skytimes)).km
+    lat, lon = skyapi.wgs84.latlon_of(sat_obj)
+    alt = skyapi.wgs84.height_of(sat_obj).km
 
     # Convert to geodetic latitude, longitude, altitude.
     # Ellipsoidal conversions require input in meters.
@@ -246,12 +247,12 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
                           'velocity_eci_x': velocity[0, :],
                           'velocity_eci_y': velocity[1, :],
                           'velocity_eci_z': velocity[2, :],
-                          # 'position_ecef_x': pos_ecef[:, 0],
-                          # 'position_ecef_y': pos_ecef[:, 1],
-                          # 'position_ecef_z': pos_ecef[:, 2],
-                          # 'velocity_ecef_x': vel_ecef[:, 0],
-                          # 'velocity_ecef_y': vel_ecef[:, 1],
-                          # 'velocity_ecef_z': vel_ecef[:, 2],
+                          'position_ecef_x': ecef[0].km[0],
+                          'position_ecef_y': ecef[0].km[1],
+                          'position_ecef_z': ecef[0].km[2],
+                          'velocity_ecef_x': ecef[1].km_per_s[0],
+                          'velocity_ecef_y': ecef[1].km_per_s[1],
+                          'velocity_ecef_z': ecef[1].km_per_s[2],
                           'geod_latitude': lat.degrees,
                           'geod_longitude': lon.degrees,
                           'geod_altitude': alt},
@@ -280,22 +281,22 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
             meta.labels.min_val: -np.inf,
             meta.labels.max_val: np.inf,
             meta.labels.fill_val: np.nan}
-        # meta['position_ecef_{:}'.format(v)] = {
-        #     meta.labels.units: 'km',
-        #     meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
-        #     meta.labels.name: 'ECEF {:}-position'.format(v),
-        #     meta.labels.desc: 'Earth Centered Earth Fixed {:}-position'.format(v),
-        #     meta.labels.min_val: -np.inf,
-        #     meta.labels.max_val: np.inf,
-        #     meta.labels.fill_val: np.nan}
-        # meta['velocity_ecef_{:}'.format(v)] = {
-        #     meta.labels.units: 'km',
-        #     meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
-        #     meta.labels.name: 'ECEF {:}-velocity'.format(v),
-        #     meta.labels.desc: 'Earth Centered Earth Fixed {:}-velocity'.format(v),
-        #     meta.labels.min_val: -np.inf,
-        #     meta.labels.max_val: np.inf,
-        #     meta.labels.fill_val: np.nan}
+        meta['position_ecef_{:}'.format(v)] = {
+            meta.labels.units: 'km',
+            meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
+            meta.labels.name: 'ECEF {:}-position'.format(v),
+            meta.labels.desc: 'Earth Centered Earth Fixed {:}-position'.format(v),
+            meta.labels.min_val: -np.inf,
+            meta.labels.max_val: np.inf,
+            meta.labels.fill_val: np.nan}
+        meta['velocity_ecef_{:}'.format(v)] = {
+            meta.labels.units: 'km',
+            meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
+            meta.labels.name: 'ECEF {:}-velocity'.format(v),
+            meta.labels.desc: 'Earth Centered Earth Fixed {:}-velocity'.format(v),
+            meta.labels.min_val: -np.inf,
+            meta.labels.max_val: np.inf,
+            meta.labels.fill_val: np.nan}
     # meta['latitude'] = {
     #     meta.labels.units: 'degrees',
     #     meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
