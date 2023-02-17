@@ -50,13 +50,12 @@ def init(self):
     orbits._check_orbital_params(self.kwargs)
 
     self.acknowledgements = ' '.join((
-        'The project uses the sgp4 library available at',
-        'https://github.com/brandon-rhodes/python-sgp4'))
+        'The project uses the skyfield library available at',
+        'https://github.com/skyfielders/python-skyfield'))
     self.references = ' '.join((
-        'Vallado, David A., Paul Crawford, Richard, Hujsak, and T.S. Kelso,',
-        '"Revisiting Spacetrack Report #3," presented at the AIAA/AAS',
-        'Astrodynamics Specialist Conference, Keystone, CO, 2006',
-        'August 21–24.'))
+        'Rhodes, B., Skyfield: High precision research-grade positions for',
+        'planets and Earth satellites generator, Astrophysics Source Code',
+        'Library, 2019. ascl:1907.024.'))
     pysat.logger.info(self.acknowledgements)
 
     if 'epoch' not in self.kwargs['load'].keys():
