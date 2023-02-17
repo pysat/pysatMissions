@@ -267,7 +267,7 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
             meta.labels.fill_val: np.nan}
         meta['position_ecef_{:}'.format(v)] = {
             meta.labels.units: 'km',
-            meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
+            meta.labels.notes: 'Calculated using skyfield with ITRS',
             meta.labels.name: 'ECEF {:}-position'.format(v),
             meta.labels.desc: 'Earth Centered Earth Fixed {:}-position'.format(v),
             meta.labels.min_val: -np.inf,
@@ -275,7 +275,7 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
             meta.labels.fill_val: np.nan}
         meta['velocity_ecef_{:}'.format(v)] = {
             meta.labels.units: 'km',
-            meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
+            meta.labels.notes: 'Calculated using skyfield with ITRS',
             meta.labels.name: 'ECEF {:}-velocity'.format(v),
             meta.labels.desc: 'Earth Centered Earth Fixed {:}-velocity'.format(v),
             meta.labels.min_val: -np.inf,
@@ -283,7 +283,7 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
             meta.labels.fill_val: np.nan}
     meta['geod_latitude'] = {
         meta.labels.units: 'degrees',
-        meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
+        meta.labels.notes: 'Calculated using skyfield with WGS84',
         meta.labels.name: 'Geodetic Latitude',
         meta.labels.desc: 'Geodetic Latitude of satellite',
         meta.labels.min_val: -90.,
@@ -291,7 +291,7 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
         meta.labels.fill_val: np.nan}
     meta['geod_longitude'] = {
         meta.labels.units: 'degrees',
-        meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
+        meta.labels.notes: 'Calculated using skyfield with WGS84',
         meta.labels.name: 'Geodetic Longitude',
         meta.labels.desc: 'Geodetic Longitude of satellite',
         meta.labels.min_val: -180.,
@@ -299,7 +299,7 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
         meta.labels.fill_val: np.nan}
     meta['geod_altitude'] = {
         meta.labels.units: 'km',
-        meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
+        meta.labels.notes: 'Calculated using skyfield with WGS84',
         meta.labels.name: 'Altitude',
         meta.labels.desc: 'Altitude of satellite above an ellipsoidal Earth',
         meta.labels.min_val: -np.inf,
