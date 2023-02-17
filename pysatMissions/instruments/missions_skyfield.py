@@ -24,14 +24,10 @@ from pysat.instruments.methods import testing as ps_meth
 from pysatMissions.instruments import _core as mcore
 from pysatMissions.instruments.methods import orbits
 
-# from geospacepy import terrestrial_ellipsoidal as conv_ell
-# from geospacepy import terrestrial_spherical as conv_sph
 from sgp4 import api as sapi
 from skyfield import api as skyapi
 from skyfield import framelib
 
-# import EarthSatellite
-# from skyfield.api import load, wgs84
 # -------------------------------
 # Required Instrument attributes
 platform = 'missions'
@@ -222,23 +218,12 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
     position = sat_obj.position.km
     velocity = sat_obj.velocity.km_per_s
 
-    # # Check all propagated values for errors in propagation
-    # errors = np.unique(err_code[err_code > 0])
-    # if len(errors) > 0:
-    #     # Raise highest priority error.
-    #     raise ValueError(sapi.SGP4_ERRORS[errors[0]])
-
     # Add ECEF values to instrument.
     ecef = sat_obj.frame_xyz_and_velocity(framelib.itrs)
 
     # Convert to geocentric latitude, longitude, altitude.
-    # lat, lon, rad = conv_sph.ecef_cart2spherical(pos_ecef)
     lat, lon = skyapi.wgs84.latlon_of(sat_obj)
     alt = skyapi.wgs84.height_of(sat_obj).km
-
-    # Convert to geodetic latitude, longitude, altitude.
-    # Ellipsoidal conversions require input in meters.
-    # geod_lat, geod_lon, geod_alt = conv_ell.ecef_cart2geodetic(pos_ecef * 1000.)
 
     # Put data into DataFrame
     data = pds.DataFrame({'position_eci_x': position[0, :],
@@ -297,30 +282,6 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
             meta.labels.min_val: -np.inf,
             meta.labels.max_val: np.inf,
             meta.labels.fill_val: np.nan}
-    # meta['latitude'] = {
-    #     meta.labels.units: 'degrees',
-    #     meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
-    #     meta.labels.name: 'Geocentric Latitude',
-    #     meta.labels.desc: 'Geocentric Latitude of satellite',
-    #     meta.labels.min_val: -90.,
-    #     meta.labels.max_val: 90.,
-    #     meta.labels.fill_val: np.nan}
-    # meta['longitude'] = {
-    #     meta.labels.units: 'degrees',
-    #     meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
-    #     meta.labels.name: 'Geocentric Longitude',
-    #     meta.labels.desc: 'Geocentric Longitude of satellite',
-    #     meta.labels.min_val: -180.,
-    #     meta.labels.max_val: 180.,
-    #     meta.labels.fill_val: np.nan}
-    # meta['altitude'] = {
-    #     meta.labels.units: 'km',
-    #     meta.labels.notes: 'Calculated using geospacepy.terrestrial_spherical',
-    #     meta.labels.name: 'Altitude',
-    #     meta.labels.desc: 'Altitude of satellite above an ellipsoidal Earth',
-    #     meta.labels.min_val: 0,
-    #     meta.labels.max_val: np.inf,
-    #     meta.labels.fill_val: np.nan}
     meta['geod_latitude'] = {
         meta.labels.units: 'degrees',
         meta.labels.notes: 'Calculated using geospacepy.terrestrial_ellipsoidal',
