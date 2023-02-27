@@ -3,6 +3,7 @@
 
 import datetime as dt
 import numpy as np
+import warnings
 
 import pysat
 from pysatMissions.methods import spacecraft as mm_sc
@@ -76,6 +77,18 @@ class TestBasics(object):
         self.testInst.load(date=self.reftime)
         targets = ['velocity_ecef_x', 'velocity_ecef_y', 'velocity_ecef_z']
         self.eval_targets(targets)
+        return
+
+    def test_calculate_ecef_velocity_deprecation(self):
+        """Test `calculate_ecef_velocity` helper function."""
+
+        self.testInst.custom_attach(mm_sc.calculate_ecef_velocity)
+        warnings.simplefilter("always", DeprecationWarning)
+        with warnings.catch_warnings(record=True) as war:
+            self.testInst.load(date=self.reftime)
+        warn_msgs = ["`calculate_ecef_velocity` has been deprecated"]
+
+        pysat.utils.testing.eval_warnings(war, warn_msgs)
         return
 
     def test_add_ram_pointing_sc_attitude_vectors(self):
