@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   * Add manual GitHub Actions tests for optional dependencies
   * Remove optional dependencies in readthedocs requirements
   * Add tests for NEP 29 testing
+  * Add tests for Mac OS
   * Deprecate `calculate_ecef_velocity` method
 * Testing
   * Include checks on sc coordinate transformation calculations
