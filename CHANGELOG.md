@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   * Add manual GitHub Actions tests for pysat RC
   * Add manual GitHub Actions tests for optional dependencies
   * Remove optional dependencies in readthedocs requirements
+  * Add tests for NEP 29 testing
 
 ## [0.3.3] - 2022-09-06
 * Documentation Updates
