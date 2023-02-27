@@ -193,7 +193,6 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
         eccentricity, mean_motion = orbits.convert_to_keplerian(alt_periapsis,
                                                                 alt_apoapsis)
         satrec = sapi.Satrec()
-        # According to module webpage, wgs72 is common
         satrec.sgp4init(sapi.WGS84, 'i', 0, epoch_days, bstar, 0, 0,
                         eccentricity, np.radians(arg_periapsis),
                         np.radians(inclination), np.radians(mean_anomaly),
@@ -213,11 +212,12 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
     esat = skyapi.EarthSatellite.from_satrec(satrec, skyapi.load.timescale())
     # Generate object with info for all times
     sat_obj = esat.at(skytimes)
-
+    # ECI coords are True Equator and Equinox of date
     position = sat_obj.position.km
     velocity = sat_obj.velocity.km_per_s
 
     # Add ECEF values to instrument.
+    # ECEF coords are International Terrestrial Reference System (ITRS)
     ecef = sat_obj.frame_xyz_and_velocity(framelib.itrs)
 
     # Convert to geocentric latitude, longitude, altitude.
@@ -254,6 +254,7 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
         meta['position_eci_{:}'.format(v)] = {
             meta.labels.units: 'km',
             meta.labels.name: 'ECI {:}-position'.format(v),
+            meta.labels.notes: 'Calculated using skyfield with TEME',
             meta.labels.desc: 'Earth Centered Inertial {:}-position'.format(v),
             meta.labels.min_val: -np.inf,
             meta.labels.max_val: np.inf,
@@ -261,6 +262,7 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
         meta['velocity_eci_{:}'.format(v)] = {
             meta.labels.units: 'km/s',
             meta.labels.name: 'Satellite velocity ECI-{:}'.format(v),
+            meta.labels.notes: 'Calculated using skyfield with TEME',
             meta.labels.desc: 'Satellite velocity along ECI-{:}'.format(v),
             meta.labels.min_val: -np.inf,
             meta.labels.max_val: np.inf,
