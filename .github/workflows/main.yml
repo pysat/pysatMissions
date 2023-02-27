@@ -28,6 +28,10 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    - name: Reinstall fortran on MacOS
+      if: ${{ matrix.os == 'macos-latest' }}
+      run: brew reinstall gcc
+
     - name: Install requirements for testing setup
       run: |
         python -m pip install --upgrade pip
