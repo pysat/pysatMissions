@@ -1,6 +1,7 @@
 """Default routines for projecting values onto vectors for pysat instruments."""
 
 import numpy as np
+import warnings
 
 
 def add_ram_pointing_sc_attitude_vectors(inst):
@@ -92,6 +93,11 @@ def add_ram_pointing_sc_attitude_vectors(inst):
 def calculate_ecef_velocity(inst):
     """Calculate spacecraft velocity in ECEF frame.
 
+    .. deprecated:: 0.4.0
+      This function is no longer needed with the deprecation of `missions_ephem`.
+      Better calculations are available through geospacepy and skyfield.
+      `calculate_ecef_velocity` will be removed in versions 0.5.0+
+
     Presumes that the spacecraft velocity in ECEF is in
     the input instrument object as position_ecef_*. Uses a symmetric
     difference to calculate the velocity thus endpoints will be
@@ -110,6 +116,11 @@ def calculate_ecef_velocity(inst):
         using naming scheme velocity_ecef_* (*=x,y,z)
 
     """
+
+    warnings.warn(' '.join(("`calculate_ecef_velocity` has been deprecated and",
+                            "will be removed in pysatMissions 0.5.0+.",
+                            "Use `geospacepy` or `skyfield` instead.")),
+                  DeprecationWarning, stacklevel=2)
 
     def get_vel_from_pos(x):
         vel = (x.values[2:] - x.values[0:-2]) / 2.

@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   * Remove optional dependencies in readthedocs requirements
   * Add tests for NEP 29 testing
   * Add tests for Mac OS
+  * Deprecate `calculate_ecef_velocity` method
+* Testing
+  * Include checks on sc coordinate transformation calculations
 
 ## [0.3.3] - 2022-09-06
 * Documentation Updates
