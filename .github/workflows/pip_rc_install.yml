@@ -28,3 +28,12 @@ jobs:
 
     - name: Install pysatMissions RC
       run: pip install --no-deps --pre -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ pysatMissions
+
+    - name: Set up pysat
+      run: |
+        mkdir pysatData
+        python -c "import pysat; pysat.params['data_dirs'] = 'pysatData'"
+    - name: Check that install imports correctly
+      run: |
+        cd ..
+        python -c "import pysatMissions; print(pysatMissions.__version__)"
