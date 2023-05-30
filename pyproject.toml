@@ -73,6 +73,8 @@ doc = [
 Documentation = "https://pysatmissions.readthedocs.io/en/latest/"
 Source = "https://github.com/pysat/pysatMissions"
 
+[tool.coverage.report]
+
 [tool.pytest.ini_options]
 addopts = "--cov=pysatMissions"
 markers = [
