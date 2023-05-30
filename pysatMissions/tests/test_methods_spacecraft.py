@@ -3,6 +3,7 @@
 
 import datetime as dt
 import numpy as np
+import warnings
 
 import pysat
 from pysatMissions.methods import spacecraft as mm_sc
@@ -11,24 +12,29 @@ from pysatMissions.methods import spacecraft as mm_sc
 def add_ecef(inst):
     """Add ECEF position to pysat_testing instrument."""
 
-    inst['position_ecef_x'] = [-6197.135721, -6197.066687, -6196.990263,
-                               -6196.906991, -6196.816336, -6196.718347,
-                               -6196.613474, -6196.501303, -6196.382257]
-    inst['position_ecef_y'] = [-2169.334337, -2174.014920, -2178.693373,
-                               -2183.368212, -2188.040895, -2192.711426,
-                               -2197.378290, -2202.042988, -2206.703992]
-    inst['position_ecef_z'] = [1716.528241, 1710.870004, 1705.209738,
-                               1699.547245, 1693.882731, 1688.216005,
-                               1682.547257, 1676.876312, 1671.203352]
+    # Maintain each as unit vector to simplify checks.
+    inst['position_ecef_x'] = [0.0, 0.0, 0.0, 1.0, 1.0, 0.0]
+    inst['position_ecef_y'] = [1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+    inst['position_ecef_z'] = [0.0, 1.0, 1.0, 0.0, 0.0, 0.0]
+    return
+
+
+def add_ecef_vel(inst):
+    """Add ECEF velocity to pysat_testing instrument."""
+
+    # Maintain each as unit vector to simplify checks.
+    inst['velocity_ecef_x'] = [1.0, 1.0, 0.0, 0.0, 0.0, 0.0]
+    inst['velocity_ecef_y'] = [0.0, 0.0, 1.0, 1.0, 0.0, 0.0]
+    inst['velocity_ecef_z'] = [0.0, 0.0, 0.0, 0.0, 1.0, 1.0]
     return
 
 
 def add_fake_data(inst):
     """Add an arbitrary vector to a pysat_testing instrument."""
 
-    inst['ax'] = np.ones(9)
-    inst['ay'] = np.zeros(9)
-    inst['az'] = np.zeros(9)
+    inst['ax'] = np.ones(6)
+    inst['ay'] = np.zeros(6)
+    inst['az'] = np.zeros(6)
     return
 
 
@@ -39,7 +45,7 @@ class TestBasics(object):
         """Create a clean testing setup before each method."""
 
         self.testInst = pysat.Instrument(platform='pysat', name='testing',
-                                         num_samples=9, clean_level='clean',
+                                         num_samples=6, clean_level='clean',
                                          use_header=True)
         self.testInst.custom_attach(add_ecef)
         self.reftime = dt.datetime(2009, 1, 1)
@@ -73,29 +79,61 @@ class TestBasics(object):
         self.eval_targets(targets)
         return
 
+    def test_calculate_ecef_velocity_deprecation(self):
+        """Test `calculate_ecef_velocity` helper function."""
+
+        self.testInst.custom_attach(mm_sc.calculate_ecef_velocity)
+        warnings.simplefilter("always", DeprecationWarning)
+        with warnings.catch_warnings(record=True) as war:
+            self.testInst.load(date=self.reftime)
+        warn_msgs = ["`calculate_ecef_velocity` has been deprecated"]
+
+        pysat.utils.testing.eval_warnings(war, warn_msgs)
+        return
+
     def test_add_ram_pointing_sc_attitude_vectors(self):
         """Test `add_ram_pointing_sc_attitude_vectors` helper function."""
 
-        # TODO(#64): check if calculations are correct
-        self.testInst.custom_attach(mm_sc.calculate_ecef_velocity)
+        self.testInst.custom_attach(add_ecef_vel)
         self.testInst.custom_attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
         self.testInst.load(date=self.reftime)
-        targets = ['sc_xhat_ecef_x', 'sc_xhat_ecef_y', 'sc_xhat_ecef_z',
-                   'sc_yhat_ecef_x', 'sc_yhat_ecef_y', 'sc_yhat_ecef_z',
-                   'sc_zhat_ecef_x', 'sc_zhat_ecef_y', 'sc_zhat_ecef_z']
-        self.eval_targets(targets)
+
+        # Xhat vector should match velocity
+        assert np.all(self.testInst['sc_xhat_ecef_x']
+                      == self.testInst['velocity_ecef_x'])
+        assert np.all(self.testInst['sc_xhat_ecef_y']
+                      == self.testInst['velocity_ecef_y'])
+        assert np.all(self.testInst['sc_xhat_ecef_z']
+                      == self.testInst['velocity_ecef_z'])
+
+        # Zhat vector should match - position
+        assert np.all(self.testInst['sc_zhat_ecef_x']
+                      == -self.testInst['position_ecef_x'])
+        assert np.all(self.testInst['sc_zhat_ecef_y']
+                      == -self.testInst['position_ecef_y'])
+        assert np.all(self.testInst['sc_zhat_ecef_z']
+                      == -self.testInst['position_ecef_z'])
+
+        # Yhat vector should be orthogonal
+        assert np.all(self.testInst['sc_yhat_ecef_x']
+                      == [0.0, 0.0, 1.0, 0.0, 0.0, -1.0])
+        assert np.all(self.testInst['sc_yhat_ecef_y']
+                      == [0.0, -1.0, 0.0, 0.0, 1.0, 0.0])
+        assert np.all(self.testInst['sc_yhat_ecef_z']
+                      == [1.0, 0.0, 0.0, -1.0, 0.0, 0.0])
         return
 
     def test_project_ecef_vector_onto_sc(self):
         """Test `project_ecef_vector_onto_sc` helper function."""
 
-        # TODO(#64): check if calculations are correct
-        self.testInst.custom_attach(mm_sc.calculate_ecef_velocity)
+        self.testInst.custom_attach(add_ecef_vel)
         self.testInst.custom_attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
         self.testInst.custom_attach(add_fake_data)
         self.testInst.custom_attach(mm_sc.project_ecef_vector_onto_sc,
                                     args=['ax', 'ay', 'az', 'bx', 'by', 'bz'])
         self.testInst.load(date=self.reftime)
-        targets = ['bx', 'by', 'bz']
-        self.eval_targets(targets)
+
+        assert np.all(self.testInst['bx'] == [1.0, 1.0, 0.0, 0.0, 0.0, 0.0])
+        assert np.all(self.testInst['by'] == [0.0, 0.0, 1.0, 0.0, 0.0, -1.0])
+        assert np.all(self.testInst['bz'] == [0.0, 0.0, 0.0, -1.0, -1.0, 0.0])
         return
