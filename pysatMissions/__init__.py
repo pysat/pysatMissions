@@ -11,7 +11,8 @@ Main Features
 
 """
 
-import pkg_resources
+import importlib
+import importlib_metadata
 
 from pysatMissions import instruments
 from pysatMissions import methods
@@ -20,4 +21,8 @@ from pysatMissions import utils
 __all__ = ['instruments', 'methods', 'utils']
 
 # set version
-__version__ = pkg_resources.get_distribution('pysatMissions').version
+try:
+    __version__ = importlib.metadata.version('pysatMissions')
+except AttributeError:
+    # Python 3.6 requires a different version
+    __version__ = importlib_metadata.version('pysatMissions')
