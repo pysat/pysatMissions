@@ -33,9 +33,9 @@ jobs:
       run: brew reinstall gcc
 
     - name: Install requirements for testing setup
+      if: ${{ matrix.numpy_ver != 'latest'}}
       run: |
         pip install --no-binary :numpy: numpy==${{ matrix.numpy_ver }}
-        # Force install version compatible with NEP29
         pip install --upgrade-strategy only-if-needed .[test]
 
     - name: Install with standard dependencies
