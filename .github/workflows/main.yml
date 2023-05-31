@@ -42,6 +42,7 @@ jobs:
       if: ${{ matrix.test_config == 'Ops'}}
       run: |
         pip install --no-cache-dir numpy==${{ matrix.numpy_ver }}
+        pip install netCDF4<1.6.2
         pip install -r requirements.txt
         pip install -r test_requirements.txt
         pip install .
