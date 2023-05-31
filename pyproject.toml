@@ -7,7 +7,7 @@ name = "pysatMissions"
 version = "0.3.4"
 description = "Mission Planning toolkit for pysat"
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.8"
 license = {file = "LICENSE"}
 authors = [
     {name = "Jeff Klenzing", email = "pysat.developers@gmail.com"}

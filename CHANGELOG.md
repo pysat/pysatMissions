@@ -2,14 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## [0.X.X] - 2023-XX-XX
+## [0.3.4] - 2023-XX-XX
 * Maintenance
   * Update pytest syntax
   * Update Github Actions versions
   * Add manual GitHub Actions tests for pysat RC
   * Add manual GitHub Actions tests for optional dependencies
   * Add manual GitHub Actions tests for pysatMissions RC
-  * Add tests for operational environment
   * Remove optional dependencies in readthedocs requirements
   * Add tests for NEP 29 testing
   * Add tests for Mac OS
