@@ -39,7 +39,7 @@ jobs:
         pip install --upgrade-strategy only-if-needed .[test]
 
     - name: Install standard dependencies
-      if: ${{ matrix.test_config == 'latest'}}
+      if: ${{ matrix.numpy_ver == 'latest'}}
       run: pip install .[test]
 
     - name: Install aacgmv2
