@@ -51,6 +51,7 @@ jobs:
       if: ${{ matrix.test_config == 'NEP29'}}
       run: |
         pip install numpy==${{ matrix.numpy_ver }}
+        pip install netCDF4<1.6.2
         pip install --upgrade-strategy only-if-needed .[test]
 
     - name: Install standard dependencies

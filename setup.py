@@ -7,7 +7,7 @@
 
 from setuptools import setup
 
-# package metadata stored in pyproject.toml
-# tool configurations stored in setup.cfg
+# Package metadata is stored in pyproject.toml.
+# Tool configurations are stored in setup.cfg.
 
 setup()
