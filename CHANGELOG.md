@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## [0.X.X] - 2023-XX-XX
+## [0.3.4] - 2023-XX-XX
 * Add support for skyfield propagation
 * Maintenance
   * Update pytest syntax
@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   * Add tests for NEP 29 testing
   * Add tests for Mac OS
   * Deprecate `calculate_ecef_velocity` method
+  * Use pyproject.toml to handle metadata / installation
 * Testing
   * Include checks on sc coordinate transformation calculations
 

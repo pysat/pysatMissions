@@ -4,6 +4,7 @@ numpydoc
 geospacepy
 numpy
 pandas
+pyproject_parser
 pysat>=3.0
 pyEphem
 sgp4>=2.7
