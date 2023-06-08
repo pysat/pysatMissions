@@ -43,7 +43,8 @@ dependencies = [
   "pandas",
   "pysat >= 3.0.4",
   "pyEphem",
-  "sgp4 >= 2.7"
+  "sgp4 >= 2.7",
+  "skyfield"
 ]
 
 [project.optional-dependencies]
