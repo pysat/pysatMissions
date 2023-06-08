@@ -33,6 +33,8 @@ instruments['sgp4'] = []
 for inst in instruments['download']:
     if 'sgp4' in inst['inst_module'].name:
         instruments['sgp4'].append(inst)
+    if 'skyfield' in inst['inst_module'].name:
+        instruments['sgp4'].append(inst)
 
 
 class TestInstruments(clslib.InstLibTests):

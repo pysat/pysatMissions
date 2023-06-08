@@ -36,6 +36,7 @@ Python 3.8+.
 | numpy          | pysat>=3.0.4      | aacgmv2          |
 | pandas         | pyEphem           | apexpy           |
 |                | sgp4>=2.7         | OMMBV            |
+|                | skyfield          |                  |
 
 
 One way to install is through pip.  Just type
