@@ -98,6 +98,7 @@ pygments_style = None
 # a list of builtin themes.
 #
 html_theme = 'sphinx_rtd_theme'
+html_theme_path = ["_themes", ]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -124,7 +125,7 @@ html_static_path = []
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'pysatMissionsdoc'
+htmlhelp_basename = '{:s}doc'.format(project)
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -173,6 +174,9 @@ texinfo_documents = [(master_doc, project, title, author, project, description,
 
 # Bibliographic Dublin Core info.
 epub_title = project
+epub_author = author
+epub_publisher = author
+epub_copyright = copyright
 
 # The unique identifier of the text. This can be a ISBN number
 # or the project homepage.

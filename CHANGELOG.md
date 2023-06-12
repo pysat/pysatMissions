@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   * Add tests for Mac OS
   * Deprecate `calculate_ecef_velocity` method
   * Use pyproject.toml to handle metadata / installation
+  * Update GitHub Actions workflow standards
 * Testing
   * Include checks on sc coordinate transformation calculations
 
