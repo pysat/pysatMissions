@@ -78,7 +78,7 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
     ----------
     fnames : list-like collection
         File name that contains date in its name.
-    tag : string
+    tag : str
         Identifies a particular subset of satellite data
     inst_id : str
         Instrument satellite ID (accepts '' or a number (i.e., '10'), which
