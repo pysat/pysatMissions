@@ -23,11 +23,12 @@ Python 3.8+ and pysat 3.0.4+.
   numpy            pysat>=3.0.4        aacgmv2
   pandas           pyEphem             apexpy
                    sgp4>=2.7           OMMBV>=1.0
+                   skyfield
  ================ =================== ==================
 
 
- Installation Options
- --------------------
+Installation Options
+--------------------
 
  1. Clone the git repository
  ::
@@ -43,17 +44,17 @@ Python 3.8+ and pysat 3.0.4+.
     A. Install on the system (root privileges required)::
 
 
-         sudo python setup.py install
+         sudo pip install .
 
     B. Install at the user level::
 
 
-         python setup.py install --user
+         pip install --user .
 
     C. Install with the intent to develop locally::
 
 
-         python setup.py develop --user
+         pip install -e --user .
 
 
 .. _post-install:

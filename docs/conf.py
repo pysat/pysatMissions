@@ -17,23 +17,23 @@ https://www.sphinx-doc.org/en/master/config
 #
 import json
 import os
+from pyproject_parser import PyProject
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
+
+info = PyProject.load("../pyproject.toml")
 
 project = 'pysatMissions'
 title = '{:s} Documentation'.format(project)
 zenodo = json.loads(open('../.zenodo.json').read())
 author = ', '.join([creator['name'] for creator in zenodo['creators']])
 copyright = ', '.join(['2022', author])
-description = 'Tools for generating simulated instruments in pysat.'
+description = info.project['description']
 
 # The short X.Y version
-module_dir = os.path.split(os.path.abspath(os.path.dirname(__file__)))[0]
-version_file = os.path.join(module_dir, project, 'version.txt')
-with open(version_file, 'r') as fin:
-    version = fin.read().strip()
+version = info.project['version'].base_version
 
 # The full version, including alpha/beta/rc tags.
 release = '{:s}-alpha'.format(version)
@@ -81,7 +81,7 @@ master_doc = 'index'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -98,6 +98,7 @@ pygments_style = None
 # a list of builtin themes.
 #
 html_theme = 'sphinx_rtd_theme'
+html_theme_path = ["_themes", ]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -124,7 +125,7 @@ html_static_path = []
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'pysatMissionsdoc'
+htmlhelp_basename = '{:s}doc'.format(project)
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -173,6 +174,9 @@ texinfo_documents = [(master_doc, project, title, author, project, description,
 
 # Bibliographic Dublin Core info.
 epub_title = project
+epub_author = author
+epub_publisher = author
+epub_copyright = copyright
 
 # The unique identifier of the text. This can be a ISBN number
 # or the project homepage.

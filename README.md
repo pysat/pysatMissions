@@ -36,6 +36,7 @@ Python 3.8+.
 | numpy          | pysat>=3.0.4      | aacgmv2          |
 | pandas         | pyEphem           | apexpy           |
 |                | sgp4>=2.7         | OMMBV            |
+|                | skyfield          |                  |
 
 
 One way to install is through pip.  Just type
@@ -56,7 +57,7 @@ a local install use the "--user" flag after "install".
 
 ```
 cd pysatMissions/
-python setup.py install
+pip install .
 ```
 
 Note: pre-1.0.0 version

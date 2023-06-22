@@ -2,6 +2,23 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.3.4] - 2023-06-22
+* Add support for skyfield propagation
+* Maintenance
+  * Update pytest syntax
+  * Update Github Actions versions
+  * Add manual GitHub Actions tests for pysat RC
+  * Add manual GitHub Actions tests for optional dependencies
+  * Add manual GitHub Actions tests for pysatMissions RC
+  * Remove optional dependencies in readthedocs requirements
+  * Add tests for NEP 29 testing
+  * Add tests for Mac OS
+  * Deprecate `calculate_ecef_velocity` method
+  * Use pyproject.toml to handle metadata / installation
+  * Update GitHub Actions workflow standards
+* Testing
+  * Include checks on sc coordinate transformation calculations
+
 ## [0.3.3] - 2022-09-06
 * Documentation Updates
 

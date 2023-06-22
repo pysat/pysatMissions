@@ -11,30 +11,53 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
-        os: ["ubuntu-latest", "windows-latest"]
+        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
+        python-version: ["3.10", "3.11"]
         numpy_ver: ["latest"]
+        include:
+          - python-version: "3.9"
+            numpy_ver: "1.21"
+            os: "ubuntu-latest"
 
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }} with numpy ${{ matrix.numpy_ver }}
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install requirements for testing setup
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r test_requirements.txt
+    - name: Reinstall fortran on MacOS
+      if: ${{ matrix.os == 'macos-latest' }}
+      run: brew reinstall gcc
 
-    - name: Install dependencies
+    - name: Install NEP29 dependencies
+      if: ${{ matrix.numpy_ver != 'latest'}}
       run: |
-        pip install -r requirements.txt
-        pip install aacgmv2 --no-binary==aacgmv2
-        pip install apexpy --no-binary==apexpy
-        pip install OMMBV --no-binary==OMMBV
+        pip install numpy==${{ matrix.numpy_ver }}
+        pip install --upgrade-strategy only-if-needed .[test]
+
+    - name: Install standard dependencies
+      if: ${{ matrix.numpy_ver == 'latest'}}
+      run: pip install .[test]
+
+    - name: Install aacgmv2
+      # Optional package, continue with tests if install fails
+      continue-on-error: true
+      run: pip install aacgmv2 --no-binary==aacgmv2
+
+    - name: Install apexpy
+      # Skip apexpy for nep29 tests
+      if: ${{ matrix.numpy_ver == 'latest'}}
+      # Optional package, continue with tests if install fails
+      continue-on-error: true
+      run: pip install apexpy --no-binary==apexpy
+
+    - name: Install OMMBV
+      # Optional package, continue with tests if install fails
+      continue-on-error: true
+      run: pip install OMMBV --no-binary==OMMBV
 
     - name: Set up pysat
       run: |
@@ -48,10 +71,9 @@ jobs:
       run: flake8 . --count --exit-zero --max-complexity=10 --statistics
 
     - name: Test with pytest
-      run: |
-        pytest --cov=pysatMissions/
+      run: pytest
 
     - name: Publish results to coveralls
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: coveralls --rcfile=setup.cfg --service=github
+      run: coveralls --rcfile=pyproject.toml --service=github

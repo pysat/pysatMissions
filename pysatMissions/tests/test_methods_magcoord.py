@@ -14,7 +14,7 @@ import pysatMissions.methods.magcoord as mm_magcoord
 class TestBasics(object):
     """Main testing class for aacgmv2."""
 
-    def setup(self):
+    def setup_method(self):
         """Create a clean testing setup before each method."""
 
         self.test_inst = pysat.Instrument(platform='pysat', name='testing',
@@ -26,7 +26,7 @@ class TestBasics(object):
         self.reftime = dt.datetime(2009, 1, 1)
         return
 
-    def teardown(self):
+    def teardown_method(self):
         """Clean up test environment after each method."""
 
         del self.test_inst, self.kwargs, self.reftime
