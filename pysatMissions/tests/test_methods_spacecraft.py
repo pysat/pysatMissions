@@ -98,7 +98,7 @@ class TestBasics(object):
         self.testInst.custom_attach(mm_sc.add_ram_pointing_sc_attitude_vectors)
         self.testInst.load(date=self.reftime)
 
-        # Xhat vector should match velocity
+        # X-hat vector should match velocity
         assert np.all(self.testInst['sc_xhat_ecef_x']
                       == self.testInst['velocity_ecef_x'])
         assert np.all(self.testInst['sc_xhat_ecef_y']
@@ -106,7 +106,7 @@ class TestBasics(object):
         assert np.all(self.testInst['sc_xhat_ecef_z']
                       == self.testInst['velocity_ecef_z'])
 
-        # Zhat vector should match - position
+        # Z-hat vector should match - position
         assert np.all(self.testInst['sc_zhat_ecef_x']
                       == -self.testInst['position_ecef_x'])
         assert np.all(self.testInst['sc_zhat_ecef_y']
@@ -114,7 +114,7 @@ class TestBasics(object):
         assert np.all(self.testInst['sc_zhat_ecef_z']
                       == -self.testInst['position_ecef_z'])
 
-        # Yhat vector should be orthogonal
+        # Y-hat vector should be orthogonal
         assert np.all(self.testInst['sc_yhat_ecef_x']
                       == [0.0, 0.0, 1.0, 0.0, 0.0, -1.0])
         assert np.all(self.testInst['sc_yhat_ecef_y']
