@@ -1,3 +1,9 @@
+# Full author list can be found in .zenodo.json file
+# DOI:10.5281/zenodo.3475498
+#
+# DISTRIBUTION STATEMENT A: Approved for public release. Distribution is
+# unlimited.
+# ----------------------------------------------------------------------------
 """Unit and Integration Tests for each instrument module.
 
 Note
@@ -12,8 +18,7 @@ import warnings
 
 import pytest
 
-# Make sure to import your instrument package here
-# e.g.,
+# Make sure to import your instrument package here:
 import pysatMissions
 
 # Import the test classes from pysat
