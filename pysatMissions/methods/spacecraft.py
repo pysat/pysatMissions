@@ -22,23 +22,20 @@ def add_ram_pointing_sc_attitude_vectors(inst):
     inst : pysat.Instrument
         Instrument object
 
-    Returns
-    -------
-    None
-        Modifies pysat.Instrument object in place to include S/C attitude
-        unit vectors, expressed in ECEF basis. Vectors are named
-        sc_(x,y,z)hat_ecef_(x,y,z).
-        sc_xhat_ecef_x is the spacecraft unit vector along x (positive along
-        velocity vector) reported in ECEF, ECEF x-component.
-
     Notes
     -----
-        Expects velocity and position of spacecraft in Earth Centered
-        Earth Fixed (ECEF) coordinates to be in the instrument object
-        and named velocity_ecef_* (*=x,y,z) and position_ecef_* (*=x,y,z)
+    Modifies pysat.Instrument object in place to include S/C attitude
+    unit vectors, expressed in ECEF basis. Vectors are named
+    sc_(x,y,z)hat_ecef_(x,y,z).
+    sc_xhat_ecef_x is the spacecraft unit vector along x (positive along
+    velocity vector) reported in ECEF, ECEF x-component.
 
-        Adds attitude vectors for spacecraft in the ECEF basis by calculating
-        the scalar product of each attitude vector with each component of ECEF.
+    Expects velocity and position of spacecraft in Earth Centered
+    Earth Fixed (ECEF) coordinates to be in the instrument object
+    and named velocity_ecef_(x,y,z) and position_ecef_(x,y,z)
+
+    Adds attitude vectors for spacecraft in the ECEF basis by calculating
+    the scalar product of each attitude vector with each component of ECEF.
 
     """
 
@@ -77,11 +74,11 @@ def add_ram_pointing_sc_attitude_vectors(inst):
         for u in ['x', 'y', 'z']:
             inst.meta['sc_{:}hat_ecef_{:}'.format(v, u)] = {
                 inst.meta.labels.units: '',
-                inst.meta.labels.name: 'SC {:}-unit vector, ECEF-{:}'.format(v, u),
-                inst.meta.labels.desc: ' '.join(('S/C attitude ({:}'.format(v),
-                                                 '-direction, ram) unit vector,',
-                                                 'expressed in ECEF basis,',
-                                                 '{:}-component'.format(u)))}
+                inst.meta.labels.name: 'SC {:}-unit vector, ECEF-{:}'.format(
+                    v, u),
+                inst.meta.labels.desc: ' '.join((
+                    'S/C attitude ({:}-direction, ram) unit vector,'.format(v),
+                    'expressed in ECEF basis, {:}-component'.format(u)))}
 
     # Check what magnitudes we get
     mag = np.linalg.norm(
@@ -100,26 +97,24 @@ def calculate_ecef_velocity(inst):
     """Calculate spacecraft velocity in ECEF frame.
 
     .. deprecated:: 0.4.0
-      This function is no longer needed with the deprecation of `missions_ephem`.
-      Better calculations are available through geospacepy and skyfield.
-      `calculate_ecef_velocity` will be removed in versions 0.5.0+
-
-    Presumes that the spacecraft velocity in ECEF is in
-    the input instrument object as position_ecef_*. Uses a symmetric
-    difference to calculate the velocity thus endpoints will be
-    set to NaN. Routine should be run using pysat data padding feature
-    to create valid end points.
+      This function is no longer needed with the deprecation of 
+      `missions_ephem`. Better calculations are available through geospacepy
+      and skyfield. `calculate_ecef_velocity` will be removed in versions 0.5.0+
 
     Parameters
     ----------
     inst : pysat.Instrument
         Instrument object
 
-    Returns
-    -------
-    None
-        Modifies pysat.Instrument object in place to include ECEF velocity
-        using naming scheme velocity_ecef_* (*=x,y,z)
+    Notes
+    -----
+    Presumes that the spacecraft velocity in ECEF is in the input instrument
+    object as position_ecef_(x,y,z). Uses a symmetric difference to calculate
+    the velocity thus endpoints will be set to NaN. Routine should be run using
+    pysat data padding feature to create valid end points.
+
+    Modifies pysat.Instrument object in place to include ECEF velocity
+    using naming scheme velocity_ecef_(x,y,z)
 
     """
 
@@ -174,6 +169,7 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
         Label used to set Z component of projected vector
     meta : array_like of dicts (None)
         Dicts contain metadata to be assigned.
+
     """
 
     # TODO(#65): add checks for existence of ECEF variables in the Instrument
@@ -190,9 +186,12 @@ def project_ecef_vector_onto_sc(inst, x_label, y_label, z_label,
     zy = inst['sc_zhat_ecef_y']
     zz = inst['sc_zhat_ecef_z']
 
-    inst[new_x_label] = inst[x_label] * xx + inst[y_label] * xy + inst[z_label] * xz
-    inst[new_y_label] = inst[x_label] * yx + inst[y_label] * yy + inst[z_label] * yz
-    inst[new_z_label] = inst[x_label] * zx + inst[y_label] * zy + inst[z_label] * zz
+    inst[new_x_label] = inst[x_label] * xx + inst[y_label] * xy + inst[
+        z_label] * xz
+    inst[new_y_label] = inst[x_label] * yx + inst[y_label] * yy + inst[
+        z_label] * yz
+    inst[new_z_label] = inst[x_label] * zx + inst[y_label] * zy + inst[
+        z_label] * zz
 
     if meta is not None:
         inst.meta[new_x_label] = meta[0]
