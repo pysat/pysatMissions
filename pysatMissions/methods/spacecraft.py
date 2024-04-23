@@ -97,7 +97,7 @@ def calculate_ecef_velocity(inst):
     """Calculate spacecraft velocity in ECEF frame.
 
     .. deprecated:: 0.4.0
-      This function is no longer needed with the deprecation of 
+      This function is no longer needed with the deprecation of
       `missions_ephem`. Better calculations are available through geospacepy
       and skyfield. `calculate_ecef_velocity` will be removed in versions 0.5.0+
 
