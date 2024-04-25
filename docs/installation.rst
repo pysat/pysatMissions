@@ -18,7 +18,7 @@ and for the Space Physics community.  This module officially supports
 Python 3.8+ and pysat 3.0.4+.
 
  ================ =================== ==================
- Common  modules   Community modules   Optional Modules
+ Common modules   Community modules   Optional Modules
  ================ =================== ==================
   numpy            pysat>=3.0.4        aacgmv2
   pandas           pyEphem             apexpy

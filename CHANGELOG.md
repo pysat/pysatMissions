@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 * Maintenance
   * Update workflows coveralls usage
   * Update NEP29
+  * Update headers and add acknowledgements
 
 ## [0.3.4] - 2023-06-22
 * Add support for skyfield propagation

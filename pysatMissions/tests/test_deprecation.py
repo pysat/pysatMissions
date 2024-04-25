@@ -1,3 +1,9 @@
+# Full author list can be found in .zenodo.json file
+# DOI:10.5281/zenodo.3475498
+#
+# DISTRIBUTION STATEMENT A: Approved for public release. Distribution is
+# unlimited.
+# ----------------------------------------------------------------------------
 """Unit tests for deprecated methods and objects in pysatMissions."""
 
 import warnings
@@ -20,7 +26,7 @@ class TestDeprecation(object):
         return
 
     def test_ephem_deprecation(self):
-        """Test that instatiating missions_ephem will give DeprecationWarning."""
+        """Test that instatiating missions_ephem gives DeprecationWarning."""
 
         with warnings.catch_warnings(record=True) as war:
             pysat.Instrument(inst_module=missions_ephem)
