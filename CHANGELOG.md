@@ -2,11 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## [0.3.X] - XXXX-XX-XX
+## [0.3.5] - 2024-XX-XX
 * Maintenance
   * Update workflows coveralls usage
   * Update NEP29
   * Update headers and add acknowledgements
+  * Update GitHub Actions workflows for NEP29 (Apr 2024)
 
 ## [0.3.4] - 2023-06-22
 * Add support for skyfield propagation
