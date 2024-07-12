@@ -54,7 +54,7 @@ jobs:
       continue-on-error: true
       run: |
           brew reinstall gcc
-	  which gcc
+          which gcc
           CC=/opt/homebrew/bin/gcc FC=/opt/homebrew/bin/gfortran pip install apexpy --no-binary==apexpy
 
     - name: Install apexpy for Unix/Windows
