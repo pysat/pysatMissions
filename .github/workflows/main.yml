@@ -62,9 +62,9 @@ jobs:
       # Optional package, continue with tests if install fails
       continue-on-error: true
       run: |
-	  pip install numpy>=1.19.5,<2.0.0
+          pip install numpy>=1.19.5,<2.0.0
           pip install apexpy --no-binary==apexpy
-	  pip install numpy --upgrade
+          pip install numpy --upgrade
 
     - name: Install OMMBV
       # Optional package, continue with tests if install fails
