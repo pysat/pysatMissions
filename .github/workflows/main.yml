@@ -36,7 +36,7 @@ jobs:
       if: ${{ matrix.numpy_ver != 'latest'}}
       run: |
         pip install numpy==${{ matrix.numpy_ver }}
-        pip install --upgrade-strategy only-if-needed .[test]
+        pip install .[test]
 
     - name: Install standard dependencies
       if: ${{ matrix.numpy_ver == 'latest'}}
