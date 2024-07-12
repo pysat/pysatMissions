@@ -54,20 +54,16 @@ jobs:
       continue-on-error: true
       run: |
           brew reinstall gcc
-          ls /opt/homebrew/bin/*gcc*
           /opt/homebrew/bin/gfortran --version
-          CC=/opt/homebrew/bin/gcc FC=/opt/homebrew/bin/gfortran pip install apexpy --no-binary==apexpy
+	  /opt/homebrew/bin/gcc-14 --version
+          CC=/opt/homebrew/bin/gcc-14 FC=/opt/homebrew/bin/gfortran pip install apexpy --no-binary==apexpy
 
     - name: Install apexpy for Unix/Windows
       # Skip apexpy for nep29 tests
       if: ${{ matrix.numpy_ver == 'latest' && matrix.os != 'macos-latest' }}
       # Optional package, continue with tests if install fails
       continue-on-error: true
-      run: |
-          pip uninstall -y numpy
-          pip install numpy<=1.26.4
-          pip install apexpy --no-binary==apexpy
-          pip install numpy --upgrade
+      run: pip install apexpy --no-binary==apexpy
 
     - name: Install OMMBV
       # Optional package, continue with tests if install fails
