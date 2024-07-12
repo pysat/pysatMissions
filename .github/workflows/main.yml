@@ -55,7 +55,7 @@ jobs:
       run: |
           brew reinstall gcc
           /opt/homebrew/bin/gfortran --version
-	  /opt/homebrew/bin/gcc-14 --version
+          /opt/homebrew/bin/gcc-14 --version
           CC=/opt/homebrew/bin/gcc-14 FC=/opt/homebrew/bin/gfortran pip install apexpy --no-binary==apexpy
 
     - name: Install apexpy for Unix/Windows
