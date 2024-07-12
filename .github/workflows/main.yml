@@ -55,6 +55,9 @@ jobs:
       run: |
           brew reinstall gcc
           which gcc
+          gcc --version
+          ls /opt/homebrew/bin
+          ls /usr/bin
           CC=/opt/homebrew/bin/gcc FC=/opt/homebrew/bin/gfortran pip install apexpy --no-binary==apexpy
 
     - name: Install apexpy for Unix/Windows
@@ -63,7 +66,7 @@ jobs:
       # Optional package, continue with tests if install fails
       continue-on-error: true
       run: |
-          pip uninstall numpy
+          pip uninstall -y numpy
           pip install numpy<2.0.0
           pip install apexpy --no-binary==apexpy
           pip install numpy --upgrade
