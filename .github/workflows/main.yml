@@ -35,8 +35,8 @@ jobs:
     - name: Install NEP29 dependencies
       if: ${{ matrix.numpy_ver != 'latest'}}
       run: |
-        pip install numpy==${{ matrix.numpy_ver }}
         pip install .[test]
+        pip install numpy==${{ matrix.numpy_ver }}
 
     - name: Install standard dependencies
       if: ${{ matrix.numpy_ver == 'latest'}}
