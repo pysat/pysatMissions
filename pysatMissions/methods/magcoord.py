@@ -1,5 +1,10 @@
-"""Routines for projecting aacgmv2 and apexpy model values onto pysat instruments.
-"""
+# Full author list can be found in .zenodo.json file
+# DOI:10.5281/zenodo.3475498
+#
+# DISTRIBUTION STATEMENT A: Approved for public release. Distribution is
+# unlimited.
+# ----------------------------------------------------------------------------
+"""Routines for projecting aacgmv2 and apexpy coords onto pysat instruments."""
 
 import pysat
 from pysatMissions.utils import package_check

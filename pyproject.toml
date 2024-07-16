@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pysatMissions"
-version = "0.3.4"
+version = "0.3.5"
 description = "Mission Planning toolkit for pysat"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [
     {name = "Jeff Klenzing", email = "pysat.developers@gmail.com"}
@@ -21,9 +21,9 @@ classifiers = [
   "License :: OSI Approved :: BSD License",
   "Natural Language :: English",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Operating System :: POSIX :: Linux",
   "Operating System :: MacOS :: MacOS X",
   "Operating System :: Microsoft :: Windows"
@@ -67,7 +67,7 @@ doc = [
   "numpydoc",
   "pyproject_parser",
   "sphinx",
-  "sphinx_rtd_theme"
+  "sphinx_rtd_theme<2.0.0"
 ]
 
 [project.urls]

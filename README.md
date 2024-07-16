@@ -11,16 +11,19 @@
 [![Coverage Status](https://coveralls.io/repos/github/pysat/pysatMissions/badge.svg?branch=main)](https://coveralls.io/github/pysat/pysatMissions?branch=main)
 [![Maintainability](https://api.codeclimate.com/v1/badges/83011911691b9d2076e9/maintainability)](https://codeclimate.com/github/pysat/pysatMissions/maintainability)
 
-pysatMissions allows users to run build simulated satellites for Two-Line Elements (TLE) and add empirical data.  It includes the missions_ephem and mission_sgp4 instrument modules which can be imported into pysat.
+pysatMissions allows users to run build simulated satellites for Two-Line
+Elements (TLE) and add empirical data.  It includes the missions_ephem and
+mission_sgp4 instrument modules which can be imported into pysat.
 
 Main Features
 -------------
 - Simulate satellite orbits from TLEs and add data from empirical models
-- Import magnetic coordinates through apexpy and aacgmv2 (optional install)
+- Import magnetic coordinates through apexpy and aacgmv2 (optional dependencies)
 
 Documentation
 ---------------------
-[Full Documentation for main package](https://pysat.readthedocs.io/en/latest/)
+[Full Documentation](https://pysatmissions.readthedocs.io/en/latest/)
+[pysat Documentation](https://pysat.readthedocs.io/en/latest/)
 
 
 # Installation
@@ -76,7 +79,9 @@ from pysatMissions.instruments import missions_sgp4
 
 sim_inst = pysat.Instrument(inst_module=missions_sgp4)
 ```
-Another way to use the instruments in an external repository is to register the instruments.  This only needs to be done the first time you load an instrument.  Afterward, pysat will identify them using the `platform` and `name` keywords.
+Another way to use the instruments in an external repository is to register the
+instruments.  This only needs to be done the first time you load an instrument.
+Afterward, pysat will identify them using the `platform` and `name` keywords.
 
 ```
 import pysat
@@ -96,7 +101,7 @@ additional configuration.  Both can be installed from pip, but may require the
 The instrument `missions_ephem` has been deprecated since pyEphem is no longer
 maintained. This will be removed in v0.4.0.  Note that OMMBV is required for
 this instrument to function correctly, but is not required for the core
-pysatMissions package.  This has also been made optional to improve installation.  
-Please use the `missions_sgp4` instrument for future needs.
+pysatMissions package.  This has also been made optional to improve
+installation.   Please use the `missions_sgp4` instrument for future needs.
 
 The orbital trajectories can be calculated without any of the optional modules.
