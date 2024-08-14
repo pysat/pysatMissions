@@ -49,7 +49,7 @@ jobs:
       run: pip install aacgmv2 --no-binary==aacgmv2
 
     - name: Install apexpy for MacOS X
-      # Only test apexpy for nep29 tests
+      # Only test apexpy for NEP29 tests
       if: ${{ matrix.numpy_ver != 'latest' && matrix.os == 'macos-latest' }}
       # Optional package, continue with tests if install fails
       continue-on-error: true
@@ -60,7 +60,7 @@ jobs:
           CC=/opt/homebrew/bin/gcc-14 FC=/opt/homebrew/bin/gfortran pip install apexpy --no-binary==apexpy
 
     - name: Install apexpy for Unix/Windows
-      # Only test apexpy for nep29 tests
+      # Only test apexpy for NEP29 tests
       if: ${{ matrix.numpy_ver != 'latest' && matrix.os != 'macos-latest' }}
       # Optional package, continue with tests if install fails
       continue-on-error: true
