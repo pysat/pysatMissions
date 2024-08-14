@@ -35,8 +35,9 @@ jobs:
     - name: Install NEP29 dependencies
       if: ${{ matrix.numpy_ver != 'latest'}}
       run: |
+        pip install .[test]
+        pip install scipy==1.13.1
         pip install numpy==${{ matrix.numpy_ver }}
-        pip install --upgrade-strategy only-if-needed .[test]
 
     - name: Install standard dependencies
       if: ${{ matrix.numpy_ver == 'latest'}}
@@ -47,9 +48,20 @@ jobs:
       continue-on-error: true
       run: pip install aacgmv2 --no-binary==aacgmv2
 
-    - name: Install apexpy
-      # Skip apexpy for nep29 tests
-      if: ${{ matrix.numpy_ver == 'latest'}}
+    - name: Install apexpy for MacOS X
+      # Only test apexpy for NEP29 tests
+      if: ${{ matrix.numpy_ver != 'latest' && matrix.os == 'macos-latest' }}
+      # Optional package, continue with tests if install fails
+      continue-on-error: true
+      run: |
+          brew reinstall gcc
+          /opt/homebrew/bin/gfortran --version
+          /opt/homebrew/bin/gcc-14 --version
+          CC=/opt/homebrew/bin/gcc-14 FC=/opt/homebrew/bin/gfortran pip install apexpy --no-binary==apexpy
+
+    - name: Install apexpy for Unix/Windows
+      # Only test apexpy for NEP29 tests
+      if: ${{ matrix.numpy_ver != 'latest' && matrix.os != 'macos-latest' }}
       # Optional package, continue with tests if install fails
       continue-on-error: true
       run: pip install apexpy --no-binary==apexpy
