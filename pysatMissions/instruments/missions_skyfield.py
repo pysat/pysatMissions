@@ -203,10 +203,17 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
                         eccentricity, np.radians(arg_periapsis),
                         np.radians(inclination), np.radians(mean_anomaly),
                         mean_motion, np.radians(raan))
+        # Set header level metadata
+        header = {'alt_periapsis': alt_periapsis, 'alt_apoapsis': alt_apoapsis,
+                  'arg_periapsis': arg_periapsis, 'bstar': bstar,
+                  'inclination': inclination, 'mean_anomaly': mean_anomaly,
+                  'raan': raan}
     else:
         # Otherwise, use TLEs
         satrec = sapi.Satrec.twoline2rv(line1, line2, sapi.WGS84)
         mean_motion = satrec.mm
+        # Set header level metadata
+        header = {'tle1': line1, 'tle2': line2}
 
     if one_orbit:
         ind = times <= (2 * np.pi / mean_motion * 60)
@@ -250,7 +257,7 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
     data.index.name = 'Epoch'
 
     # Create metadata corresponding to variables in load routine
-    meta = pysat.Meta()
+    meta = pysat.Meta(header_data=header)
     meta['Epoch'] = {
         meta.labels.units: 'Milliseconds since 1970-1-1',
         meta.labels.notes: 'UTC time at middle of geophysical measurement.',
