@@ -203,6 +203,7 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
                         eccentricity, np.radians(arg_periapsis),
                         np.radians(inclination), np.radians(mean_anomaly),
                         mean_motion, np.radians(raan))
+
         # Set header level metadata
         header = {'alt_periapsis': alt_periapsis, 'alt_apoapsis': alt_apoapsis,
                   'arg_periapsis': arg_periapsis, 'bstar': bstar,
@@ -212,6 +213,7 @@ def load(fnames, tag=None, inst_id=None, tle1=None, tle2=None,
         # Otherwise, use TLEs
         satrec = sapi.Satrec.twoline2rv(line1, line2, sapi.WGS84)
         mean_motion = satrec.mm
+
         # Set header level metadata
         header = {'tle1': line1, 'tle2': line2}
 
