@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ## [0.3.6] - 2024-XX-XX
 * Maintenance
   * Update meta headers to include orbital info used in propagation
+  * Update controlled information statement for accuracy and clarity
 
 ## [0.3.5] - 2024-07-16
 * Maintenance
