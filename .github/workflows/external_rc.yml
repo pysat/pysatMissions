@@ -27,14 +27,14 @@ jobs:
       run: pip install .[test]
 
     - name: Install ApexPy RC dependency on Mac
-      if: ${{ matrix.rc-package == "apexpy" && $matrix.os == "macos-latest"}}
+      if: ${{ matrix.rc-package == 'apexpy' && $matrix.os == 'macos-latest' }}
       run: |
           brew reinstall gcc@14
           CC=/opt/homebrew/bin/gcc-14 pip install --pre -i https://test.pypi.org/simple/  --extra-index-url https://pypi.org/simple/ ${{ matrix.rc-package }}
 
 
     - name: Install RC dependency
-      if: ${{ matrix.rc-package != "apexpy" || $matrix.os != "macos-latest" }}
+      if: ${{ matrix.rc-package != 'apexpy' || $matrix.os != 'macos-latest' }}
       run: pip install --pre -i https://test.pypi.org/simple/  --extra-index-url https://pypi.org/simple/ ${{ matrix.rc-package }}
 
     - name: Set up pysat
