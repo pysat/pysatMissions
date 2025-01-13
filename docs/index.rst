@@ -22,8 +22,10 @@ as well as apply geomagnetic field models to existing pysat instruments.
    acknowledgements.rst
 
 
-.. admonition:: DISTRIBUTION STATEMENT A: Approved for public release.
-		Distribution is unlimited.
+.. admonition:: Review Status for Classified or Controlled Information by NRL
+
+   DISTRIBUTION STATEMENT A: Approved for public release.
+   Distribution is unlimited.
 
 
 
