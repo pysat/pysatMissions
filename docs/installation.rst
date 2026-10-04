@@ -15,7 +15,7 @@ Prerequisites
 
 pysatMissions uses common Python modules, as well as modules developed by
 and for the Space Physics community.  This module officially supports
-Python 3.8+ and pysat 3.0.4+.
+Python 3.10+ and pysat 3.2.3+.
 
  ================ =================== ==================
  Common modules   Community modules   Optional Modules

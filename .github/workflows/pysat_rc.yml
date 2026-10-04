@@ -11,19 +11,19 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu-latest", "macos-latest", "windows-latest"]
-        python-version: ["3.11", "3.12"]
+        python-version: ["3.10", "3.12", "3.13", "3.14"]
         numpy_ver: ["latest"]
         include:
           - python-version: "3.10"
-            numpy_ver: "1.25"
-            os: "ubuntu-latest"
+            numpy_ver: "1.21.6"
+            os: "ubuntu-22.04"
 
     name: Python ${{ matrix.python-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
 

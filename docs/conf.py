@@ -59,7 +59,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.autosectionlabel',
               'numpydoc',
               'IPython.sphinxext.ipython_console_highlighting',
-              'm2r2']
+              'myst_parser']
 
 autosectionlabel_prefix_document = True
 autosectionlabel_maxdepth = 3
@@ -189,3 +189,7 @@ epub_copyright = copyright
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ['search.html']
+
+# Links to ignore when checking for stability
+linkcheck_ignore = ['https://zenodo.org',
+                    'https://doi.org']
