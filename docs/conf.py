@@ -189,3 +189,6 @@ epub_copyright = copyright
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ['search.html']
+
+# Links to ignore when checking for stability
+linkcheck_ignore = ['https://zenodo.org']
