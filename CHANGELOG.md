@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   * Update external RC tests to include Mac environment testing
   * Update NEP29 minimum to numpy 1.25
   * Update support for pandas 3.0
+  * Switched from `m2r2` to `myst_parser`
 
 ## [0.3.5] - 2024-07-16
 * Maintenance
