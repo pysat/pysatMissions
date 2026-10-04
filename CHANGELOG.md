@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   * Update NEP29 minimum to numpy 1.25
   * Update support for pandas 3.0
   * Switched from `m2r2` to `myst_parser`
+  * Added support for Python 3.14
+  * Updated GitHub Actions versions
 
 ## [0.3.5] - 2024-07-16
 * Maintenance
