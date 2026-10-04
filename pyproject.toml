@@ -63,7 +63,7 @@ test = [
 doc = [
   "extras_require",
   "ipython",
-  "m2r2",
+  "myst_parser",
   "numpydoc",
   "pyproject_parser",
   "sphinx",
